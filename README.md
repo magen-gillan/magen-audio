@@ -1,18 +1,30 @@
 # Magen Play
 
-A modern Android music player based on [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) by chr_56.
+**مشغل موسيقى حديث لأندرويد | A modern Android music player**
 
-## Features
-- Natural numeric sort
-- Custom folder covers
-- Custom sort order
-- Auto-scan
-- Arabic + 27 languages
-- Default tab: Folders→Songs→Albums→Playlists→Files→Artists→Genres
+Magen Play is a focused Android music player based on [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) by chr_56, rebuilt with Kotlin, Jetpack Compose, and Media3, with custom anime iconography and Magen Play branding.
 
-## Installation
-Download from [Releases](../../releases).
+Magen Play مشغل موسيقى لأندرويد مشتق من مشروع [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) ببناء Kotlin وJetpack Compose وMedia3، مع أيقونات أنمي مخصصة وهوية خاصة.
 
-## Acknowledgements
+## Features | المميزات
+
+- **Natural numeric sort** — ترتيب رقمي طبيعي للأغاني والمجلدات
+- **Custom folder covers** — أغلفة مخصصة للمجلدات
+- **Custom sort order** — ترتيب مخصص حسب رغبتك
+- **Auto-scan** — فحص تلقائي للمكتبة
+- **Arabic + 27 languages** — دعم العربية و27 لغة أخرى
+- **Default tab flow**: Folders → Songs → Albums → Playlists → Files → Artists → Genres
+
+## Download | التحميل
+
+**Latest release | أحدث إصدار: [v2.7.8](https://github.com/magen-gillan/magen-play/releases/tag/v2.7.8)**
+
+- Direct APK | تحميل مباشر: [magen-play-v2.7.8.apk](https://github.com/magen-gillan/magen-play/releases/download/v2.7.8/magen-play-v2.7.8.apk)
+- All releases | كل الإصدارات: [Releases](https://github.com/magen-gillan/magen-play/releases)
+
+Each release ships with a `.sha256` checksum file. | كل إصدار مرفق معه ملف تحقق `.sha256`.
+
+## Acknowledgements | شكر وتقدير
+
 - [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) by chr_56
-- GPLv3
+- License | الترخيص: GPLv3
