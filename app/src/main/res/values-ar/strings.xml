@@ -283,4 +283,5 @@
     <string name="disc_speed_normal">عادي</string>
     <string name="disc_speed_fast">سريع</string>
     <string name="disc_speed_record">مثل الأسطوانة الحقيقية (33⅓ دورة/د)</string>
+    <string name="intro_welcome_description">شغّل الموسيقى المخزنة على جهازك، واستعرض المكتبة وقوائم التشغيل وتحكّم بالتشغيل.</string>
 </resources>

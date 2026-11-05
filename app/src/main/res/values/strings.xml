@@ -643,4 +643,5 @@
     <string name="disc_speed_normal">Normal</string>
     <string name="disc_speed_fast">Fast</string>
     <string name="disc_speed_record">Like a real record (33⅓ rpm)</string>
+    <string name="intro_welcome_description">Play music stored on your device, browse your library and playlists, and control playback.</string>
 </resources>

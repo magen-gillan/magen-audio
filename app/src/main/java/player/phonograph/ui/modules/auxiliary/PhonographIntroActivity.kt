@@ -99,30 +99,8 @@ class PhonographIntroActivity : AppIntro(),
             openFileStorageAccessDelegate, requestPermissionDelegate, requestMultiplePermissionsDelegate
         )
 
-        addSlide(
-            AppIntroFragment.createInstance(
-                title = getString(R.string.app_name),
-                description = getString(R.string.tips_welcome_to_magen_play),
-                imageDrawable = R.drawable.icon_web,
-                backgroundColorRes = MaterialColor.Blue._900.asResource
-            )
-        )
-
-        addSlide(
-            PermissionSlideFragment.newInstance()
-        )
-
-        addSlide(
-            SettingSlideFragment.newInstance()
-        )
-
-        addSlide(
-            AppIntroFragment.createInstance(
-                description = getString(R.string.state_completed),
-                imageDrawable = R.drawable.icon_web,
-                backgroundColorRes = MaterialColor.Green._800.asResource
-            )
-        )
+        addSlide(WelcomeSlideFragment())
+        addSlide(PermissionSlideFragment.newInstance())
 
     }
 
@@ -149,6 +127,28 @@ class PhonographIntroActivity : AppIntro(),
         private val items get() = _items!!
 
         override fun setUpView(container: ViewGroup) {
+            val context = container.context
+            val imageSize = (52 * context.resources.displayMetrics.density).toInt()
+            val brandRow = LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER
+                val logo = android.widget.ImageView(context).apply {
+                    setImageResource(R.drawable.magen_gillan_logo)
+                    contentDescription = "MG logo"
+                    scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                }
+                addView(logo, LinearLayout.LayoutParams(imageSize, imageSize))
+                val mascot = android.widget.ImageView(context).apply {
+                    setImageResource(R.drawable.alisha_chibi)
+                    contentDescription = "Alisha chibi"
+                    scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                }
+                addView(mascot, LinearLayout.LayoutParams(imageSize, imageSize))
+            }
+            container.addView(
+                brandRow,
+                LinearLayout.LayoutParams(MATCH_PARENT, imageSize).apply { setMargins(16) }
+            )
             _items = necessaryPermissions.map { detail -> createPermissionViewBinding(detail) }
             val params = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply { setMargins(32) }
             for (itemBinding in items) {
@@ -265,6 +265,41 @@ class PhonographIntroActivity : AppIntro(),
         companion object {
             fun newInstance(): PermissionSlideFragment = PermissionSlideFragment()
         }
+    }
+
+    class WelcomeSlideFragment : EmptySlideFragment() {
+
+        override val titleRes: Int get() = R.string.app_name
+        override val descriptionRes: Int get() = -1
+
+        override fun setUpView(container: ViewGroup) {
+            container.removeAllViews()
+            container.gravity = Gravity.CENTER
+            container.setPadding(24, 12, 24, 12)
+            val logo = android.widget.ImageView(requireContext()).apply {
+                setImageResource(R.drawable.magen_gillan_logo)
+                contentDescription = "MG"
+                scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                adjustViewBounds = true
+            }
+            container.addView(logo, LinearLayout.LayoutParams(MATCH_PARENT, 0, 1f))
+            val character = android.widget.ImageView(requireContext()).apply {
+                setImageResource(R.drawable.alisha_chibi)
+                contentDescription = "Alisha chibi"
+                scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                adjustViewBounds = true
+            }
+            container.addView(character, LinearLayout.LayoutParams(MATCH_PARENT, 0, 2f))
+            val copy = android.widget.TextView(requireContext()).apply {
+                text = getString(R.string.intro_welcome_description)
+                gravity = Gravity.CENTER
+                textSize = 17f
+                setPadding(8, 20, 8, 8)
+            }
+            container.addView(copy, LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+        }
+
+        override val defaultBackgroundColorRes: Int get() = MaterialColor.Blue._900.asResource
     }
 
     class SettingSlideFragment : EmptySlideFragment(), SlidePolicy {
