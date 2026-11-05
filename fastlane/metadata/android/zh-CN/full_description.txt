@@ -1,9 +1,9 @@
 <b>正在开发与维护 Phonograph 分支</b><br />
 
 Phonograph 原为一款 Android 质感设计的本地音乐播放器。<br />
-Phonograph Plus 是 Phonograph 的独立分支，自2021年起一直在维护和开发中。
+Magen Audio 是 Phonograph 的独立分支，自2021年起一直在维护和开发中。
 
-Phonograph Plus 继承了原版 Phonograph 的所有功能，并进行了扩展。
+Magen Audio 继承了原版 Phonograph 的所有功能，并进行了扩展。
 
 - 轻量
 - 完全离线，无广告

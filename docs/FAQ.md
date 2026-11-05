@@ -7,9 +7,9 @@ Check your storage permission:
 - on Android 11 and above, make sure "Manage All Files" is granted (You can check it from Main Drawer `Menu` -> `More` -> `Grant External Storage Permission`);
 
 
-## Can not find Phonograph Plus in Android Auto
+## Can not find Magen Audio in Android Auto
 
-Well, it is because Phonograph Plus is an _Unknown Source_ application (Well, looks like that _only_ applications installed by Google Play can be
+Well, it is because Magen Audio is an _Unknown Source_ application (Well, looks like that _only_ applications installed by Google Play can be
 Known Source). _Unknown Source_ applications **won't be displayed** in  Android Auto's launcher settings.
 
 So you need trust "_Unknown Source_ applications":
@@ -20,7 +20,7 @@ So you need trust "_Unknown Source_ applications":
 - Check Launcher Settings again
 
 Actually, besides using third-party installers which faking the source to Google Play, there is no way to fix such problems.
-(Or you can distribute your app to Google Play, but Phonograph Plus has never such plan).
+(Or you can distribute your app to Google Play, but Magen Audio has never such plan).
 
 By the way, it seems that Developer Mode can be turned off once Unknown Sources are allowed
 (This doesn't turn off along with Developer Mode).
@@ -49,7 +49,7 @@ _See Also Issue: #6_
 **No**.
 
 `Windows Media Audio (WMA)` is not supported by Android OS. 
-And Phonograph Plus is currently relaying on OS to decode media.
+And Magen Audio is currently relaying on OS to decode media.
 
 
 **Workaround**
@@ -61,7 +61,7 @@ And Phonograph Plus is currently relaying on OS to decode media.
    platforms.
 
 
-- Or wait for me to implement integrating a 3rd-party decoder (like `ffmpeg`) to Phonograph Plus.
+- Or wait for me to implement integrating a 3rd-party decoder (like `ffmpeg`) to Magen Audio.
 
    But this is temporarily planning on late 2024 or early 2025.
 

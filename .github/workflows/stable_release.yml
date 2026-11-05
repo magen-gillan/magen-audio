@@ -94,7 +94,7 @@ jobs:
           path: |
             products/${{ matrix.PRODUCT_VARIANT }}/*.apk
             products/${{ matrix.PRODUCT_VARIANT }}/*.sha*
-            products/${{ matrix.PRODUCT_VARIANT }}/PhonographPlus*.txt.gz
+            products/${{ matrix.PRODUCT_VARIANT }}/MagenAudio*.txt.gz
           retention-days: 30
 
       - name: Clean up
@@ -179,9 +179,9 @@ jobs:
         with:
           name: ${{ github.ref_name }}
           files: |
-            products/PhonographPlus_*.apk
-            products/PhonographPlus_*.apk.sha256
-            products/PhonographPlus*.txt.gz
+            products/MagenAudio_*.apk
+            products/MagenAudio_*.apk.sha256
+            products/MagenAudio*.txt.gz
           prerelease: false
           draft: false
           tag_name: ${{ github.ref }}

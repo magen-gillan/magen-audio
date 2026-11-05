@@ -1,10 +1,10 @@
-# Magen Play
+# Magen Audio
 
 **مشغل موسيقى حديث لأندرويد | A modern Android music player**
 
-Magen Play is a focused Android music player based on [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) by chr_56, rebuilt with Kotlin, Jetpack Compose, and Media3, with custom anime iconography and Magen Play branding.
+Magen Audio is a focused Android music player based on [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) by chr_56, rebuilt with Kotlin, Jetpack Compose, and Media3, with custom anime iconography and Magen Audio branding.
 
-Magen Play مشغل موسيقى لأندرويد مشتق من مشروع [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) ببناء Kotlin وJetpack Compose وMedia3، مع أيقونات أنمي مخصصة وهوية خاصة.
+Magen Audio مشغل موسيقى لأندرويد مشتق من مشروع [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) ببناء Kotlin وJetpack Compose وMedia3، مع أيقونات أنمي مخصصة وهوية خاصة.
 
 ## Features | المميزات
 
@@ -17,10 +17,10 @@ Magen Play مشغل موسيقى لأندرويد مشتق من مشروع [Phon
 
 ## Download | التحميل
 
-**Latest release | أحدث إصدار: [v2.7.8](https://github.com/magen-gillan/magen-play/releases/tag/v2.7.8)**
+**Latest release | أحدث إصدار: [v2.7.8](https://github.com/magen-gillan/magen-audio/releases/tag/v2.7.8)**
 
-- Direct APK | تحميل مباشر: [magen-play-v2.7.8.apk](https://github.com/magen-gillan/magen-play/releases/download/v2.7.8/magen-play-v2.7.8.apk)
-- All releases | كل الإصدارات: [Releases](https://github.com/magen-gillan/magen-play/releases)
+- Direct APK | تحميل مباشر: [magen-audio-v2.7.8.apk](https://github.com/magen-gillan/magen-audio/releases/download/v2.7.8/magen-audio-v2.7.8.apk)
+- All releases | كل الإصدارات: [Releases](https://github.com/magen-gillan/magen-audio/releases)
 
 Each release ships with a `.sha256` checksum file. | كل إصدار مرفق معه ملف تحقق `.sha256`.
 

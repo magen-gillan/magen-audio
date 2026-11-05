@@ -66,12 +66,12 @@ _中国大陆机型可能并不受影响（~或更惨~）_
 
 ### 影响
 
-通过 Google Play 以外渠道分发的应用（如 Phonograph Plus）将受到严重影响；尽管未来可能存在“高级流程”，但 **对大多数用户而言，“侧载”将变得更加困难**；目前，Google 意向坚定不动摇。
+通过 Google Play 以外渠道分发的应用（如 Magen Audio）将受到严重影响；尽管未来可能存在“高级流程”，但 **对大多数用户而言，“侧载”将变得更加困难**；目前，Google 意向坚定不动摇。
 
 更多细节与跟进请关注 [官方页面](https://developer.android.com/developer-verification) 和 [第三方页面](https://keepandroidopen.org/)。
 
 ### 未来计划
 
-回应此政策，计划从 **2027年4月1日**（或 **2027年8月10日**）起，**不再发布 APK 安装包，仅发布源代码**；请自行编译Phonograph Plus。
+回应此政策，计划从 **2027年4月1日**（或 **2027年8月10日**）起，**不再发布 APK 安装包，仅发布源代码**；请自行编译Magen Audio。
 
-如果 Android 进一步封闭和限制，取决于 Google 的后续政策，Phonograph Plus 可能最终在**2028**年起**彻底停更**。
+如果 Android 进一步封闭和限制，取决于 Google 的后续政策，Magen Audio 可能最终在**2028**年起**彻底停更**。

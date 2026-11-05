@@ -107,7 +107,7 @@ Now, we can build project in variant of `Modern` and `Stable` with Build Type `R
 
 ### 7. Locate Output Artifacts
 
-Built apk is in `./app/build/outputs/apk/modernStable/release/` with name `PhonographPlus_<VERSION>-modern-stable-release.apk`
+Built apk is in `./app/build/outputs/apk/modernStable/release/` with name `MagenAudio_<VERSION>-modern-stable-release.apk`
 
 You can run
 
@@ -115,7 +115,7 @@ You can run
 ./gradlew PublishModernStableRelease
 ```
 
-to move apk to `./products/ModernStableRelease` and rename to `Phonograph Plus_<VERSION>_ModernStableRelease.apk`
+to move apk to `./products/ModernStableRelease` and rename to `Magen Audio_<VERSION>_ModernStableRelease.apk`
 
 ## Appendices
 

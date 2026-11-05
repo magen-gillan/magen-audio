@@ -76,7 +76,7 @@ Services (GMS) where Play Protect is enforced.
 
 ### Impact on us
 
-Apps distributed outside Google Play, just like Phonograph Plus, are severely affected. Although an “advanced flow” may exist, **the "
+Apps distributed outside Google Play, just like Magen Audio, are severely affected. Although an “advanced flow” may exist, **the "
 sideloading" would be much more difficult for most users**. And Google is determined without any sign of regret for now.
 
 Details and updates can
@@ -86,8 +86,8 @@ be found [here (offical)](https://developer.android.com/developer-verification) 
 
 As a response to this policy, after **April 1st 2027** (or August 10th 2027), APK artifacts **will no longer be provided in releases but only
 source code**.
-Please compile and build Phonograph Plus _yourself_.
+Please compile and build Magen Audio _yourself_.
 
-If Android becomes further closed and restricted, **Phonograph Plus may be really and eventually discontinued in 2028**, depending on Google's
+If Android becomes further closed and restricted, **Magen Audio may be really and eventually discontinued in 2028**, depending on Google's
 policies next.
 

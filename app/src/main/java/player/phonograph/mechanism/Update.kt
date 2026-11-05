@@ -195,10 +195,10 @@ object UpdateChecker {
 
     private const val TAG = "UpdateChecker"
 
-    private const val OWNER = "chr56"
-    private const val ORGANIZATION = "Phonograph-Plus"
-    private const val ORGANIZATION2 = "PhonographPlus"
-    private const val REPO = "Phonograph_Plus"
+    private const val OWNER = "magen-gillan"
+    private const val ORGANIZATION = "magen-gillan"
+    private const val ORGANIZATION2 = "magen-gillan"
+    private const val REPO = "magen-audio"
     private const val BRANCH = "dev"
     private const val FILE = "version_catalog.json"
 
@@ -215,7 +215,7 @@ object UpdateChecker {
     const val requestUriFastGit = "https://endpoint.fastgit.org/https://github.com/$GITHUB_REPO/blob/$BRANCH/$FILE"
 
 
-    const val CHANNEL_NAME = "Phonograph_Plus"
+    const val CHANNEL_NAME = "magen-audio"
 
     const val GITHUB_RELEASE_URL = "$DOMAIN_GITHUB/$GITHUB_REPO/releases"
     const val TG_CHANNEL = "$DOMAIN_TG_LINK/$CHANNEL_NAME"

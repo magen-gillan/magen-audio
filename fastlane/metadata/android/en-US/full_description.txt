@@ -1,10 +1,10 @@
 <b>An independent fork of Phonograph in development</b><br />
 
 Phonograph is a light-weighted material designed local music player for Android.
-Phonograph Plus is an <i>independent</i> fork of Phonograph since it is no longer maintained,
+Magen Audio is an <i>independent</i> fork of Phonograph since it is no longer maintained,
 and has been in maintenance and development since 2021. <br />
 
-Phonograph Plus inherits all features from Phonograph:
+Magen Audio inherits all features from Phonograph:
 
 
 - Light weight
@@ -37,4 +37,4 @@ Phonograph Plus inherits all features from Phonograph:
 
 Visit project homepage ob GitHub to learn more.
 
-Phonograph Plus is available on GitHub Releases (Stable Channel and Preview Channel) and F-Droid (Stable Channel)
+Magen Audio is available on GitHub Releases (Stable Channel and Preview Channel) and F-Droid (Stable Channel)

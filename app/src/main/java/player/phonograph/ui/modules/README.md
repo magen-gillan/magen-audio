@@ -14,6 +14,6 @@ _List of modules:_
 - `player`: Player UI
 - `playlist`: Playlist Detail
 - `search`: Local Search
-- `setting`: Phonograph Plus Settings
+- `setting`: Magen Audio Settings
 - `tag`: music tag related stuff (SongDetail(s) & Tag Editor)
 - `web`: Online Search

@@ -72,7 +72,7 @@ We make this distinction mostly for bypassing _Scope Storage_ for Android 10.
 
 Currently:
 
-- _app_(`app/`): source code of the Phonograph Plus
+- _app_(`app/`): source code of the Magen Audio
 - _changelog-generator_(`tools/changelog-generator`): utility for generating formated changelogs and release notes
 
 #### Repository Structure
@@ -88,9 +88,9 @@ Except files relative to gradle or building:
 - `crowdin.yml`: Crowdin configuration
 - `ReleaseNote.yaml`, `ReleaseNoteStable.yaml`: Pending release notes as well as metadata, used for generating changelogs and release note everywhere on releasing 
 - `fdroid.properties`: metadata of current latest version, unused
-- `version_catalog.json`: containing the latest version metadata that Phonograph Plus used for checking updates
+- `version_catalog.json`: containing the latest version metadata that Magen Audio used for checking updates
 
-#### Source Code Structure of Phonograph Plus
+#### Source Code Structure of Magen Audio
 
 For main source set (`app/src/main`):
 
