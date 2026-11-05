@@ -11,7 +11,7 @@ const val ACTUAL_PACKAGE_NAME: String = BuildConfig.APPLICATION_ID
 const val CURRENT_RELEASE_CHANNEL: String = BuildConfig.FLAVOR_channel
 const val CURRENT_TARGET_VARIANT: String = BuildConfig.FLAVOR_target
 
-const val USER_AGENT = "PhonographPlus/${BuildConfig.VERSION_NAME} (Android) ${okhttp3.internal.userAgent}"
+const val USER_AGENT = "MagenAudio/${BuildConfig.VERSION_NAME} (Android) ${okhttp3.internal.userAgent}"
 
 const val GITHUB_LINK = "https://github.com/chr56/Phonograph_Plus"
 const val ISSUE_TRACKER_LINK = "${GITHUB_LINK}/issues"

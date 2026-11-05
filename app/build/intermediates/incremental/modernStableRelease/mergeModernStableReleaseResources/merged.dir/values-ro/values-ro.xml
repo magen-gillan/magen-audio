@@ -46,7 +46,7 @@
     <string name="about_special_thanks_to">Mulțumiri speciale</string>
     <string name="about_support_development">Susţineţi dezvoltarea</string>
     <string name="about_translate">Traducere</string>
-    <string name="about_translate_summary">Ajutaţi la traducerea Magen Play în limba maternă.</string>
+    <string name="about_translate_summary">Ajutaţi la traducerea Magen Audio în limba maternă.</string>
     <string name="about_version">Versiune</string>
     <string name="about_visit_website">Vizitati site-ul web</string>
     <string name="about_write_an_email">Scrieţi un e-mail</string>
@@ -113,9 +113,9 @@
     <string name="app_shortcut_last_added_short">Ultimele adăugate</string>
     <string name="app_shortcut_shuffle_all_short">Amestecare</string>
     <string name="app_shortcut_top_tracks_short">Melodii de top</string>
-    <string name="app_widget_big_name">Magen Play - Mare</string>
-    <string name="app_widget_classic_name">Magen Play - Clasic</string>
-    <string name="app_widget_small_name">Magen Play - Mic</string>
+    <string name="app_widget_big_name">Magen Audio - Mare</string>
+    <string name="app_widget_classic_name">Magen Audio - Clasic</string>
+    <string name="app_widget_small_name">Magen Audio - Mic</string>
     <string name="bottomsheet_action_collapse">Restrângeți foaia din partea de jos</string>
     <string name="bottomsheet_action_expand">Extindeți foaia din partea de jos</string>
     <string name="bottomsheet_action_expand_halfway">Extinde pe ecran complet</string>
@@ -329,7 +329,7 @@
     <string name="tips_playlist_name_placeholder">Nume listă</string>
     <string name="tips_search_hint">Căutați în bibliotecă.</string>
     <string name="tips_select_at_least_one_category">Trebuie să selectați cel puțin o categorie.</string>
-    <string name="tips_welcome_to_magen_play">Bine ați venit la Magen Play, un player muzical frumos și ușor pentru Android. </string>
+    <string name="tips_welcome_to_magen_play">Bine ați venit la Magen Audio, un player muzical frumos și ușor pentru Android. </string>
     <string name="tips_x_selected">%1$d selectat/ă</string>
     <string name="title_add_playlist">Adăugaţi la lista de redare</string>
     <string name="title_new_playlist">Listă de redare nouă</string>

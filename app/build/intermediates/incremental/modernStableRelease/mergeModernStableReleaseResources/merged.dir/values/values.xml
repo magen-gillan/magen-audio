@@ -2599,13 +2599,13 @@
     <string name="about_maarten_corpel_summary">For making the Play Store illustration and the empty album cover.</string>
     <string name="about_michael_cook_summary">For the pretty material app icon.</string>
     <string name="about_original_author">Original Author</string>
-    <string name="about_plus_author">The author of Magen Play</string>
+    <string name="about_plus_author">The author of Magen Audio</string>
     <string name="about_report_bugs">Report bugs</string>
     <string name="about_report_bugs_summary">Report bugs or request new features.</string>
     <string name="about_special_thanks_to">Special thanks to</string>
     <string name="about_support_development">Support development</string>
     <string name="about_translate">Translate</string>
-    <string name="about_translate_summary">Help translating Magen Play to your native language.</string>
+    <string name="about_translate_summary">Help translating Magen Audio to your native language.</string>
     <string name="about_version">Version</string>
     <string name="about_visit_website">Visit website</string>
     <string name="about_write_an_email">Write an email</string>
@@ -2723,14 +2723,14 @@
     <string name="app_intro_image_content_description" ns1:ignore="MissingTranslation">graphics</string>
     <string name="app_intro_next_button" ns1:ignore="MissingTranslation">NEXT</string>
     <string name="app_intro_skip_button">SKIP</string>
-    <string name="app_name" translatable="false">Magen Play</string>
+    <string name="app_name" translatable="false">Magen Audio</string>
     <string name="app_shortcut_last_added_short">Last added</string>
     <string name="app_shortcut_shuffle_all_short">Shuffle</string>
     <string name="app_shortcut_top_tracks_short">Top tracks</string>
-    <string name="app_widget_big_name">Magen Play - Big</string>
-    <string name="app_widget_card_name">Magen Play - Card</string>
-    <string name="app_widget_classic_name">Magen Play - Classic</string>
-    <string name="app_widget_small_name">Magen Play - Small</string>
+    <string name="app_widget_big_name">Magen Audio - Big</string>
+    <string name="app_widget_card_name">Magen Audio - Card</string>
+    <string name="app_widget_classic_name">Magen Audio - Classic</string>
+    <string name="app_widget_small_name">Magen Audio - Small</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="behaviour_auto">Automatic</string>
     <string name="behaviour_force_legacy">Force to use legacy ways</string>
@@ -2794,10 +2794,10 @@
     <string name="err_illegal_operation">The operation does not match its requirement.</string>
     <string name="err_no_audio_ID">Play a song first, then try again.</string>
     <string name="err_no_equalizer">No equalizer found.</string>
-    <string name="err_no_storage_write_permission">Magen Play has no permission to write or edit or delete files!</string>
+    <string name="err_no_storage_write_permission">Magen Audio has no permission to write or edit or delete files!</string>
     <string name="err_no_volume_found">No Volume found! Your system might be not supported!</string>
     <string name="err_permission_external_storage_denied">Permission to access external storage denied.</string>
-    <string name="err_permission_manage_external_storage_denied">It seems that Magen Play has no permission \"manage external storage\"!</string>
+    <string name="err_permission_manage_external_storage_denied">It seems that Magen Audio has no permission \"manage external storage\"!</string>
     <string name="err_permissions_denied">Permissions denied.</string>
     <string name="err_playlist_exists">Playlist %1$s already exists.</string>
     <string name="err_tag_save_failed">Failed to save tags of %1$d file(s) (e.g. %2$s). The original file was kept.</string>
@@ -3393,12 +3393,12 @@
     <string name="tips_preview_next_updates_check">The next updates check will be after: \n %1$s \n(%2$s)</string>
     <string name="tips_reached_to_root">You have reached to root folder of this storage volume</string>
     <string name="tips_refresh_database">Scan songs and index them</string>
-    <string name="tips_ringtone_settings">Allow Magen Play to modify audio settings</string>
+    <string name="tips_ringtone_settings">Allow Magen Audio to modify audio settings</string>
     <string name="tips_search_hint">Search your library…</string>
     <string name="tips_select_at_least_one_category">You have to select at least one category.</string>
     <string name="tips_service_disconnected">[Service is disconnected!]</string>
     <string name="tips_unmatched_notification_actions">Actions in compact notification must be in expanded notification as well.</string>
-    <string name="tips_welcome_to_magen_play">Welcome to Magen Play, a beautiful and lightweight music player for Android. </string>
+    <string name="tips_welcome_to_magen_play">Welcome to Magen Audio, a beautiful and lightweight music player for Android. </string>
     <string name="tips_x_selected">%1$d selected</string>
     <string name="title_add_playlist">Add to playlist</string>
     <string name="title_corrupted_data_error">Corrupted Data Error</string>

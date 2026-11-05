@@ -133,10 +133,10 @@
     <string name="tips_select_at_least_one_category">عليك أن تختار قسماً واحداً على الأقل.</string>
     <string name="tips_minutes">%1$d دقيقة</string>
     <string name="tips_add_to_blacklist">هل تريد اضافة هذا العنصر للقائمة السوداء؟ </string>
-    <string name="tips_ringtone_settings">السماح لـMagen Play بتعديل إعدادات الصوت</string>
+    <string name="tips_ringtone_settings">السماح لـMagen Audio بتعديل إعدادات الصوت</string>
     <string name="tips_reached_to_root">لقد وصلت إلى جذر المجلد في وحدة التخزين هذه</string>
     <string name="tips_go_to_the_issue_tracker_website">سيتم توجيهك إلى موقع تعقب الأخطاء.</string>
-    <string name="tips_welcome_to_magen_play">مرحباً بك في Magen Play، مشغل موسيقى جميل وخفيف للأندرويد. </string>
+    <string name="tips_welcome_to_magen_play">مرحباً بك في Magen Audio، مشغل موسيقى جميل وخفيف للأندرويد. </string>
     <string name="msg_no_playlists">لا توجد قوائم تشغيل</string>
     <string name="msg_no_results">لا توجد نتائج</string>
     <string name="msg_empty_playlist">قائمة تشغيل فارغة</string>
@@ -170,10 +170,10 @@
     <string name="notification_playing_name">إشعار التشغيل</string>
     <string name="notification_playing_description">إشعار التشغيل يوفر أزرار تحكم للتشغيل/الإيقاف المؤقت إلخ.</string>
     <string name="notification_background_name">العمل في الخلفية</string>
-    <string name="app_widget_big_name">Magen Play - كبير</string>
-    <string name="app_widget_classic_name">Magen Play - كلاسيكي</string>
-    <string name="app_widget_small_name">Magen Play - صغير</string>
-    <string name="app_widget_card_name">Magen Play - بطاقة</string>
+    <string name="app_widget_big_name">Magen Audio - كبير</string>
+    <string name="app_widget_classic_name">Magen Audio - كلاسيكي</string>
+    <string name="app_widget_small_name">Magen Audio - صغير</string>
+    <string name="app_widget_card_name">Magen Audio - بطاقة</string>
     <string name="app_shortcut_shuffle_all_short">خلط</string>
     <string name="app_shortcut_top_tracks_short">أفضل الأغاني</string>
     <string name="app_shortcut_last_added_short">المضافة مؤخراً</string>
@@ -187,7 +187,7 @@
     <string name="about_report_bugs">الإبلاغ عن مشاكل</string>
     <string name="about_report_bugs_summary">الإبلاغ عن مشاكل أو طلب ميزات جديدة.</string>
     <string name="about_translate">ترجمة</string>
-    <string name="about_translate_summary">ساعد في ترجمة Magen Play إلى لغتك الأم.</string>
+    <string name="about_translate_summary">ساعد في ترجمة Magen Audio إلى لغتك الأم.</string>
     <string name="about_donate">تبرع</string>
     <string name="about_aidan_follestad_summary">من أجل محرك التنسيقات وبعض الأشياء الرائعة الأخرى.</string>
     <string name="about_michael_cook_summary">من أجل أيقونة التطبيق الجميلة بتصميم الماتيريال.</string>

@@ -49,7 +49,7 @@
     <string name="about_special_thanks_to">شكر خاص إلى</string>
     <string name="about_support_development">دعم التطوير</string>
     <string name="about_translate">ترجمة</string>
-    <string name="about_translate_summary">ساعد في ترجمة Magen Play إلى لغتك الأم.</string>
+    <string name="about_translate_summary">ساعد في ترجمة Magen Audio إلى لغتك الأم.</string>
     <string name="about_version">الإصدار</string>
     <string name="about_visit_website">زيارة الموقع</string>
     <string name="about_write_an_email">كتابة بريد إلكتروني</string>
@@ -131,10 +131,10 @@
     <string name="app_shortcut_last_added_short">المضافة مؤخراً</string>
     <string name="app_shortcut_shuffle_all_short">خلط</string>
     <string name="app_shortcut_top_tracks_short">أفضل الأغاني</string>
-    <string name="app_widget_big_name">Magen Play - كبير</string>
-    <string name="app_widget_card_name">Magen Play - بطاقة</string>
-    <string name="app_widget_classic_name">Magen Play - كلاسيكي</string>
-    <string name="app_widget_small_name">Magen Play - صغير</string>
+    <string name="app_widget_big_name">Magen Audio - كبير</string>
+    <string name="app_widget_card_name">Magen Audio - بطاقة</string>
+    <string name="app_widget_classic_name">Magen Audio - كلاسيكي</string>
+    <string name="app_widget_small_name">Magen Audio - صغير</string>
     <string name="behaviour_auto">تلقائي</string>
     <string name="behaviour_force_legacy">الاجبار على استخدام الطرق التقليدية</string>
     <string name="behaviour_force_saf">الاجبار على استخدام إطار الوصول إلى التخزين</string>
@@ -418,10 +418,10 @@
     <string name="tips_not_available_now">غير متاح حالياً</string>
     <string name="tips_playlist_name_placeholder">اسم قائمة التشغيل</string>
     <string name="tips_reached_to_root">لقد وصلت إلى جذر المجلد في وحدة التخزين هذه</string>
-    <string name="tips_ringtone_settings">السماح لـMagen Play بتعديل إعدادات الصوت</string>
+    <string name="tips_ringtone_settings">السماح لـMagen Audio بتعديل إعدادات الصوت</string>
     <string name="tips_search_hint">البحث في مكتبتك...</string>
     <string name="tips_select_at_least_one_category">عليك أن تختار قسماً واحداً على الأقل.</string>
-    <string name="tips_welcome_to_magen_play">مرحباً بك في Magen Play، مشغل موسيقى جميل وخفيف للأندرويد. </string>
+    <string name="tips_welcome_to_magen_play">مرحباً بك في Magen Audio، مشغل موسيقى جميل وخفيف للأندرويد. </string>
     <string name="tips_x_selected">تم تحديد %1$d</string>
     <string name="title_add_playlist">إضافة إلى قائمة التشغيل</string>
     <string name="title_crash">التطبيق تحطم !!</string>

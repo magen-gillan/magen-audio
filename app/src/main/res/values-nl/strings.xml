@@ -169,10 +169,10 @@
     <string name="tips_x_selected">%1$d geselecteerd</string>
     <string name="tips_select_at_least_one_category">Je moet tenminste één categorie selecteren.</string>
     <string name="tips_add_to_blacklist">Wil je dit aan de zwarte lijst toevoegen?</string>
-    <string name="tips_ringtone_settings">Sta Magen Play toe om audioinstellingen te wijzigen</string>
+    <string name="tips_ringtone_settings">Sta Magen Audio toe om audioinstellingen te wijzigen</string>
     <string name="tips_reached_to_root">Je hebt de hoofdmap van dit opslagvolume bereikt</string>
     <string name="tips_go_to_the_issue_tracker_website">Je wordt doorverwezen naar de probleem bijhoud website.</string>
-    <string name="tips_welcome_to_magen_play">Welkom bij Magen Play, een mooie en lichte muziekspeler voor Android.</string>
+    <string name="tips_welcome_to_magen_play">Welkom bij Magen Audio, een mooie en lichte muziekspeler voor Android.</string>
     <string name="msg_no_playlists">Geen afspeellijsten</string>
     <string name="msg_no_results">Geen resultaten</string>
     <string name="msg_empty_playlist">Lege afspeellijst</string>
@@ -204,10 +204,10 @@
     <string name="notification_playing_description">De afspeelmelding biedt acties voor afspelen/pauzeren etc.</string>
     <string name="notification_error_name">Foutmeldingen</string>
     <string name="notification_background_name">Achtergrond Werk</string>
-    <string name="app_widget_big_name">Magen Play - Groot</string>
-    <string name="app_widget_classic_name">Magen Play - Klassiek</string>
-    <string name="app_widget_small_name">Magen Play - Klein</string>
-    <string name="app_widget_card_name">Magen Play - Kaart</string>
+    <string name="app_widget_big_name">Magen Audio - Groot</string>
+    <string name="app_widget_classic_name">Magen Audio - Klassiek</string>
+    <string name="app_widget_small_name">Magen Audio - Klein</string>
+    <string name="app_widget_card_name">Magen Audio - Kaart</string>
     <string name="app_shortcut_top_tracks_short">Top nummers</string>
     <string name="app_shortcut_last_added_short">Laatst toegevoegd</string>
     <string name="about_special_thanks_to">Speciale dank aan</string>
@@ -220,7 +220,7 @@
     <string name="about_report_bugs">Rapporteer bugs</string>
     <string name="about_report_bugs_summary">Rapporteer bugs of verzoek nieuwe functies.</string>
     <string name="about_translate">Vertalen</string>
-    <string name="about_translate_summary">Help Magen Play te vertalen naar jouw moedertaal.</string>
+    <string name="about_translate_summary">Help Magen Audio te vertalen naar jouw moedertaal.</string>
     <string name="about_donate">Doneer</string>
     <string name="about_aidan_follestad_summary">Voor de themamogelijkheden en andere goede functies.</string>
     <string name="about_michael_cook_summary">Voor het mooie material app icoon.</string>

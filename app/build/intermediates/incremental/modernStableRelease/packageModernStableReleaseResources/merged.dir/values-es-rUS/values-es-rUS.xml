@@ -14,7 +14,7 @@
     <string name="about_special_thanks_to">Agradecimientos especiales a</string>
     <string name="about_support_development">Apoyar el desarrollo</string>
     <string name="about_translate">Traducir</string>
-    <string name="about_translate_summary">Ayuda traduciendo Magen Play a tu idioma.</string>
+    <string name="about_translate_summary">Ayuda traduciendo Magen Audio a tu idioma.</string>
     <string name="about_version">Versión</string>
     <string name="about_visit_website">Visitar sitio web</string>
     <string name="about_write_an_email">Escribir un email</string>
@@ -74,10 +74,10 @@
     <string name="app_shortcut_last_added_short">Último agregado</string>
     <string name="app_shortcut_shuffle_all_short">Al azar</string>
     <string name="app_shortcut_top_tracks_short">Mejores pistas</string>
-    <string name="app_widget_big_name">Magen Play - Grande</string>
-    <string name="app_widget_card_name">Magen Play - Tarjeta</string>
-    <string name="app_widget_classic_name">Magen Play - Clásico</string>
-    <string name="app_widget_small_name">Magen Play - Pequeño</string>
+    <string name="app_widget_big_name">Magen Audio - Grande</string>
+    <string name="app_widget_card_name">Magen Audio - Tarjeta</string>
+    <string name="app_widget_classic_name">Magen Audio - Clásico</string>
+    <string name="app_widget_small_name">Magen Audio - Pequeño</string>
     <string name="err_audio_focus_denied">Enfoque de audio denegado.</string>
     <string name="err_biography_unavailable">No se encontr\u00f3 una biograf\u00eda para este artista.</string>
     <string name="err_could_not_create_playlist">No se pudo crear la lista de reproducci\u00f3n.</string>
@@ -188,7 +188,7 @@
     <string name="tips_playlist_name_placeholder">Nombre de la lista de reproducción</string>
     <string name="tips_search_hint">Buscar en la biblioteca...</string>
     <string name="tips_select_at_least_one_category">Tienes que seleccionar al menos una categoría.</string>
-    <string name="tips_welcome_to_magen_play">"Bienvenido a Magen Play, un reproductor de música hermoso y ligero para Android."</string>
+    <string name="tips_welcome_to_magen_play">"Bienvenido a Magen Audio, un reproductor de música hermoso y ligero para Android."</string>
     <string name="tips_x_selected">%1$d seleccionado(s)</string>
     <string name="title_add_playlist">"Agregar a la lista de reproducción"</string>
     <string name="title_new_playlist">Nueva lista de reproducción</string>

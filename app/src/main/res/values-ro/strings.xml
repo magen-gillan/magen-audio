@@ -99,7 +99,7 @@
     <string name="tips_x_selected">%1$d selectat/ă</string>
     <string name="tips_select_at_least_one_category">Trebuie să selectați cel puțin o categorie.</string>
     <string name="tips_go_to_the_issue_tracker_website">Veți fi redirecționați pe site-ul de urmărire a problemelor.</string>
-    <string name="tips_welcome_to_magen_play">Bine ați venit la Magen Play, un player muzical frumos și ușor pentru Android. </string>
+    <string name="tips_welcome_to_magen_play">Bine ați venit la Magen Audio, un player muzical frumos și ușor pentru Android. </string>
     <string name="msg_no_playlists">Nu sunt liste de redare</string>
     <string name="msg_no_results">Niciun rezultat</string>
     <string name="msg_empty_playlist">Listă goală</string>
@@ -128,9 +128,9 @@
     <string name="err_could_not_scan_files">Nu s-au putut scana %d fişiere.</string>
     <string name="notification_playing_name">Notificare de redare</string>
     <string name="notification_playing_description">Notificarea de redare oferă acțiuni de redare/pauză etc.</string>
-    <string name="app_widget_big_name">Magen Play - Mare</string>
-    <string name="app_widget_classic_name">Magen Play - Clasic</string>
-    <string name="app_widget_small_name">Magen Play - Mic</string>
+    <string name="app_widget_big_name">Magen Audio - Mare</string>
+    <string name="app_widget_classic_name">Magen Audio - Clasic</string>
+    <string name="app_widget_small_name">Magen Audio - Mic</string>
     <string name="app_shortcut_shuffle_all_short">Amestecare</string>
     <string name="app_shortcut_top_tracks_short">Melodii de top</string>
     <string name="app_shortcut_last_added_short">Ultimele adăugate</string>
@@ -144,7 +144,7 @@
     <string name="about_report_bugs">Raportaţi probleme</string>
     <string name="about_report_bugs_summary">Raportați probleme sau solicitați noi funcții.</string>
     <string name="about_translate">Traducere</string>
-    <string name="about_translate_summary">Ajutaţi la traducerea Magen Play în limba maternă.</string>
+    <string name="about_translate_summary">Ajutaţi la traducerea Magen Audio în limba maternă.</string>
     <string name="about_donate">Donaţi</string>
     <string name="about_aidan_follestad_summary">Pentru motorul tematic și câteva alte lucruri minunate.</string>
     <string name="about_michael_cook_summary">Pentru pictograma drăguţă a aplicației în stil material.</string>

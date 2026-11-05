@@ -46,7 +46,7 @@
     <string name="about_special_thanks_to">תודות מיוחדות ל</string>
     <string name="about_support_development">תמיכה בפיתוח</string>
     <string name="about_translate">תרגם</string>
-    <string name="about_translate_summary">עזור לתרגם את Magen Play לשפת האם שלך.</string>
+    <string name="about_translate_summary">עזור לתרגם את Magen Audio לשפת האם שלך.</string>
     <string name="about_version">גרסה</string>
     <string name="about_visit_website">ביקור באתר</string>
     <string name="about_write_an_email">כתוב אימייל</string>
@@ -109,10 +109,10 @@
     <string name="app_shortcut_last_added_short">נוספו לאחרונה</string>
     <string name="app_shortcut_shuffle_all_short">ערבב</string>
     <string name="app_shortcut_top_tracks_short">שירים מובילים</string>
-    <string name="app_widget_big_name">Magen Play - גדול</string>
-    <string name="app_widget_card_name">Magen Play - כרטיס</string>
-    <string name="app_widget_classic_name">Magen Play - קלאסי</string>
-    <string name="app_widget_small_name">Magen Play - קטן</string>
+    <string name="app_widget_big_name">Magen Audio - גדול</string>
+    <string name="app_widget_card_name">Magen Audio - כרטיס</string>
+    <string name="app_widget_classic_name">Magen Audio - קלאסי</string>
+    <string name="app_widget_small_name">Magen Audio - קטן</string>
     <string name="bottomsheet_action_collapse">כיווץ הגיליון התחתון</string>
     <string name="bottomsheet_action_expand">הרחבת הגיליון התחתון</string>
     <string name="bottomsheet_action_expand_halfway">הרחבה עד האמצע</string>
@@ -334,7 +334,7 @@
     <string name="tips_playlist_name_placeholder">שם רשימת השמעה</string>
     <string name="tips_search_hint">חפש בספרייה שלך...</string>
     <string name="tips_select_at_least_one_category">עליך לבחור לפחות קטגוריה אחת.</string>
-    <string name="tips_welcome_to_magen_play">ברוכים הבאים ל-Magen Play, נגן מוזיקה קל ויפה ל-Android. </string>
+    <string name="tips_welcome_to_magen_play">ברוכים הבאים ל-Magen Audio, נגן מוזיקה קל ויפה ל-Android. </string>
     <string name="tips_x_selected">%1$d נבחר</string>
     <string name="title_add_playlist">הוסף לרשימת ההשמעה</string>
     <string name="title_new_playlist">רשימת השמעה חדשה</string>

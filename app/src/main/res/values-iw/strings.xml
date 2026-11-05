@@ -106,7 +106,7 @@
     <string name="tips_x_selected">%1$d נבחר</string>
     <string name="tips_select_at_least_one_category">עליך לבחור לפחות קטגוריה אחת.</string>
     <string name="tips_go_to_the_issue_tracker_website">תועבר לאתר איתור הבאגים.</string>
-    <string name="tips_welcome_to_magen_play">ברוכים הבאים ל-Magen Play, נגן מוזיקה קל ויפה ל-Android. </string>
+    <string name="tips_welcome_to_magen_play">ברוכים הבאים ל-Magen Audio, נגן מוזיקה קל ויפה ל-Android. </string>
     <string name="msg_no_playlists">אין רשימות השמעה</string>
     <string name="msg_no_results">אין תוצאות</string>
     <string name="msg_empty_playlist">רשימת השמעה ריקה</string>
@@ -135,10 +135,10 @@
     <string name="err_could_not_scan_files">לא ניתן היה לסרוק %d קבצים.</string>
     <string name="notification_playing_name">התראת ניגון</string>
     <string name="notification_playing_description">התראת הניגון מספקת פעולות הפעלה/השהייה וכו\'.</string>
-    <string name="app_widget_big_name">Magen Play - גדול</string>
-    <string name="app_widget_classic_name">Magen Play - קלאסי</string>
-    <string name="app_widget_small_name">Magen Play - קטן</string>
-    <string name="app_widget_card_name">Magen Play - כרטיס</string>
+    <string name="app_widget_big_name">Magen Audio - גדול</string>
+    <string name="app_widget_classic_name">Magen Audio - קלאסי</string>
+    <string name="app_widget_small_name">Magen Audio - קטן</string>
+    <string name="app_widget_card_name">Magen Audio - כרטיס</string>
     <string name="app_shortcut_shuffle_all_short">ערבב</string>
     <string name="app_shortcut_top_tracks_short">שירים מובילים</string>
     <string name="app_shortcut_last_added_short">נוספו לאחרונה</string>
@@ -152,7 +152,7 @@
     <string name="about_report_bugs">דווח על באגים</string>
     <string name="about_report_bugs_summary">דווח על באגים או בקש פיצ\'רים חדשים.</string>
     <string name="about_translate">תרגם</string>
-    <string name="about_translate_summary">עזור לתרגם את Magen Play לשפת האם שלך.</string>
+    <string name="about_translate_summary">עזור לתרגם את Magen Audio לשפת האם שלך.</string>
     <string name="about_donate">תרומה</string>
     <string name="about_aidan_follestad_summary">על מנוע ערכת הנושא, ועוד כמה דברים נחמדים.</string>
     <string name="about_michael_cook_summary">על סמל האפליקציה בסגנון Material.</string>

@@ -43,7 +43,7 @@
     <string name="about_special_thanks_to">Ιδιαίτερες ευχαριστίες προς</string>
     <string name="about_support_development">Υποστηρίξτε την ανάπτυξη της εφαρμογής</string>
     <string name="about_translate">Μεταφράστε</string>
-    <string name="about_translate_summary">Βοηθήστε την μετάφραση του Magen Play στη μητρική σας γλώσσα.</string>
+    <string name="about_translate_summary">Βοηθήστε την μετάφραση του Magen Audio στη μητρική σας γλώσσα.</string>
     <string name="about_version">Έκδοση</string>
     <string name="about_visit_website">Επισκεφθείτε την ιστοσελίδα μας</string>
     <string name="accent_color">Χρώμα χαρακτήρων</string>
@@ -103,9 +103,9 @@
     <string name="app_shortcut_last_added_short">Προστέθηκαν τελευταία</string>
     <string name="app_shortcut_shuffle_all_short">Τυχαία αναπαραγωγή</string>
     <string name="app_shortcut_top_tracks_short">Κορυφαία Κομμάτια</string>
-    <string name="app_widget_big_name">Magen Play - Μεγάλο</string>
-    <string name="app_widget_classic_name">Magen Play - Κλασικό</string>
-    <string name="app_widget_small_name">Magen Play - Μικρό</string>
+    <string name="app_widget_big_name">Magen Audio - Μεγάλο</string>
+    <string name="app_widget_classic_name">Magen Audio - Κλασικό</string>
+    <string name="app_widget_small_name">Magen Audio - Μικρό</string>
     <string name="bottomsheet_action_collapse">Σύμπτυξη του φύλλου κάτω μέρους</string>
     <string name="bottomsheet_action_expand">Ανάπτυξη του φύλλου κάτω μέρους</string>
     <string name="bottomsheet_action_expand_halfway">Ανάπτυξη μέχρι τη μέση</string>
@@ -309,7 +309,7 @@
     <string name="tips_go_to_the_issue_tracker_website">Θα μεταφερθείτε στην ιστοσελίδα του εντοπιστή ζητημάτων.</string>
     <string name="tips_playlist_name_placeholder">Όνομα λίστας</string>
     <string name="tips_search_hint">Αναζήτηση στη βιβλιοθήκη...</string>
-    <string name="tips_welcome_to_magen_play">Καλώς ήρθατε στο Magen Play, ένα όμορφο και ελαφρύ πρόγραμμα αναπαραγωγής μουσικής για το Android.  </string>
+    <string name="tips_welcome_to_magen_play">Καλώς ήρθατε στο Magen Audio, ένα όμορφο και ελαφρύ πρόγραμμα αναπαραγωγής μουσικής για το Android.  </string>
     <string name="tips_x_selected">Επιλέχθηκαν %1$d</string>
     <string name="title_add_playlist">Προσθήκη στη λίστα αναπαραγωγής</string>
     <string name="title_new_playlist">Νέα λίστα αναπαραγωγής</string>

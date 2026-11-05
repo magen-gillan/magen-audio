@@ -20,7 +20,7 @@ plugins {
 }
 apply(plugin = "com.google.devtools.ksp")
 
-val appName = "Magen Play"
+val appName = "Magen Audio"
 
 // Signing key and secrets
 val keystoreFile = System.getenv("RELEASE_KEYSTORE_FILE") ?: project.findProperty("release.keystoreFile")?.toString()
@@ -43,8 +43,8 @@ android {
         targetSdk = 36
 
         applicationId = "player.phonograph.plus"
-        versionCode = 20002
-        versionName = "2.0.2"
+        versionCode = 29000
+        versionName = "2.9.0"
 
         proguardFiles(File("proguard-rules-base.pro"), File("proguard-rules-app.pro"))
 
@@ -65,6 +65,10 @@ android {
                 storePassword = keystorePassword
                 keyAlias = keyAliasValue
                 keyPassword = keyPasswordValue
+                // Enable v1+v2+v3 signing so APK installs on Android 14 (Honor X6c NIC-LX2)
+                enableV1Signing = true
+                enableV2Signing = true
+                enableV3Signing = true
             } else {
                 print("No signing key configured!")
             }
@@ -195,7 +199,7 @@ androidComponents {
         for (output in variant.outputs) {
             val outputImpl = output as? com.android.build.api.variant.impl.VariantOutputImpl ?: continue
             val origin = outputImpl.outputFileName.get()
-            val new = origin.replace(moduleName, "MagenPlay-${output.versionName.get()}")
+            val new = origin.replace(moduleName, "MagenAudio-${output.versionName.get()}")
             outputImpl.outputFileName.set(new)
         }
     }

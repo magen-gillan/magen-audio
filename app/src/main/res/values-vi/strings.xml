@@ -104,9 +104,9 @@
     <string name="tips_search_hint">Tìm kiếm thư viện của bạn...</string>
     <string name="tips_x_selected">Đã chọn %1$d</string>
     <string name="tips_select_at_least_one_category">Bạn phải chọn ít nhất một danh mục.</string>
-    <string name="tips_ringtone_settings">Cho phép Magen Play thay đổi cài đặt âm thanh</string>
+    <string name="tips_ringtone_settings">Cho phép Magen Audio thay đổi cài đặt âm thanh</string>
     <string name="tips_go_to_the_issue_tracker_website">Bạn sẽ được đưa đến trang web theo dõi vấn đề.</string>
-    <string name="tips_welcome_to_magen_play">Chào mừng bạn đến Magen Play, một máy nghe nhạc đẹp và nhẹ cho Android.</string>
+    <string name="tips_welcome_to_magen_play">Chào mừng bạn đến Magen Audio, một máy nghe nhạc đẹp và nhẹ cho Android.</string>
     <string name="msg_no_playlists">Không có danh sách nhạc</string>
     <string name="msg_no_results">Không có kết quả</string>
     <string name="msg_empty_playlist">Danh sách nhạc trống</string>
@@ -135,10 +135,10 @@
     <string name="err_could_not_scan_files">Không thể quét %d tập tin.</string>
     <string name="notification_playing_name">Thông báo đang phát</string>
     <string name="notification_playing_description">Thông báo đang phát cung cấp các hành động để phát / tạm dừng vv.</string>
-    <string name="app_widget_big_name">Magen Play - Lớn</string>
-    <string name="app_widget_classic_name">Magen Play - Cổ điển</string>
-    <string name="app_widget_small_name">Magen Play - Nhỏ</string>
-    <string name="app_widget_card_name">Magen Play - Thẻ</string>
+    <string name="app_widget_big_name">Magen Audio - Lớn</string>
+    <string name="app_widget_classic_name">Magen Audio - Cổ điển</string>
+    <string name="app_widget_small_name">Magen Audio - Nhỏ</string>
+    <string name="app_widget_card_name">Magen Audio - Thẻ</string>
     <string name="app_shortcut_shuffle_all_short">Xáo trộn</string>
     <string name="app_shortcut_top_tracks_short">Bài hát hàng đầu</string>
     <string name="app_shortcut_last_added_short">Thêm gần đây nhất</string>
@@ -152,7 +152,7 @@
     <string name="about_report_bugs">Báo lỗi</string>
     <string name="about_report_bugs_summary">Báo lỗi và yêu cầu tính năng mới.</string>
     <string name="about_translate">Dịch</string>
-    <string name="about_translate_summary">Hỗ trợ dịch Magen Play sang ngôn ngữ của bạn.</string>
+    <string name="about_translate_summary">Hỗ trợ dịch Magen Audio sang ngôn ngữ của bạn.</string>
     <string name="about_donate">Hỗ trợ</string>
     <string name="about_aidan_follestad_summary">Bộ máy chủ đề và một vài thứ tuyệt vời khác.</string>
     <string name="about_michael_cook_summary">Biểu tượng Material cho ứng dụng.</string>

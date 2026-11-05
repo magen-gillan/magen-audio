@@ -45,7 +45,7 @@
     <string name="about_special_thanks_to">Trân trọng cảm ơn</string>
     <string name="about_support_development">Hỗ trợ phát triển</string>
     <string name="about_translate">Dịch</string>
-    <string name="about_translate_summary">Hỗ trợ dịch Magen Play sang ngôn ngữ của bạn.</string>
+    <string name="about_translate_summary">Hỗ trợ dịch Magen Audio sang ngôn ngữ của bạn.</string>
     <string name="about_version">Phiên bản</string>
     <string name="about_visit_website">Truy cập trang web</string>
     <string name="about_write_an_email">Viết email</string>
@@ -113,10 +113,10 @@
     <string name="app_shortcut_last_added_short">Thêm gần đây nhất</string>
     <string name="app_shortcut_shuffle_all_short">Xáo trộn</string>
     <string name="app_shortcut_top_tracks_short">Bài hát hàng đầu</string>
-    <string name="app_widget_big_name">Magen Play - Lớn</string>
-    <string name="app_widget_card_name">Magen Play - Thẻ</string>
-    <string name="app_widget_classic_name">Magen Play - Cổ điển</string>
-    <string name="app_widget_small_name">Magen Play - Nhỏ</string>
+    <string name="app_widget_big_name">Magen Audio - Lớn</string>
+    <string name="app_widget_card_name">Magen Audio - Thẻ</string>
+    <string name="app_widget_classic_name">Magen Audio - Cổ điển</string>
+    <string name="app_widget_small_name">Magen Audio - Nhỏ</string>
     <string name="bottomsheet_action_collapse">Thu gọn bảng dưới cùng</string>
     <string name="bottomsheet_action_expand">Mở rộng bảng dưới cùng</string>
     <string name="bottomsheet_action_expand_halfway">Mở rộng một nửa</string>
@@ -333,10 +333,10 @@
     <string msgid="5946805113151406391" name="template_percent">"<xliff:g id="PERCENTAGE">%1$d</xliff:g>%%."</string>
     <string name="tips_go_to_the_issue_tracker_website">Bạn sẽ được đưa đến trang web theo dõi vấn đề.</string>
     <string name="tips_playlist_name_placeholder">Tên danh sách nhạc</string>
-    <string name="tips_ringtone_settings">Cho phép Magen Play thay đổi cài đặt âm thanh</string>
+    <string name="tips_ringtone_settings">Cho phép Magen Audio thay đổi cài đặt âm thanh</string>
     <string name="tips_search_hint">Tìm kiếm thư viện của bạn...</string>
     <string name="tips_select_at_least_one_category">Bạn phải chọn ít nhất một danh mục.</string>
-    <string name="tips_welcome_to_magen_play">Chào mừng bạn đến Magen Play, một máy nghe nhạc đẹp và nhẹ cho Android.</string>
+    <string name="tips_welcome_to_magen_play">Chào mừng bạn đến Magen Audio, một máy nghe nhạc đẹp và nhẹ cho Android.</string>
     <string name="tips_x_selected">Đã chọn %1$d</string>
     <string name="title_add_playlist">Thêm vào danh sách nhạc</string>
     <string name="title_dialog_ringtone">Cài nhạc chuông</string>

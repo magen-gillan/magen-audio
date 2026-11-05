@@ -12,7 +12,7 @@
     <string name="about_special_thanks_to">Ιδιαίτερες ευχαριστίες προς</string>
     <string name="about_support_development">Υποστηρίξτε την ανάπτυξη της εφαρμογής</string>
     <string name="about_translate">Μεταφράστε</string>
-    <string name="about_translate_summary">Βοηθήστε την μετάφραση του Magen Play στη μητρική σας γλώσσα.</string>
+    <string name="about_translate_summary">Βοηθήστε την μετάφραση του Magen Audio στη μητρική σας γλώσσα.</string>
     <string name="about_version">Έκδοση</string>
     <string name="about_visit_website">Επισκεφθείτε την ιστοσελίδα μας</string>
     <string name="accent_color">Χρώμα χαρακτήρων</string>
@@ -65,9 +65,9 @@
     <string name="app_shortcut_last_added_short">Προστέθηκαν τελευταία</string>
     <string name="app_shortcut_shuffle_all_short">Τυχαία αναπαραγωγή</string>
     <string name="app_shortcut_top_tracks_short">Κορυφαία Κομμάτια</string>
-    <string name="app_widget_big_name">Magen Play - Μεγάλο</string>
-    <string name="app_widget_classic_name">Magen Play - Κλασικό</string>
-    <string name="app_widget_small_name">Magen Play - Μικρό</string>
+    <string name="app_widget_big_name">Magen Audio - Μεγάλο</string>
+    <string name="app_widget_classic_name">Magen Audio - Κλασικό</string>
+    <string name="app_widget_small_name">Magen Audio - Μικρό</string>
     <string name="err_audio_focus_denied">Έγινε άρνηση εστίασης ήχου</string>
     <string name="err_biography_unavailable">\u03a3\u03c5\u03b3\u03b3\u03bd\u03ce\u03bc\u03b7, \u03b4\u03b5\u03bd \u03bc\u03c0\u03bf\u03c1\u03bf\u03cd\u03bc\u03b5 \u03c4\u03b7 \u03b2\u03b9\u03bf\u03b3\u03c1\u03b1\u03c6\u03af\u03b1 \u03b1\u03c5\u03c4\u03bf\u03cd \u03c4\u03bf\u03c5 \u03ba\u03b1\u03bb\u03bb\u03b9\u03c4\u03ad\u03c7\u03bd\u03b7</string>
     <string name="err_could_not_create_playlist">\u0394\u03b5\u03bd \u03b5\u03af\u03bd\u03b1\u03b9 \u03b4\u03c5\u03bd\u03b1\u03c4\u03ae \u03b7 \u03b4\u03b7\u03bc\u03b9\u03bf\u03c5\u03c1\u03b3\u03af\u03b1 \u03bb\u03af\u03c3\u03c4\u03b1\u03c2 \u03b1\u03bd\u03b1\u03c0\u03b1\u03c1\u03b1\u03b3\u03c9\u03b3\u03ae\u03c2</string>
@@ -160,7 +160,7 @@
     <string name="tips_go_to_the_issue_tracker_website">Θα μεταφερθείτε στην ιστοσελίδα του εντοπιστή ζητημάτων.</string>
     <string name="tips_playlist_name_placeholder">Όνομα λίστας</string>
     <string name="tips_search_hint">Αναζήτηση στη βιβλιοθήκη...</string>
-    <string name="tips_welcome_to_magen_play">Καλώς ήρθατε στο Magen Play, ένα όμορφο και ελαφρύ πρόγραμμα αναπαραγωγής μουσικής για το Android.  </string>
+    <string name="tips_welcome_to_magen_play">Καλώς ήρθατε στο Magen Audio, ένα όμορφο και ελαφρύ πρόγραμμα αναπαραγωγής μουσικής για το Android.  </string>
     <string name="tips_x_selected">Επιλέχθηκαν %1$d</string>
     <string name="title_add_playlist">Προσθήκη στη λίστα αναπαραγωγής</string>
     <string name="title_new_playlist">Νέα λίστα αναπαραγωγής</string>

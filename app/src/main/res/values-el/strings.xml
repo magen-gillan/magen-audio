@@ -94,7 +94,7 @@
     <string name="tips_search_hint">Αναζήτηση στη βιβλιοθήκη...</string>
     <string name="tips_x_selected">Επιλέχθηκαν %1$d</string>
     <string name="tips_go_to_the_issue_tracker_website">Θα μεταφερθείτε στην ιστοσελίδα του εντοπιστή ζητημάτων.</string>
-    <string name="tips_welcome_to_magen_play">Καλώς ήρθατε στο Magen Play, ένα όμορφο και ελαφρύ πρόγραμμα αναπαραγωγής μουσικής για το Android.  </string>
+    <string name="tips_welcome_to_magen_play">Καλώς ήρθατε στο Magen Audio, ένα όμορφο και ελαφρύ πρόγραμμα αναπαραγωγής μουσικής για το Android.  </string>
     <string name="msg_no_playlists">Καμία λίστα</string>
     <string name="msg_no_results">Κανένα αποτέλεσμα</string>
     <string name="msg_empty_playlist">Άδεια λίστα αναπαραγωγής</string>
@@ -121,9 +121,9 @@
     <string name="err_permissions_denied">Άρνηση χορήγησης δικαιωμάτων.</string>
     <string name="err_permission_external_storage_denied">Άρνηση χορήγησης δικαιώματος πρόσβασης σε εξωτερικά μέσα αποθήκευσης.</string>
     <string name="err_could_not_scan_files">Δεν μπόρεσε να πραγματοποιηθεί σάρωση σε %d αρχεία.</string>
-    <string name="app_widget_big_name">Magen Play - Μεγάλο</string>
-    <string name="app_widget_classic_name">Magen Play - Κλασικό</string>
-    <string name="app_widget_small_name">Magen Play - Μικρό</string>
+    <string name="app_widget_big_name">Magen Audio - Μεγάλο</string>
+    <string name="app_widget_classic_name">Magen Audio - Κλασικό</string>
+    <string name="app_widget_small_name">Magen Audio - Μικρό</string>
     <string name="app_shortcut_shuffle_all_short">Τυχαία αναπαραγωγή</string>
     <string name="app_shortcut_top_tracks_short">Κορυφαία Κομμάτια</string>
     <string name="app_shortcut_last_added_short">Προστέθηκαν τελευταία</string>
@@ -136,7 +136,7 @@
     <string name="about_report_bugs">Αναφορά σφαλμάτων</string>
     <string name="about_report_bugs_summary">Αναφέρετε σφάλματα ή ζητείστε νέα χαρακτηριστικά.</string>
     <string name="about_translate">Μεταφράστε</string>
-    <string name="about_translate_summary">Βοηθήστε την μετάφραση του Magen Play στη μητρική σας γλώσσα.</string>
+    <string name="about_translate_summary">Βοηθήστε την μετάφραση του Magen Audio στη μητρική σας γλώσσα.</string>
     <string name="about_donate">Δωρεά</string>
     <string name="about_aidan_follestad_summary">Για την μηχανή θεμάτων και κάποια άλλα ωραία πράγματα.</string>
     <string name="about_michael_cook_summary">Για το όμορφο material εικονίδιο της εφαρμογής.</string>

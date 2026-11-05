@@ -220,7 +220,7 @@
     <string name="title_up_next">播放佇列：即將播放</string>
     <string name="pref_title_now_playing_screen_appearance">外觀</string>
     <string name="label_intro">程式介紹</string>
-    <string name="tips_welcome_to_magen_play">歡迎光臨 Magen Play，一個美麗又輕量的音樂播放器。</string>
+    <string name="tips_welcome_to_magen_play">歡迎光臨 Magen Audio，一個美麗又輕量的音樂播放器。</string>
     <string name="label_folders">資料夾</string>
     <string name="label_files">檔案</string>
     <string name="action_theme_switch">主題切換</string>
@@ -229,10 +229,10 @@
     <string name="msg_scanned_files">已掃描%2$d個檔案夾中的%1$d個。</string>
     <string name="err_could_not_scan_files">不能掃描%d。</string>
     <string name="msg_new_start_directory">%s是新的起始目錄</string>
-    <string name="app_widget_big_name">Magen Play - 大型</string>
-    <string name="app_widget_classic_name">Magen Play - 經典</string>
-    <string name="app_widget_small_name">Magen Play - 小型</string>
-    <string name="app_widget_card_name">Magen Play - 卡片</string>
+    <string name="app_widget_big_name">Magen Audio - 大型</string>
+    <string name="app_widget_classic_name">Magen Audio - 經典</string>
+    <string name="app_widget_small_name">Magen Audio - 小型</string>
+    <string name="app_widget_card_name">Magen Audio - 卡片</string>
     <string name="label_title">標題</string>
     <string name="label_description">內容敘述</string>
     <string name="label_device_info">裝置資訊</string>
@@ -264,7 +264,7 @@
     <string name="sort_order_date_added">加入時間</string>
     <string name="option_finish_current_music_sleep_timer">歌曲全數播放完畢</string>
     <string name="title_dialog_ringtone">設定鈴聲</string>
-    <string name="tips_ringtone_settings">允許 Magen Play 修改音訊設定</string>
+    <string name="tips_ringtone_settings">允許 Magen Audio 修改音訊設定</string>
     <string name="perf_title_fixed_tab_layout">固定所有分頁標籤</string>
     <string name="pref_summary_fixed_tab_layout">完全平鋪頂部標籤不再滾動</string>
     <string name="tips_add_to_blacklist">你是否想加至黑名單？</string>
@@ -279,9 +279,9 @@
     <string name="warning_clear_all_preference_msg"><b>警告</b>: 這將清除應用的<b>所有設定</b>! \n\n若應用在啟動時立刻崩潰, 請嘗試使用該選項! \n<b>確定?</b></string>
     <string name="err_failed_to_delete">無法刪除</string>
     <string name="action_grant_permission">授予許可權</string>
-    <string name="err_no_storage_write_permission">Magen Play 未能獲取讀寫儲存許可權!</string>
+    <string name="err_no_storage_write_permission">Magen Audio 未能獲取讀寫儲存許可權!</string>
     <string name="action_retry">重試</string>
-    <string name="err_permission_manage_external_storage_denied"> Magen Play 疑似無\"所有檔案訪問\"許可權! </string>
+    <string name="err_permission_manage_external_storage_denied"> Magen Audio 疑似無\"所有檔案訪問\"許可權! </string>
     <string name="tips_not_available_now">現在不可用</string>
     <string name="action_check_for_updates">檢查更新</string>
     <string name="msg_new_version_available">新版本可用！</string>
@@ -318,7 +318,7 @@
     <string name="err_file_incorrect">檔案不正確!</string>
     <string name="tips_are_you_sure">是否確定？</string>
     <string name="about_original_author">原作者</string>
-    <string name="about_plus_author">Magen Play 作者</string>
+    <string name="about_plus_author">Magen Audio 作者</string>
     <string name="label_comment">註釋</string>
     <string name="label_misc">雜項</string>
     <string name="label_composer">作曲</string>
