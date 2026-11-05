@@ -113,7 +113,14 @@ class FoldersPage : AbsPanelPage() {
 
     private fun prepareAdaptersAndData() {
 
-        songCollectionDisplayAdapter = DisplayAdapter(requireActivity(), buildFolderDisplayPresenter())
+        songCollectionDisplayAdapter = DisplayAdapter(
+            activity = requireActivity(),
+            presenter = buildFolderDisplayPresenter(),
+            // Pass folder icon callbacks so the multi-selection menu can offer
+            // "Change folder icon" / "Reset folder icon" when a folder is selected.
+            onChangeFolderIcon = ::requestChangeFolderIcon,
+            onResetFolderIcon = ::resetFolderIcon,
+        )
 
         songAdapter = DisplayAdapter(requireActivity(), buildSongDisplayPresenter())
         binding.recyclerView.adapter = songCollectionDisplayAdapter
@@ -305,9 +312,10 @@ class FoldersPage : AbsPanelPage() {
         override val usePalette: Boolean = false
         override val imageType: Int = DisplayPresenter.IMAGE_TYPE_IMAGE
 
-        // big square cards show the folder name only
-        override fun getSecondaryText(context: Context, item: SongCollection): CharSequence =
-            if (layoutStyle == ItemLayoutStyle.GRID) "" else super.getSecondaryText(context, item)
+        // Show ONLY the folder name — no song count, no path, in any layout style.
+        override fun getDescription(context: Context, item: SongCollection): CharSequence = ""
+        override fun getSecondaryText(context: Context, item: SongCollection): CharSequence = ""
+        override fun getTertiaryText(context: Context, item: SongCollection): CharSequence? = null
 
         // stable and cheap (the default one hashes every song in the folder)
         override fun getItemID(item: SongCollection): Long = item.folderKey.hashCode().toLong()

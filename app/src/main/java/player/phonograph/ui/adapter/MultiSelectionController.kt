@@ -40,6 +40,10 @@ class MultiSelectionController<I>(
     private val linkedAdapter: IMultiSelectableAdapter<I>,
     private val activity: ComponentActivity,
     var enable: Boolean = true,
+    // Optional callbacks for folder icon operations (only used when the selection
+    // contains SongCollection items, e.g. in the Folders page).
+    var onChangeFolderIcon: ((player.phonograph.model.SongCollection) -> Unit)? = null,
+    var onResetFolderIcon: ((player.phonograph.model.SongCollection) -> Unit)? = null,
 ) {
     private val _selected: MutableList<I> = mutableListOf()
     val selected: List<I> get() = _selected.toList()

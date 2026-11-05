@@ -1,4 +1,4 @@
-#Thu Nov 05 03:29:33 UTC 2026
+#Thu Nov 05 04:12:54 UTC 2026
 base.0=/home/z/my-project/repos/magen-play/app/build/intermediates/dex/modernStableRelease/mergeDexModernStableRelease/classes.dex
 base.1=/home/z/my-project/repos/magen-play/app/build/intermediates/dex/modernStableRelease/mergeDexModernStableRelease/classes2.dex
 base.2=/home/z/my-project/repos/magen-play/app/build/intermediates/dex/modernStableRelease/mergeDexModernStableRelease/classes3.dex

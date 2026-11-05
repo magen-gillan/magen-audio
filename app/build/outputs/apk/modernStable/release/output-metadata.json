@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 29000,
-      "versionName": "2.9.0",
-      "outputFile": "MagenAudio-2.9.0-modern-stable-release.apk"
+      "versionCode": 29100,
+      "versionName": "2.9.1",
+      "outputFile": "MagenAudio-2.9.1-modern-stable-release.apk"
     }
   ],
   "elementType": "File",
@@ -22,14 +22,14 @@
       "minApi": 28,
       "maxApi": 30,
       "baselineProfiles": [
-        "baselineProfiles/1/MagenAudio-2.9.0-modern-stable-release.dm"
+        "baselineProfiles/1/MagenAudio-2.9.1-modern-stable-release.dm"
       ]
     },
     {
       "minApi": 31,
       "maxApi": 2147483647,
       "baselineProfiles": [
-        "baselineProfiles/0/MagenAudio-2.9.0-modern-stable-release.dm"
+        "baselineProfiles/0/MagenAudio-2.9.1-modern-stable-release.dm"
       ]
     }
   ],

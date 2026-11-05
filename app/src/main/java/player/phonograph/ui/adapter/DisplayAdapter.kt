@@ -28,6 +28,10 @@ open class DisplayAdapter<I>(
     var presenter: DisplayPresenter<I>,
     allowMultiSelection: Boolean = true,
     stableId: Boolean = true,
+    // Optional folder-icon callbacks passed through to MultiSelectionController.
+    // Only relevant when the dataset contains SongCollection items (Folders page).
+    val onChangeFolderIcon: ((player.phonograph.model.SongCollection) -> Unit)? = null,
+    val onResetFolderIcon: ((player.phonograph.model.SongCollection) -> Unit)? = null,
 ) : RecyclerView.Adapter<DisplayAdapter.DisplayViewHolder<I>>(),
     FastScrollRecyclerView.SectionedAdapter,
     IMultiSelectableAdapter<I> {
@@ -45,7 +49,13 @@ open class DisplayAdapter<I>(
     }
 
     protected val controller: MultiSelectionController<I> =
-        MultiSelectionController(this, activity, allowMultiSelection)
+        MultiSelectionController(
+            this,
+            activity,
+            allowMultiSelection,
+            onChangeFolderIcon = onChangeFolderIcon,
+            onResetFolderIcon = onResetFolderIcon,
+        )
 
     override fun getItemId(position: Int): Long = presenter.getItemID(dataset[position])
     override fun getItem(datasetPosition: Int): I = dataset[datasetPosition]

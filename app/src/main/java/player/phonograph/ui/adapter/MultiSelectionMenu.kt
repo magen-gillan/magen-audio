@@ -176,6 +176,36 @@ fun <I> inflateMultiSelectionToolbarMenu(
                     true
                 }
             }
+
+            // Folder icon change/reset — only shown when exactly one SongCollection
+            // (a folder) is selected AND the controller has the callbacks wired.
+            val selectedFolders = controller.selected.filterIsInstance<SongCollection>()
+            if (selectedFolders.size == 1) {
+                val folder = selectedFolders.first()
+                controller.onChangeFolderIcon?.let { onChangeIcon ->
+                    menuItem(title = getString(R.string.action_change_folder_icon)) {
+                        showAsActionFlag = MenuItem.SHOW_AS_ACTION_NEVER
+                        onClick {
+                            onChangeIcon(folder)
+                            controller.unselectedAll()
+                            true
+                        }
+                    }
+                }
+                // Show "reset" only if the folder has a custom icon
+                controller.onResetFolderIcon?.let { onResetIcon ->
+                    if (player.phonograph.mechanism.folder.FolderIconStore.get(context, folder) != null) {
+                        menuItem(title = getString(R.string.action_reset_folder_icon)) {
+                            showAsActionFlag = MenuItem.SHOW_AS_ACTION_NEVER
+                            onClick {
+                                onResetIcon(folder)
+                                controller.unselectedAll()
+                                true
+                            }
+                        }
+                    }
+                }
+            }
         } // attach
         true
     }
