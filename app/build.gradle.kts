@@ -43,8 +43,12 @@ android {
         targetSdk = 36
 
         applicationId = "player.phonograph.plus"
-        versionCode = 29100
-        versionName = "2.9.1"
+        versionCode = 29200
+        versionName = "2.9.2"
+
+        ndk {
+            abiFilters.add("arm64-v8a")
+        }
 
         proguardFiles(File("proguard-rules-base.pro"), File("proguard-rules-app.pro"))
 
@@ -81,8 +85,8 @@ android {
             if (isKeystoreAvailable) signingConfig = signingConfigs.getByName("release")
 
             // shrink
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
 
             // git revision tracker
             manifestPlaceholders["GIT_COMMIT_HASH"] = "n/a"

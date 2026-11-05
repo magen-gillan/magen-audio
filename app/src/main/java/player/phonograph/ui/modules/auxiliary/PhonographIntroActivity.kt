@@ -303,7 +303,7 @@ class PhonographIntroActivity : AppIntro(),
 
         override fun setUpView(container: ViewGroup) {
             container.removeAllViews()
-            container.gravity = Gravity.CENTER
+            (container as? LinearLayout)?.gravity = Gravity.CENTER
             container.setPadding(24, 12, 24, 12)
             val scene = FrameLayout(requireContext())
             scene.addView(
