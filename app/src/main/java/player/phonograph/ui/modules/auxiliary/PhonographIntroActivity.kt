@@ -55,7 +55,10 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import kotlinx.coroutines.Dispatchers
@@ -125,6 +128,8 @@ class PhonographIntroActivity : AppIntro(),
 
         private var _items: List<ItemSimpleBinding>? = null
         private val items get() = _items!!
+        private var moodImage: ImageView? = null
+        private var moodText: TextView? = null
 
         override fun setUpView(container: ViewGroup) {
             val context = container.context
@@ -138,17 +143,31 @@ class PhonographIntroActivity : AppIntro(),
                     scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
                 }
                 addView(logo, LinearLayout.LayoutParams(imageSize, imageSize))
-                val mascot = android.widget.ImageView(context).apply {
-                    setImageResource(R.drawable.alisha_chibi)
-                    contentDescription = "Alisha chibi"
+                val character = ImageView(context).apply {
+                    contentDescription = "Alisha permission status"
                     scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
                 }
-                addView(mascot, LinearLayout.LayoutParams(imageSize, imageSize))
+                moodImage = character
+                addView(character, LinearLayout.LayoutParams(imageSize, imageSize))
             }
-            container.addView(
-                brandRow,
-                LinearLayout.LayoutParams(MATCH_PARENT, imageSize).apply { setMargins(16) }
+            val scene = FrameLayout(context)
+            scene.addView(
+                ImageView(context).apply {
+                    setImageResource(R.drawable.alisha_control_room)
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                    alpha = 0.7f
+                },
+                FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT),
             )
+            scene.addView(brandRow, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
+            container.addView(scene, LinearLayout.LayoutParams(MATCH_PARENT, imageSize + imageSize / 2).apply { setMargins(16) })
+            moodText = TextView(context).apply {
+                gravity = Gravity.CENTER
+                textSize = 15f
+                setPadding(12, 4, 12, 12)
+            }
+            container.addView(moodText, LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+            updateMood()
             _items = necessaryPermissions.map { detail -> createPermissionViewBinding(detail) }
             val params = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply { setMargins(32) }
             for (itemBinding in items) {
@@ -166,6 +185,8 @@ class PhonographIntroActivity : AppIntro(),
         override fun onDestroyView() {
             super.onDestroyView()
             _items = null
+            moodImage = null
+            moodText = null
         }
 
         private fun createPermissionViewBinding(detail: PermissionDetail): ItemSimpleBinding =
@@ -181,6 +202,7 @@ class PhonographIntroActivity : AppIntro(),
                     if (delegate != null) {
                         delegate.launch(detail.permission) {
                             updateItemBackgroundColor(view, detail.permission)
+                            updateMood()
                         }
                     } else {
                         Toast.makeText(
@@ -202,6 +224,7 @@ class PhonographIntroActivity : AppIntro(),
                         delegate.launch(permissions) {
                             try {
                                 for ((index, binding) in items.withIndex()) { updateItemBackgroundColor(binding.root, permissions[index]) }
+                                updateMood()
                                 if (permissions.all { hasPermission(requireContext(), it) }) {
                                     val appContext = requireContext().applicationContext
                                     kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.IO) { try { player.phonograph.repo.loader.Songs.all(appContext) } catch (_: Exception) { } }
@@ -225,6 +248,12 @@ class PhonographIntroActivity : AppIntro(),
             view.setBackgroundColor(
                 if (granted) MaterialColor.Green._600.asColor else MaterialColor.Red._600.asColor
             )
+        }
+
+        private fun updateMood() {
+            val granted = necessaryPermissions.all { hasPermission(requireContext(), it.permission) }
+            moodImage?.setImageResource(if (granted) R.drawable.alisha_happy else R.drawable.alisha_sad)
+            moodText?.text = getString(if (granted) R.string.permission_mood_granted else R.string.permission_mood_denied)
         }
 
         override val isPolicyRespected: Boolean
@@ -276,13 +305,23 @@ class PhonographIntroActivity : AppIntro(),
             container.removeAllViews()
             container.gravity = Gravity.CENTER
             container.setPadding(24, 12, 24, 12)
-            val logo = android.widget.ImageView(requireContext()).apply {
+            val scene = FrameLayout(requireContext())
+            scene.addView(
+                ImageView(requireContext()).apply {
+                    setImageResource(R.drawable.alisha_control_room)
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                    alpha = 0.72f
+                },
+                FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT),
+            )
+            val logo = ImageView(requireContext()).apply {
                 setImageResource(R.drawable.magen_gillan_logo)
                 contentDescription = "MG"
-                scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                scaleType = ImageView.ScaleType.FIT_CENTER
                 adjustViewBounds = true
             }
-            container.addView(logo, LinearLayout.LayoutParams(MATCH_PARENT, 0, 1f))
+            scene.addView(logo, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
+            container.addView(scene, LinearLayout.LayoutParams(MATCH_PARENT, 0, 1f))
             val character = android.widget.ImageView(requireContext()).apply {
                 setImageResource(R.drawable.alisha_chibi)
                 contentDescription = "Alisha chibi"

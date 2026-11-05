@@ -284,4 +284,6 @@
     <string name="disc_speed_fast">سريع</string>
     <string name="disc_speed_record">مثل الأسطوانة الحقيقية (33⅓ دورة/د)</string>
     <string name="intro_welcome_description">شغّل الموسيقى المخزنة على جهازك، واستعرض المكتبة وقوائم التشغيل وتحكّم بالتشغيل.</string>
+    <string name="permission_mood_granted">شكرًا لك! اليشيا سعيدة، ومكتبتك الموسيقية جاهزة.</string>
+    <string name="permission_mood_denied">تبدو اليشيا حزينة قليلًا. يمكنك السماح بالوصول إلى الموسيقى لاحقًا.</string>
 </resources>

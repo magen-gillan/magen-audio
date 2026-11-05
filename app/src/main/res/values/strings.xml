@@ -644,4 +644,6 @@
     <string name="disc_speed_fast">Fast</string>
     <string name="disc_speed_record">Like a real record (33⅓ rpm)</string>
     <string name="intro_welcome_description">Play music stored on your device, browse your library and playlists, and control playback.</string>
+    <string name="permission_mood_granted">Thanks! Alisha is happy—your music library is ready.</string>
+    <string name="permission_mood_denied">Alisha looks a little sad. You can grant music access later.</string>
 </resources>
