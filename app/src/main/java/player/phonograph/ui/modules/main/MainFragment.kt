@@ -1,0 +1,286 @@
+/*
+ * Copyright (c) 2022~2024 chr_56
+ */
+
+package player.phonograph.ui.modules.main
+
+import com.github.chr56.android.menu_dsl.attach
+import com.github.chr56.android.menu_dsl.menuItem
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import player.phonograph.R
+import player.phonograph.databinding.FragmentHomeBinding
+import player.phonograph.debug
+import player.phonograph.foundation.error.warning
+import player.phonograph.logMetrics
+import player.phonograph.model.pages.HomePage
+import player.phonograph.model.pages.PAGE_ALBUM
+import player.phonograph.model.pages.PAGE_ARTIST
+import player.phonograph.model.pages.PAGE_FILES
+import player.phonograph.model.pages.PAGE_FOLDER
+import player.phonograph.model.pages.PAGE_GENRE
+import player.phonograph.model.pages.PAGE_PLAYLIST
+import player.phonograph.model.pages.PAGE_SONG
+import player.phonograph.model.pages.PagesConfig
+import player.phonograph.ui.modules.main.pages.AbsPage
+import player.phonograph.ui.modules.main.pages.AlbumPage
+import player.phonograph.ui.modules.main.pages.ArtistPage
+import player.phonograph.ui.modules.main.pages.EmptyPage
+import player.phonograph.ui.modules.main.pages.FilesPage
+import player.phonograph.ui.modules.main.pages.FoldersPage
+import player.phonograph.ui.modules.main.pages.GenrePage
+import player.phonograph.ui.modules.main.pages.PlaylistPage
+import player.phonograph.ui.modules.main.pages.SongPage
+import player.phonograph.ui.modules.popup.ListOptionsPopup
+import player.phonograph.ui.modules.search.SearchActivity
+import player.phonograph.ui.resource.Texts
+import player.phonograph.ui.theme.ThemeSettingsDelegate.accentColor
+import player.phonograph.ui.theme.ThemeSettingsDelegate.primaryColor
+import player.phonograph.ui.theme.getTintedDrawable
+import player.phonograph.ui.theme.textColorOn
+import player.phonograph.ui.util.menuProvider
+import player.phonograph.ui.util.observe
+import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import android.graphics.drawable.Drawable
+import android.os.Bundle
+import android.util.ArrayMap
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
+import android.view.View
+import android.view.ViewGroup
+import java.lang.ref.WeakReference
+
+class MainFragment : Fragment() {
+
+    val hostActivity: FragmentActivity get() = requireActivity()
+
+    private val drawerViewModel: MainDrawerViewModel by viewModels({ hostActivity })
+
+    private var _viewBinding: FragmentHomeBinding? = null
+    private val binding: FragmentHomeBinding get() = _viewBinding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        debug { logMetrics("MainFragment.onCreateView()") }
+        _viewBinding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupToolbar()
+
+        observe(drawerViewModel.fixedTabLayout) { fixedTabLayout ->
+            binding.tabs.tabMode = if (fixedTabLayout) TabLayout.MODE_FIXED else TabLayout.MODE_SCROLLABLE
+        }
+        observe(drawerViewModel.pages) { pagesConfig ->
+            if (pagesConfig != null) {
+                loadPages(
+                    pagesConfig,
+                    if (drawerViewModel.rememberLastTab.value) drawerViewModel.lastPage.value else -1
+                )
+            }
+        }
+
+        binding.pager.registerOnPageChangeCallback(pageChangeListener)
+
+        debug { logMetrics("MainFragment.onViewCreated()") }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.pager.unregisterOnPageChangeCallback(pageChangeListener)
+        _viewBinding = null
+    }
+
+    //region Toolbar
+
+    private fun setupToolbar() {
+        binding.appbar.setBackgroundColor(primaryColor)
+        with(binding.toolbar) {
+            setBackgroundColor(primaryColor)
+            navigationIcon = getDrawable(R.drawable.ic_menu_white_24dp)!!
+            setTitleTextColor(primaryTextColor)
+            title = getString(R.string.app_name)
+        }
+
+        (hostActivity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+        (hostActivity as? MainActivity)?.let { mainActivity ->
+            binding.toolbar.setNavigationOnClickListener { mainActivity.toggleDrawer() }
+        }
+        with(binding.tabs) {
+            setTabTextColors(secondaryTextColor, primaryTextColor)
+            setSelectedTabIndicatorColor(accentColor)
+        }
+
+        requireActivity().addMenuProvider(
+            menuProvider(this::setupMenu),
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
+    }
+
+    private fun setupMenu(menu: Menu) {
+        attach(requireContext(), menu) {
+            menuItem {
+                itemId = R.id.action_sort_and_layout
+                titleRes(R.string.action_settings)
+                icon = getTintedDrawable(R.drawable.ic_sort_variant_white_24dp, primaryTextColor)
+                showAsActionFlag = SHOW_AS_ACTION_ALWAYS
+                onClick {
+                    currentPage()?.showOptionsPopup()
+                    true
+                }
+            }
+        }
+    }
+
+    private fun currentPage(): AbsPage? {
+        val position = binding.pager.currentItem
+        val byTag = childFragmentManager.findFragmentByTag("f${pagerAdapter?.getItemId(position) ?: position.toLong()}")
+        return (byTag as? AbsPage) ?: pagerAdapter?.pageAt(position)
+    }
+    //endregion
+
+    //region Pages
+    private var pagerAdapter: HomePagerAdapter? = null
+
+    private fun loadPages(pagesConfig: PagesConfig, preferredPosition: Int) {
+
+        val oldAdapter: HomePagerAdapter? = pagerAdapter
+
+        val targetPosition = if (oldAdapter != null) {
+            // from old adapter
+            val oldPosition = binding.pager.currentItem.coerceAtLeast(0)
+            val currentPage = oldAdapter.pagesConfig[oldPosition]
+            val newPosition = pagesConfig.tabs.indexOf(currentPage)
+            newPosition.coerceIn(0, pagesConfig.size - 1)
+        } else if (preferredPosition > -1) {
+            // from Argument
+            preferredPosition.coerceIn(0, pagesConfig.size - 1)
+        } else {
+            // first page by default
+            0
+        }
+
+        setupViewPager(pagesConfig)
+        binding.pager.setCurrentItem(targetPosition, false)
+        drawerViewModel.switchPageTo(requireContext(), targetPosition)
+    }
+
+    private fun setupViewPager(homeTabConfig: PagesConfig) {
+
+        observe(drawerViewModel.selectedPage) { page ->
+            try {
+                binding.pager.currentItem = page
+            } catch (e: Exception) {
+                warning(requireContext(), "MainFragment", "Failed to select page $page", e)
+            }
+        }
+
+        // Adapter
+        val homePagerAdapter = HomePagerAdapter(this, homeTabConfig)
+        binding.pager.apply {
+            adapter = homePagerAdapter
+            offscreenPageLimit = 1
+        }
+        pagerAdapter = homePagerAdapter
+
+        // TabLayout
+        TabLayoutMediator(binding.tabs, binding.pager) { tab: TabLayout.Tab, index: Int ->
+            tab.text = Texts.page(resources, homeTabConfig[index])
+        }.attach()
+        binding.tabs.visibility = if (homePagerAdapter.itemCount == 1) View.GONE else View.VISIBLE
+    }
+
+
+    private val pageChangeListener = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            drawerViewModel.switchPageTo(requireContext(), position)
+        }
+    }
+    //endregion
+
+    //region Popup & AppBar
+
+    /**
+     *  the popup window for [AbsPage]
+     */
+    val popup: ListOptionsPopup by lazy { ListOptionsPopup(hostActivity) }
+
+    fun addOnAppBarOffsetChangedListener(onOffsetChangedListener: OnOffsetChangedListener) {
+        binding.appbar.addOnOffsetChangedListener(onOffsetChangedListener)
+    }
+
+    fun removeOnAppBarOffsetChangedListener(onOffsetChangedListener: OnOffsetChangedListener) {
+        binding.appbar.removeOnOffsetChangedListener(onOffsetChangedListener)
+    }
+
+    val totalAppBarScrollingRange: Int get() = binding.appbar.totalScrollRange
+
+    val totalHeaderHeight: Int
+        get() = totalAppBarScrollingRange + if (binding.tabs.isVisible) binding.tabs.height else 0
+    //endregion
+
+    //region Utils
+    private fun getDrawable(@DrawableRes resId: Int): Drawable? {
+        return AppCompatResources.getDrawable(hostActivity, resId)?.also {
+            it.colorFilter =
+                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(primaryTextColor, BlendModeCompat.SRC_IN)
+        }
+    }
+
+    private val primaryColor by lazy(LazyThreadSafetyMode.NONE) { primaryColor() }
+    private val accentColor by lazy(LazyThreadSafetyMode.NONE) { accentColor() }
+    private val primaryTextColor by lazy(LazyThreadSafetyMode.NONE) { textColorOn(hostActivity, primaryColor) }
+    private val secondaryTextColor by lazy(LazyThreadSafetyMode.NONE) { textColorOn(hostActivity, primaryColor) }
+    //endregion
+
+    companion object {
+        fun newInstance(): MainFragment = MainFragment()
+    }
+
+    private class HomePagerAdapter(fragment: Fragment, var pagesConfig: PagesConfig) : FragmentStateAdapter(fragment) {
+
+        private val current: MutableMap<Int, WeakReference<AbsPage>> = ArrayMap(pagesConfig.size)
+
+        override fun getItemCount(): Int = pagesConfig.size
+
+        fun pageAt(position: Int): AbsPage? = current[position]?.get()
+
+        override fun createFragment(position: Int): Fragment =
+            createPage(pagesConfig[position]).also { fragment ->
+                current[position] = WeakReference(fragment)
+            } // registry
+
+        private fun createPage(@HomePage type: String): AbsPage {
+            return when (type) {
+                PAGE_SONG     -> SongPage()
+                PAGE_ALBUM    -> AlbumPage()
+                PAGE_ARTIST   -> ArtistPage()
+                PAGE_PLAYLIST -> PlaylistPage()
+                PAGE_GENRE    -> GenrePage()
+                PAGE_FOLDER   -> FoldersPage()
+                PAGE_FILES    -> FilesPage()
+                else          -> EmptyPage()
+            }
+        }
+    }
+}

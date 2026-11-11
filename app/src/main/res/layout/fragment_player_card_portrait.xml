@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/player_fragment_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--The unused FrameLayout layout is necessary to prevent a crash on rotate-->
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/player_sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="true"
+        android:gravity="bottom"
+        sothree:umanoFadeColor="#00000000"
+        sothree:umanoOverlay="true"
+        sothree:umanoPanelHeight="0dp"
+        sothree:umanoScrollableView="@+id/player_recycler_view"
+        sothree:umanoShadowHeight="0dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/color_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/color_background_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/cover_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/player_album_cover_fragment"
+                    android:name="player.phonograph.ui.modules.player.PlayerAlbumCoverFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/playback_controls_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/toolbar_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_scrim_height"
+                android:background="@drawable/toolbar_gradient"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/status_bar_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/status_bar_height"
+                    android:background="@android:color/transparent" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/player_toolbar"
+                    style="@style/Widget.Phonograph.Toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mini_player_height"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <player.phonograph.ui.views.StatusBarMarginFrameLayout
+            android:id="@+id/player_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/playing_queue_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="-8dp"
+                app:cardBackgroundColor="?cardBackgroundColor"
+                app:cardElevation="@dimen/default_elevation"
+                app:cardUseCompatPadding="false">
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/player_queue_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </androidx.cardview.widget.CardView>
+
+        </player.phonograph.ui.views.StatusBarMarginFrameLayout>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+</FrameLayout>

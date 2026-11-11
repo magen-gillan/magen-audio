@@ -1,0 +1,313 @@
+package player.phonograph.ui.modules.main
+
+import lib.activityresultcontract.registerActivityResultLauncherDelegate
+import lib.storage.launcher.CreateFileStorageAccessDelegate
+import lib.storage.launcher.ICreateFileStorageAccessible
+import lib.storage.launcher.IOpenDirStorageAccessible
+import lib.storage.launcher.IOpenFileStorageAccessible
+import lib.storage.launcher.OpenDirStorageAccessDelegate
+import lib.storage.launcher.OpenFileStorageAccessDelegate
+import player.phonograph.R
+import player.phonograph.databinding.ActivityMainContentBinding
+import player.phonograph.databinding.ActivityMainDrawerBinding
+import player.phonograph.debug
+import player.phonograph.foundation.compat.parcelableExtra
+import player.phonograph.foundation.content.PackageMetadata
+import player.phonograph.foundation.error.warning
+import player.phonograph.logMetrics
+import player.phonograph.mechanism.PhonographShortcutManager
+import player.phonograph.mechanism.UpdateChecker
+import player.phonograph.mechanism.coil.loadImage
+import player.phonograph.model.Song
+import player.phonograph.model.pages.PagesConfig
+import player.phonograph.model.ui.PanelAction
+import player.phonograph.model.version.VersionCatalog
+import player.phonograph.settings.Keys
+import player.phonograph.settings.PrerequisiteSettings
+import player.phonograph.settings.Settings
+import player.phonograph.ui.modules.auxiliary.ChangelogDialog
+import player.phonograph.ui.modules.explorer.PathSelectorContractTool
+import player.phonograph.ui.modules.explorer.PathSelectorRequester
+import player.phonograph.ui.modules.panel.AbsSlidingMusicPanelActivity
+import player.phonograph.ui.modules.upgrade.UpgradeInfoDialog
+import player.phonograph.ui.resource.infoString
+import player.phonograph.ui.theme.ThemeSettingsDelegate.accentColor
+import player.phonograph.ui.theme.textColorPrimary
+import player.phonograph.ui.theme.themeIconColor
+import player.phonograph.ui.util.observe
+import util.theme.view.navigationview.setItemIconColors
+import util.theme.view.navigationview.setItemTextColors
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
+import androidx.fragment.app.commit
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+class MainActivity : AbsSlidingMusicPanelActivity(),
+                     IOpenFileStorageAccessible, ICreateFileStorageAccessible, IOpenDirStorageAccessible,
+                     PathSelectorRequester {
+
+    private lateinit var viewBinding: ActivityMainDrawerBinding
+    private lateinit var contentViewBinding: ActivityMainContentBinding
+
+    private val drawerViewModel: MainDrawerViewModel by viewModels()
+
+    override val createFileStorageAccessDelegate: CreateFileStorageAccessDelegate = CreateFileStorageAccessDelegate()
+    override val openDirStorageAccessDelegate: OpenDirStorageAccessDelegate = OpenDirStorageAccessDelegate()
+    override val openFileStorageAccessDelegate: OpenFileStorageAccessDelegate = OpenFileStorageAccessDelegate()
+
+    override val pathSelectorContractTool: PathSelectorContractTool = PathSelectorContractTool()
+
+    override fun createContentView(): View {
+        contentViewBinding = ActivityMainContentBinding.inflate(layoutInflater)
+        viewBinding = ActivityMainDrawerBinding.inflate(layoutInflater)
+        viewBinding.mainContentContainer.addView(wrapSlidingMusicPanel(contentViewBinding.root))
+
+        return viewBinding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        registerActivityResultLauncherDelegate(
+            createFileStorageAccessDelegate,
+            openDirStorageAccessDelegate,
+            openFileStorageAccessDelegate,
+            pathSelectorContractTool
+        )
+
+        drawerViewModel.observeSettings(this, lifecycle)
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                drawerViewModel.pages.collect { pagesConfig ->
+                    setUpDrawer(pagesConfig)
+                }
+            }
+        }
+
+        if (supportFragmentManager.findFragmentByTag("HOME") == null) {
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container, MainFragment.newInstance(), "HOME")
+            }
+        }
+
+
+        if (intent.getBooleanExtra(UPGRADABLE, false)) {
+            Handler(Looper.getMainLooper()).postDelayed(
+                { showUpgradeDialog(intent.parcelableExtra(VERSION_INFO) as? VersionCatalog) }, 900
+            )
+        }
+
+        lifecycleScope.launch(Dispatchers.Default) { latelySetup() }
+        debug { logMetrics("MainActivity.onCreate()") }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        debug { logMetrics("MainActivity.onResume()") }
+    }
+
+    private fun setUpDrawer(pagesConfig: PagesConfig?) {
+
+        // Preparation
+        setupDrawerMenu(
+            activity = this@MainActivity,
+            menu = viewBinding.navigationView.menu,
+            switchPageTo = { drawerViewModel.switchPageTo(this@MainActivity, it) },
+            closeDrawer = { viewBinding.drawerLayout.closeDrawers() },
+            pagesConfig = pagesConfig
+        )
+
+        // color
+        val iconColor = themeIconColor(this)
+        with(viewBinding.navigationView) {
+            setItemIconColors(iconColor, accentColor())
+            setItemTextColors(textColorPrimary(context), accentColor())
+        }
+
+        // listener
+        viewBinding.drawerLayout.addDrawerListener(object : SimpleDrawerListener() {
+            override fun onDrawerOpened(drawerView: View) {
+                onBackPressedDispatcher.addCallback(this@MainActivity, drawerBackPressedCallback)
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                drawerBackPressedCallback.remove()
+            }
+        })
+
+        // States
+        observe(queueViewModel.currentSong) { song -> updateNavigationDrawerHeader(song) }
+        observe(drawerViewModel.selectedPage) { page -> viewBinding.navigationView.setCheckedItem(1000 + page) }
+    }
+
+    private val drawerBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            viewBinding.drawerLayout.closeDrawers()
+        }
+    }
+
+
+    private var navigationDrawerHeader: View? = null
+    private fun updateNavigationDrawerHeader(song: Song?) {
+        if (song != null) {
+
+            if (navigationDrawerHeader == null) {
+                navigationDrawerHeader =
+                    viewBinding.navigationView.inflateHeaderView(R.layout.navigation_drawer_header).also { view ->
+                        view.setOnClickListener {
+                            viewBinding.drawerLayout.closeDrawers()
+                            lifecycleScope.launch { panelViewModel.expandPanel() }
+                        }
+                    }
+            }
+
+            val navigationDrawerHeader = navigationDrawerHeader
+            if (navigationDrawerHeader != null) {
+                val title = navigationDrawerHeader.findViewById<TextView>(R.id.title)
+                val text = navigationDrawerHeader.findViewById<TextView>(R.id.text)
+                val image = navigationDrawerHeader.findViewById<ImageView>(R.id.image)
+                title.text = song.title
+                text.text = song.infoString()
+                loadImage(this)
+                    .from(song)
+                    .into(
+                        onStart = { image.setImageResource(R.drawable.default_album_art) },
+                        onSuccess = { image.setImageDrawable(it) }
+                    )
+                    .enqueue()
+            }
+        } else {
+            if (navigationDrawerHeader != null) {
+                viewBinding.navigationView.removeHeaderView(navigationDrawerHeader!!)
+                navigationDrawerHeader = null
+            }
+        }
+    }
+
+    fun toggleDrawer() {
+        if (viewBinding.drawerLayout.isDrawerOpen(viewBinding.navigationView)) {
+            viewBinding.drawerLayout.closeDrawer(viewBinding.navigationView)
+        } else {
+            viewBinding.drawerLayout.openDrawer(viewBinding.navigationView)
+        }
+    }
+
+    override fun onPanelExpanded(panel: View?) {
+        super.onPanelExpanded(panel)
+        viewBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+
+    override fun onPanelCollapsed(panel: View?) {
+        super.onPanelCollapsed(panel)
+        viewBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+    }
+
+    private fun checkUpdate() {
+        if (!PrerequisiteSettings.instance(this).introShown) {
+            warning(
+                this,
+                TAG,
+                "Upgrade check was blocked, because AppIntro not shown (auto check requires user opt-in)!"
+            )
+            return
+        }
+        lifecycleScope.launch {
+            val versionCatalog = UpdateChecker.downloadVersionCatalog() ?: return@launch
+            val upgradable = UpdateChecker.checkUpgradable(versionCatalog, force = true)
+            if (upgradable) {
+                UpdateChecker.sendNotification(
+                    this@MainActivity,
+                    versionCatalog,
+                    launchingIntent(
+                        this@MainActivity,
+                        versionCatalog,
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    )
+                )
+            }
+            Settings(this@MainActivity)[Keys.lastCheckUpgradeTimeStamp].data = System.currentTimeMillis()
+        }
+    }
+
+    private fun checkChangelog() {
+        val currentVersion = PackageMetadata.versionCode(this)
+        val lastChangelogVersion = PrerequisiteSettings.instance(this).lastChangelogVersion
+
+        if (currentVersion > lastChangelogVersion) {
+            // ChangelogDialog.create().show(supportFragmentManager, "CHANGE_LOG_DIALOG")
+        }
+    }
+
+    private fun showUpgradeDialog(versionCatalog: VersionCatalog?) {
+        versionCatalog?.let {
+            UpgradeInfoDialog.create(versionCatalog).show(supportFragmentManager, "UpgradeDialog")
+        }
+    }
+
+
+    /**
+     * do some non-immediate work here
+     */
+    private fun latelySetup() {
+        // Set up dynamic shortcuts
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            PhonographShortcutManager.initDynamicShortcuts(this)
+            PhonographShortcutManager.updateDynamicShortcuts(this)
+        }
+        // check changelog
+        checkChangelog()
+        // check upgrade
+        val settings = Settings(this)
+        lifecycleScope.launch {
+            settings[Keys.checkUpgradeAtStartup].flow.collect { enabled ->
+                if (enabled) {
+                    val lastTimeStamp = settings[Keys.lastCheckUpgradeTimeStamp].data
+                    val interval = settings[Keys.checkUpdateInterval].data
+                    if (System.currentTimeMillis() > lastTimeStamp + interval.toSeconds() * 1000L) {
+                        checkUpdate()
+                    } else {
+                        debug {
+                            Log.v(TAG, "Ignore upgrade check due to CheckUpdateInterval!")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+        private const val VERSION_INFO = "versionInfo"
+        private const val UPGRADABLE = "upgradable"
+
+        fun launchingIntent(context: Context, flags: Int = 0): Intent =
+            Intent(context, MainActivity::class.java).apply {
+                if (flags != 0) this.flags = flags
+            }
+
+        fun launchingIntent(context: Context, versionCatalog: VersionCatalog, flags: Int = 0): Intent =
+            Intent(context, MainActivity::class.java).apply {
+                if (flags != 0) this.flags = flags
+                this.putExtra(UPGRADABLE, true)
+                this.putExtra(VERSION_INFO, versionCatalog)
+            }
+    }
+
+}

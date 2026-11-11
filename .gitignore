@@ -1,0 +1,4 @@
+app/build/
+sdk.dir=/home/z/android-sdk
+app/build/
+*.idsig

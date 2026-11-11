@@ -1,0 +1,16 @@
+<resources>
+
+    <!-- Pages -->
+    <dimen name="page_tab_height">36dp</dimen>
+    <dimen name="page_toolbar_height">48dp</dimen>
+    <dimen name="page_path_navigation_height">40dp</dimen>
+
+    <!-- Detail Page -->
+    <dimen name="detail_header_height">144dp</dimen>
+    <dimen name="detail_header_image_height">112dp</dimen>
+    <dimen name="detail_header_small_image_height">80dp</dimen>
+
+    <!-- Welcome screen: keep the content compact on short landscape screens. -->
+    <dimen name="intro_logo_size">64dp</dimen>
+    <dimen name="intro_character_max_height">240dp</dimen>
+</resources>

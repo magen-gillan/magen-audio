@@ -1,0 +1,82 @@
+/*
+ *  Copyright (c) 2022~2026 chr_56
+ */
+
+package player.phonograph.mechanism.metadata.read
+
+import player.phonograph.model.Song
+import player.phonograph.model.metadata.AudioMetadata
+import player.phonograph.model.metadata.AudioProperties
+import player.phonograph.model.metadata.ConventionalMusicMetadataKey
+import player.phonograph.model.metadata.ConventionalMusicMetadataKey.ALBUM
+import player.phonograph.model.metadata.ConventionalMusicMetadataKey.ALBUM_ARTIST
+import player.phonograph.model.metadata.ConventionalMusicMetadataKey.ARTIST
+import player.phonograph.model.metadata.ConventionalMusicMetadataKey.COMPOSER
+import player.phonograph.model.metadata.ConventionalMusicMetadataKey.TITLE
+import player.phonograph.model.metadata.ConventionalMusicMetadataKey.TRACK
+import player.phonograph.model.metadata.ConventionalMusicMetadataKey.YEAR
+import player.phonograph.model.metadata.ExceptionCollector
+import player.phonograph.model.metadata.FileProperties
+import player.phonograph.model.metadata.Metadata
+import player.phonograph.model.metadata.MetadataExtractor
+import player.phonograph.model.metadata.MusicMetadata
+import player.phonograph.model.metadata.MusicTagFormat
+import java.io.File
+
+/**
+ * **default MetadataExtractor**
+ *
+ * do not extract or read anything, just using existed information
+ */
+object DefaultMetadataExtractor : MetadataExtractor {
+
+    override fun extractMetadata(path: String, collector: ExceptionCollector?): AudioMetadata? = null
+
+    override fun extractMetadata(song: Song, collector: ExceptionCollector?): AudioMetadata {
+        val songFile = File(song.data)
+        val metadata = AudioMetadata(
+            fileProperties = FileProperties(
+                fileName = songFile.name,
+                filePath = songFile.absolutePath,
+                fileSize = songFile.length(),
+                dateAdded = song.dateAdded,
+                dateModified = song.dateModified,
+            ),
+            audioProperties = AudioProperties(
+                audioFormat = songFile.extension,
+                trackLength = song.duration,
+                bitRate = -1,
+                samplingRate = -1,
+            ),
+            audioMetadataFormat = MusicTagFormat.Unknown,
+            musicMetadata = PlainMusicMetadata(
+                mapOf(
+                    TITLE to Metadata.TextualField(song.title),
+                    ARTIST to Metadata.TextualField(song.artistName.orEmpty()),
+                    ALBUM to Metadata.TextualField(song.albumName.orEmpty()),
+                    ALBUM_ARTIST to Metadata.TextualField(song.albumArtistName.orEmpty()),
+                    COMPOSER to Metadata.TextualField(song.composer.orEmpty()),
+                    YEAR to Metadata.TextualField(song.year.toString()),
+                    TRACK to Metadata.TextualField(song.trackNumber.toString()),
+                )
+            ),
+        )
+        return metadata
+    }
+
+    private class PlainMusicMetadata(
+        override val genericTagFields: Map<ConventionalMusicMetadataKey, Metadata.Field>,
+    ) : MusicMetadata {
+
+        override fun get(key: Metadata.Key): Metadata.Field? = genericTagFields[key]
+        override fun contains(key: Metadata.Key): Boolean = genericTagFields.containsKey(key)
+        override val fields: List<Metadata.Entry>
+            get() = genericTagFields.map { (key, field) -> Metadata.PlainEntry(key, field) }
+        override val textTagFields: Map<ConventionalMusicMetadataKey, Metadata.Field> get() = genericTagFields
+        override val allTagFields: Map<String, Metadata.Field> get() = genericTagFields.mapKeys { it.key.name }
+    }
+
+    override fun extractLyrics(path: String, collector: ExceptionCollector?): String? = null
+
+    override fun extractRawImage(path: String, collector: ExceptionCollector?): ByteArray? = null
+}

@@ -1,0 +1,73 @@
+<resources>
+
+    <!-- Default -->
+    <dimen name="default_elevation">2dp</dimen>
+    <dimen name="default_padding">8dp</dimen>
+
+    <!-- Items -->
+    <dimen name="list_item_height">48dp</dimen>
+    <dimen name="list_item_margin_control">6dp</dimen>
+    <dimen name="list_item_margin_vertical">8dp</dimen>
+    <dimen name="list_item_padding_image_icon">8dp</dimen>
+    <dimen name="list_item_padding_content">24dp</dimen>
+    <dimen name="grid_item_margin_min">4dp</dimen>
+    <dimen name="grid_item_margin_extra">12dp</dimen>
+
+    <!-- Pages -->
+    <dimen name="page_tab_height">48dp</dimen>
+    <dimen name="page_toolbar_height">56dp</dimen>
+    <dimen name="page_path_navigation_height">42dp</dimen>
+
+    <!-- Player -->
+    <dimen name="mini_player_height">56dp</dimen>
+    <dimen name="player_queue_panel_min_height">96dp</dimen>
+    <dimen name="player_queue_sub_header_height">42dp</dimen>
+    <dimen name="player_progress_container_height">20dp</dimen>
+    <dimen name="controller_button_square">56dp</dimen>
+    <dimen name="controller_button_height">56dp</dimen>
+    <dimen name="controller_button_width">56dp</dimen>
+    <dimen name="controller_button_margin_outer">16dp</dimen>
+    <dimen name="controller_button_margin_inner">8dp</dimen>
+    <dimen name="controller_button_margin_vertical">8dp</dimen>
+    <dimen name="controller_button_padding_vertical">10dp</dimen>
+    <dimen name="controller_button_padding_horizontal">10dp</dimen>
+    <!-- Detail Page -->
+    <dimen name="detail_header_height">176dp</dimen>
+    <dimen name="detail_header_image_height">144dp</dimen>
+    <dimen name="detail_header_small_image_height">80dp</dimen>
+
+    <!-- Images -->
+    <dimen name="big_image_size">128dp</dimen>
+
+    <!-- Toolbar -->
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_scrim_height">168dp</dimen> <!-- 3 x 56dp -->
+    <dimen name="toolbar_elevation">4dp</dimen>
+
+    <!-- System Bar -->
+    <dimen name="navigation_bar_height">48dp</dimen>
+    <dimen name="status_bar_height">24dp</dimen>
+
+    <!--App Widgets -->
+    <dimen name="app_widget_classic_image_size">96dp</dimen>
+    <dimen name="app_widget_classic_min_width">250dp</dimen>
+    <dimen name="app_widget_classic_min_height">40dp</dimen>
+    <dimen name="app_widget_small_button_height">48dp</dimen>
+    <dimen name="app_widget_small_image_size">48dp</dimen>
+    <dimen name="app_widget_small_min_width">250dp</dimen>
+    <dimen name="app_widget_small_min_height">40dp</dimen>
+    <dimen name="app_widget_big_min_width">250dp</dimen>
+    <dimen name="app_widget_big_min_height">110dp</dimen>
+    <dimen name="app_widget_card_image_size">56dp</dimen>
+    <dimen name="app_widget_card_min_width">250dp</dimen>
+    <dimen name="app_widget_card_min_height">40dp</dimen>
+    <dimen name="app_widget_card_buttons_width">128dp</dimen>
+    <dimen name="app_widget_card_radius">2dp</dimen>
+
+    <!--Views -->
+    <dimen name="circle_view_border">1dp</dimen>
+
+    <!-- Welcome screen -->
+    <dimen name="intro_logo_size">80dp</dimen>
+    <dimen name="intro_character_max_height">360dp</dimen>
+</resources>

@@ -1,0 +1,90 @@
+/*
+ *  Copyright (c) 2022~2024 chr_56
+ */
+
+package player.phonograph.ui.modules.setting.dialog
+
+import player.phonograph.R
+import player.phonograph.settings.Keys
+import player.phonograph.settings.Settings
+import player.phonograph.ui.compose.components.ActionItem
+import player.phonograph.ui.modules.setting.elements.ExternalPlayRequestSettings
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+
+class ExternalPlayRequestSettingDialog : AbsSettingsDialog() {
+    @Composable
+    override fun Content() {
+        val context = LocalContext.current
+        var showPrompt by remember {
+            mutableStateOf(Settings(context)[Keys.externalPlayRequestShowPrompt].data)
+        }
+        val flipUseDefault = {
+            val newValue = !showPrompt
+            showPrompt = newValue
+            Settings(context)[Keys.externalPlayRequestShowPrompt].data = newValue
+        }
+
+        var silence by remember {
+            mutableStateOf(Settings(context)[Keys.externalPlayRequestSilence].data)
+        }
+        val flipSilence = {
+            val newValue = !silence
+            silence = newValue
+            Settings(context)[Keys.externalPlayRequestSilence].data = newValue
+        }
+
+        var currentModeSingle by remember {
+            mutableIntStateOf(Settings(context)[Keys.externalPlayRequestSingleMode].data)
+        }
+        val setCurrentModeSingle = { new: Int ->
+            currentModeSingle = new
+            Settings(context)[Keys.externalPlayRequestSingleMode].data = new
+        }
+
+        var currentModeMultiple by remember {
+            mutableIntStateOf(Settings(context)[Keys.externalPlayRequestMultipleMode].data)
+        }
+        val setCurrentModeMultiple = { new: Int ->
+            currentModeMultiple = new
+            Settings(context)[Keys.externalPlayRequestMultipleMode].data = new
+        }
+        SettingsDialog(
+            modifier = Modifier,
+            title = stringResource(R.string.pref_title_external_play_request),
+            actions = listOf(
+                ActionItem(
+                    Icons.Default.Check,
+                    textRes = android.R.string.ok,
+                    onClick = { dismiss() }
+                )
+            ),
+            scrollable = true,
+            innerShadow = true,
+        ) {
+            ExternalPlayRequestSettings(
+                showPrompt = showPrompt,
+                flipUseDefault = flipUseDefault,
+                silence = silence,
+                flipSilence = flipSilence,
+                currentModeSingle = currentModeSingle,
+                setCurrentModeSingle = setCurrentModeSingle,
+                currentModeMultiple = currentModeMultiple,
+                setCurrentModeMultiple = setCurrentModeMultiple,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
+    }
+}
+

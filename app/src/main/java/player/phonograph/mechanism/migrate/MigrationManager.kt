@@ -1,0 +1,105 @@
+/*
+ *  Copyright (c) 2022~2025 chr_56
+ */
+
+package player.phonograph.mechanism.migrate
+
+import player.phonograph.debug
+import player.phonograph.foundation.content.PackageMetadata
+import player.phonograph.foundation.error.warning
+import player.phonograph.model.migration.VersionMigrationRule
+import player.phonograph.model.repo.sync.ProgressConnection
+import player.phonograph.settings.PrerequisiteSettings
+import android.content.Context
+import android.util.Log
+
+object MigrationManager {
+
+    const val CODE_SUCCESSFUL = 0
+    const val CODE_NO_ACTION = 1
+    const val CODE_WARNING = 100
+    const val CODE_FORBIDDEN = -100
+    const val CODE_UNKNOWN_ERROR = -1
+
+    fun shouldMigration(context: Context): Boolean {
+        val currentVersion = PackageMetadata.versionCode(context)
+        val previousVersion = PrerequisiteSettings.instance(context).previousVersion
+        return if (previousVersion < 0) {
+            // first installation
+            PrerequisiteSettings.instance(context).previousVersion = currentVersion // initialization
+            false
+        } else {
+            currentVersion != previousVersion
+        }
+    }
+
+    suspend fun migrate(context: Context, connection: ProgressConnection? = null): Int {
+
+        val from = PrerequisiteSettings.instance(context).previousVersion
+        val to = PackageMetadata.versionCode(context)
+
+        var status = CODE_SUCCESSFUL
+
+        when (from) {
+            in 1 until 1082    -> { // v1.8.2
+                return CODE_FORBIDDEN
+            }
+
+            in 1082 until 1093 -> { // v1.9.3
+                status = CODE_WARNING
+            }
+        }
+
+        if (from == to) {
+            debug { Log.i(TAG, "No Need to Migrate") }
+            return CODE_NO_ACTION
+        }
+
+        // Actual migration
+
+        Log.i(TAG, "Start Migration: $from -> $to")
+
+        try {
+            connection?.onStart()
+            MigrateExecutor(context, from, to, connection).apply {
+                migrate(PlaylistFilesOperationBehaviourMigrationRule())
+                migrate(ColoredSystemBarsMigrationRule())
+                migrate(PreloadImagesMigrationRule())
+                migrate(NowPlayingScreenMigrationRule())
+                migrate(MusicLibraryBackendMigrationRule())
+                migrate(PathFilterMigrationRule())
+                migrate(FavoritesMigrationRule())
+                migrate(ImageCacheMigrationRule())
+                migrate(RelationshipDatabaseUpgradeRule())
+            }
+
+            Log.i(TAG, "End Migration")
+
+            PrerequisiteSettings.instance(context).previousVersion = to // todo
+
+        } catch (e: Exception) {
+            warning(context, TAG, "Failed to migrate", e)
+            return CODE_UNKNOWN_ERROR
+        } finally {
+            connection?.onCompleted()
+        }
+
+        return status
+    }
+
+    private class MigrateExecutor(
+        private val context: Context,
+        private val from: Int,
+        private val to: Int,
+        private val connection: ProgressConnection? = null,
+    ) {
+        suspend fun migrate(migration: VersionMigrationRule) {
+            if (migration.check(context, from, to)) {
+                Log.i(TAG, "Migrating ${migration.javaClass.simpleName} ...")
+                migration.execute(context, connection)
+            }
+        }
+    }
+
+    private const val TAG = "VersionMigrate"
+}

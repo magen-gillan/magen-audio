@@ -1,0 +1,1420 @@
+<!-- <<<PREVIEW>>> -->
+<!-- <<</PREVIEW>>> -->
+<!-- <<<LATEST/>>> -->
+<h4><b>2.0.2</b> 2026.09.30</h4>
+<div>
+    <ol>
+        <li>Fix: reordering playing queue may fail or cause crashes under some circumstances</li>
+        <li>Fix: occasional crashes when switching tabs during media scanning on some devices</li>
+        <li>Fix: crash when toggling system dark mode while the app is in the background on some devices</li>
+        <li>Fix: possibly trailing spaces remained in the parsed multiple music tags</li>
+        <li>New: full-screen image viewer for album artwork</li>
+        <li>Improve: add an optional top gradient scrim to the Card player as well, to enhance legibility</li>
+        <li>Translation: update German (by jande75)</li>
+        <li>Development: build with JDK 25 and Gradle 9.7.1, update dependencies</li>
+    </ol>
+</div>
+
+<h4><b>2.0.1</b> 2026.08.19</h4>
+<div>
+    <ol>
+        <li>Fix: some weird behaviours of statusbar color animations</li>
+        <li>Fix: player theme color flashing to default when resuming from background</li>
+        <li>Fix: top of player conditionally peaking behind navigation bar on Android 15 and later</li>
+        <li>Improve: optimize for square-shaped screens</li>
+        <li>Improve: enlarger playback buttons</li>
+        <li>Remove: shard elements transition animations for albums and artist details</li>
+        <li>New: support the true edge-to-edge display for Android 11 and later (optional, experimental)</li>
+        <li>Development: upgrade Kotlin to 2.4.10, update dependencies</li>
+    </ol>
+</div>
+
+<h4><b>2.0.0</b> 2026.07.06</h4>
+<div>
+    <ol>
+        <li>Distribution: IMPORTANT! since v2.0.0, we have replaced our signing key, as a breaking change. You need to uninstall first or use Intermediate variant; see related instructions to migrate or transit.</li>
+        <li>Distribution: raise minimal requirement to Android 8 (API 26), except for Legacy variant</li>
+        <li>Modify: Multiple artists and genres parsing is now enabled by default (graduated from the experimental)</li>
+        <li>Modify: create database playlists by default</li>
+        <li>Modify: change some default settings</li>
+        <li>Modify: reorganized settings pages</li>
+        <li>New: quit app when removed from Recent Screen (optional, thanks to @jpgjm)</li>
+        <li>New: add dark mode support for widgets</li>
+        <li>Improve: support using another color scheme for night</li>
+        <li>Improve: support skipping genres parsing in database synchronization</li>
+        <li>Improve: internal database synchronization performance</li>
+        <li>Improve: support disabling history</li>
+        <li>Improve: add grant all permissions button in app intro</li>
+        <li>Fix: text colors of backup dialog in app intro</li>
+        <li>Fix: statusbar color in Flat Player on Android 15 and higher</li>
+        <li>Fix: crash when restoring playlists and playing folders or external files, due to path lookup failures</li>
+        <li>Fix: occasionally all tabs disappearing when returning to the foreground on some devices</li>
+        <li>Translation: update Portuguese Brazilian (by Ricardo), Dutch (by Polovinci)</li>
+        <li>Development: targeting SDK API 36 (Android 16), build with SDK 37</li>
+        <li>Development: build with Gradle 9.5.1, build with AGP 9.2.1, update dependencies</li>
+        <li>Development: enhance the internal database for metadata</li>
+    </ol>
+</div>
+
+<h4><b>1.12.1</b> 2026.03.26</h4>
+<div>
+    <ol>
+        <li>Improve: search input debouncing for better responsiveness</li>
+        <li>Improve: merging and throttling error notifications about background metadata extraction</li>
+        <li>Development: upgrade Kotlin to 2.3.20, update dependencies</li>
+    </ol>
+</div>
+
+<h4><b>1.12.0</b> 2026.03.11</h4>
+<div>
+    <ol>
+        <li>Fix: incorrect album artist extraction</li>
+        <li>Improve: sync initial search tab with the current tab</li>
+        <li>Improve: slightly faster search response</li>
+        <li>Improve: genre search support</li>
+        <li>Improve: support adjusting lyrics fonts size and alignment</li>
+        <li>Translation: update Ukrainian (by Max Leonidov), Spanish (by Dino RTX (rtxdino36))</li>
+        <li>Translation: remove Bulgarian and Croatian</li>
+        <li>Remove: queue validating and marking at start up (first introduced in v1.3.1 in 2023)</li>
+        <li>Development: build with Gradle 9.3.1, upgrade Kotlin to 2.3.10, update dependencies</li>
+        <li>New: [experimental] support parsing and reorganizing multiple artists and genres by customizable separators from related music tags; To enable this experimental feature, please manually switch 'Music Library Metadata Source' in Advanced Settings and then 'Refresh Database' via Scan Media. This feature would be enabled by default upon stabilization in the future.</li>
+    </ol>
+</div>
+
+<h4><b>1.11.5</b> 2026.02.05</h4>
+<div>
+    <ol>
+        <li>Fix: glitchy Monet colors (since v1.11.3)</li>
+        <li>Fix: inverted text color on some dialogs in non-auto theme</li>
+        <li>Improve: support resetting Path Filter settings</li>
+        <li>New: add the shortcut of 'Scan Media' if no items to display</li>
+        <li>Development: build with JDK 21</li>
+    </ol>
+</div>
+
+<h4><b>1.11.4</b> 2026.01.21</h4>
+<div>
+    <ol>
+        <li>Fix: no response in Android Auto (since v1.11.3)</li>
+        <li>Fix: text color of crash report in dark mode (since v1.11.3)</li>
+        <li>Fix: crash when resetting certain setting items by long pressing (since v1.10.0)</li>
+        <li>Development: upgrade AGP to 8.13.2</li>
+    </ol>
+</div>
+
+<h4><b>1.11.3</b> 2025.12.24</h4>
+<div>
+    <ol>
+        <li>Fix: three memory leaks</li>
+        <li>Fix: incomplete color updates after a manual theme switch</li>
+        <li>Fix: missing reboot after a successful backup import (since v1.11.2)</li>
+        <li>Improve: slightly accelerate loading speed</li>
+        <li>Improve: add hint and options for Scan Media action</li>
+        <li>Modify: forbid upgrading from prior to v1.8.2 & warn upgrading from prior to v1.9.3</li>
+        <li>Translation: update German (by jande75)</li>
+        <li>Development: build with SDK 36, update dependencies</li>
+    </ol>
+</div>
+
+<h4><b>1.11.2</b> 2025.11.26</h4>
+<div>
+    <ol>
+        <li>Fix: occasional crash when using 'shuffle all' from the multi-selection menu</li>
+        <li>Fix: buttons in Startup Guide blocked by navigation bar on Android 15 and above</li>
+        <li>Fix: speed settings could be applied unless it's paused (since v1.11.0)</li>
+        <li>Fix: color footer settings not taking effect immediately</li>
+        <li>Fix: automatic library refresh failing once Service quits</li>
+        <li>Improve: standardize styles across all settings dialogs</li>
+        <li>Improve: accelerate loading speed in Files Tab</li>
+        <li>Improve: throttle Sync Progress notifications</li>
+        <li>New: support of automatically skipping unplayable items in queue (optional)</li>
+        <li>Modify: mute some notifications, and update notification channels</li>
+        <li>Modify: update conditions for warning inappropriate grid size</li>
+        <li>Modify: limit image resolution to prevent crashes by App Widgets refreshing</li>
+        <li>Development: upgrade Kotlin to 2.2.20, update dependencies</li>
+        <li>Development: cleanup codes</li>
+    </ol>
+</div>
+
+<h4><b>1.11.1</b> 2025.10.03</h4>
+<div>
+    <ol>
+        <li>Fix: incorrect genre song count</li>
+        <li>Fix: path filter settings importing failure (since v1.11.0)</li>
+        <li>Fix: incompleted theme switching from drawer menu action</li>
+        <li>Fix: crash or frozen when reading VorbisComment tag with large embed images in Detail</li>
+        <li>Fix: extract embed artwork option not working in Detail</li>
+        <li>Improve: display file dates in Detail</li>
+        <li>Improve: enhance 'Go to artist' menu action</li>
+        <li>Translation: update Korean (by 7829hw) and French (by Clément Lyonnet)</li>
+        <li>Development: cleanup codes</li>
+    </ol>
+</div>
+
+<h4><b>1.11.0</b> 2025.09.03</h4>
+<div>
+    🎉 Phonograph Plus 4th Anniversary Version!
+    <ol>
+        <li>New: support customizing seek internal for forwarding and rewinding</li>
+        <li>Fix: file playlist editing may not work on some devices</li>
+        <li>Fix: possibly crash due to invalid speed ratio value</li>
+        <li>Fix: crash due to the bread crumb in Files in rare circumstance</li>
+        <li>Fix: various unintended behaviors of soft keyboard in Search</li>
+        <li>Fix: some issues in Folders due to folder name collision</li>
+        <li>Fix: default start directory may not work on some circumstances</li>
+        <li>Fix: navigation bar overlaps content in landscape</li>
+        <li>Fix: instantly blinking statusbar and fluctuating mini player with navigation bar on entering and transiting</li>
+        <li>Improve: performance of playlist loading</li>
+        <li>Improve: support exporting the database of internal playlists</li>
+        <li>Improve: redesign the editor of Path Filter settings</li>
+        <li>Improve: support directly editing in Path Filter settings</li>
+        <li>Improve: support pining database playlists</li>
+        <li>Modify: force to reboot application after purging the database</li>
+        <li>Translation: update Russian (by Yurt Page), Brazilian Portuguese (by FalaTudo)</li>
+        <li>Development: cleanup codes, refactor storage of Path Filter, Favorite Songs and Pinned Playlists</li>
+        <li>Development: upgrade Gradle to 8.14.3, upgrade AGP to 8.11.1, upgrade Kotlin to 2.2.10, update dependencies</li>
+        <li>Others: upload only sha256 checksum for release artifacts</li>
+    </ol>
+</div>
+
+<h4><b>1.10.1</b> 2025.05.16</h4>
+<div>
+    <ol>
+        <li>Fix: Sleep timer possibly not working on Android 14 and above</li>
+        <li>Fix: last item behind navigation bar due to edge-to-edge</li>
+        <li>Fix: crash due to Speed Control dialog</li>
+        <li>Fix: crash when operating internal database playlists via multi-selection</li>
+        <li>Fix: occasional crash due to Main Player after some settings changed</li>
+        <li>Modify: default player buttons settings</li>
+        <li>Improve: support for exporting internal database playlists</li>
+        <li>Translation: update Brazilian Portuguese (by FalaTudo), Hungarian (by Balázs Meskó & Balázs Úr)</li>
+    </ol>
+</div>
+
+<h4><b>1.10.0</b> 2025.05.04</h4>
+<div>
+    <ol>
+        <li>Fix: randomly change artwork occasionally when toggling shuffle mode</li>
+        <li>Fix: no response of Playlist Detail multi-selection menu</li>
+        <li>Fix: occasionally incorrect folder content after changing sort order in Folders Page</li>
+        <li>Fix: edge-to-edge in Settings and horizontal Main Player</li>
+        <li>Fix: forward and rewind from notification</li>
+        <li>Fix: broken color animation in Main Player</li>
+        <li>Improve: improve performance of image loading</li>
+        <li>Improve: support custom grid size and layout for Folders Page</li>
+        <li>Improve: reorganize items in Settings, support secondary pages</li>
+        <li>Improve: add entrance of Start Directory settings, flatten path filter settings</li>
+        <li>Improve: slightly redesign Main Player, with more flexible styles and more customizable buttons</li>
+        <li>Improve: add shuffle mode and repeat mode buttons near to Playing Queue header in Main Player</li>
+        <li>Modify: move relative menu items to Playing Queue menu in Main Player</li>
+        <li>Modify: forbid upgrading from prior to v1.7.0 & warn upgrading from prior to v1.8.4</li>
+        <li>New: experimental playlists in internal database (no guarantee of its availability and compatibility in future till it reaches a stable state)</li>
+        <li>Remove: preference Preload Images</li>
+        <li>Translation: update Polish (by cooky), Hungarian (by Balázs Úr & Balázs Meskó)</li>
+        <li>Development: update dependencies, upgrade Kotlin to 2.1.20, upgrade AGP to 8.9.2</li>
+        <li>Development: cleanup codes</li>
+    </ol>
+</div>
+
+<h4><b>1.9.5</b> 2025.05.01</h4>
+<div>
+    <ol>
+        <li>Fix: crash when loading lyric for nonexistent file</li>
+        <li>Modify: update icon for page display settings</li>
+        <li>Translation: update Hungarian (by Balázs Úr &amp; Balázs Meskó)</li>
+    </ol>
+</div>
+
+<h4><b>1.9.4</b> 2025.03.20</h4>
+<div>
+    <ol>
+        <li>Fix: flooding internal error notifications, due to image loading for certain files</li>
+        <li>Fix: possible crashes after replacing playing queue on some circumstance</li>
+    </ol>
+</div>
+
+<h4><b>1.9.3</b> 2025.03.08</h4>
+<div>
+    <ol>
+        <li>Fix: text on widgets not updated since v1.9.2</li>
+        <li>Fix: some abnormal behaviors when changing items display settings especially on Artist Page</li>
+        <li>Fix: potentially wrong images loaded when fast scrolling</li>
+        <li>Improve: performance of image loading for albums and artists</li>
+        <li>Improve: support modifying playing queue even if service quits</li>
+        <li>Improve: enhance stability and usability of music tag viewer or editor</li>
+        <li>New: pop-up menu options for albums, artist, genres and folders</li>
+        <li>Translation: update Polish (by cooky), Brazilian Portuguese (by FalaTudo)</li>
+        <li>Development: cleanup codes, update dependencies, upgrade AGP to 8.8.2</li>
+    </ol>
+</div>
+
+<h4><b>1.9.2</b> 2025.02.16</h4>
+<div>
+    <ol>
+        <li>Fix: no images could be displayed once service exits (since v1.9.1)</li>
+        <li>Fix: text color legibility in some dialogs in night mode</li>
+        <li>New: support removing the missing (deleted) songs in Favorites Playlist and Playing Queue</li>
+        <li>Improve: show paths of the missing (deleted) songs instead of complete blank in Favorites Playlist</li>
+        <li>Development: update dependencies, upgrade Gradle to 8.12.1</li>
+    </ol>
+</div>
+
+<h4><b>1.9.1</b> 2025.02.09</h4>
+<div>
+    <ol>
+        <li>Fix: random crashes from background</li>
+        <li>Fix: possible crashes after rebooting on some devices</li>
+        <li>Fix: possible crashes after switching back from background on some devices</li>
+        <li>Fix: lrc lyrics with same timestamp would be overridden with last one</li>
+        <li>Fix: crashes of Lyrics Dialog when current song changed but it has no lyrics</li>
+        <li>Fix: possibly some files are missing in Files tab due to sorting</li>
+        <li>Improve: performance of loading in Files tab</li>
+        <li>Translation: update French (by Vividly8487), Portuguese (by azilara)</li>
+        <li>Development: update dependencies, cleanup codes</li>
+    </ol>
+</div>
+
+<h4><b>1.9.0</b> 2025.01.15</h4>
+<div>
+    <ol>
+        <li>Development: Targeting SDK 35 (Android 15)</li>
+        <li>Fix: possible crashes when dragging items in some circumstances</li>
+        <li>Fix: dragging playlist items but not in Edit Mode</li>
+        <li>Fix: crash when entering Tag Editor from multi-selection mode but the selection contains no song</li>
+        <li>Fix: crash after skipping from some notifications or BT devices but queue is empty</li>
+        <li>Fix: incorrect sorting order of My Top Tracks and Recently Played on some devices</li>
+        <li>Fix: missing automatic refresh in Folders tab</li>
+        <li>New: display current distribution Variant in About</li>
+        <li>New: mark current distribution Variant and Channel in Upgrade Dialog</li>
+        <li>Improve: show bottom sliding panel in Search</li>
+        <li>Improve: explicit user interface for version migration</li>
+        <li>Improve: enable new system back gesture animations for Android T and above</li>
+        <li>Improve: edge to edge user interface</li>
+        <li>Remove: preference "colored navigation bar" (not applicable now)</li>
+        <li>Modify: navigation bar would always be colored by default</li>
+        <li>Modify: navigation bar would be transparent or translucent if possible now</li>
+        <li>Modify: change default File Playlist icon</li>
+        <li>Modify: forbid upgrading from prior to v1.4.0 & warn upgrading from prior to v1.7.0</li>
+        <li>Translation: update Polish (cooky), Portuguese Brazilian (by FalaTudo, Ulisses_Mello), Spanish (by Ulisses_Mello)</li>
+        <li>Development: update dependencies</li>
+    </ol>
+</div>
+
+<h4><b>1.8.5.1</b> 2024.11.05</h4>
+<div>
+    Note: This is a patch release, with a small fix in building
+    <ol>
+        <li>Development: remove DependencyInfo from artifacts (for better reproducible build)</li>
+    </ol>
+</div>
+
+<h4><b>1.8.5</b> 2024.11.03</h4>
+<div>
+    <ol>
+        <li>Fix: regression of playlist icons</li>
+        <li>Fix: sometimes could not enter Album Detail</li>
+        <li>Fix: possibly crash when starting from background</li>
+        <li>Fix: crash when reading or editing tags of some certain files</li>
+        <li>Fix: frozen or crash when processing extremely long tags in Tag Editor</li>
+        <li>Fix: sometimes playlists would not be automatically updated after changing</li>
+        <li>Fix: crash when deleting playlists using SAF but selecting the wrong directory</li>
+        <li>Fix: crash when adding songs to a playlist in Search Results, Album Detail, Artist Detail, Genre Detail</li>
+        <li>Fix: unexpected behaviors when dismissing multi-selection actionbar</li>
+        <li>Fix: could not exit application properly when Files tab nearby</li>
+        <li>Fix: blank images in App Widgets after device rebooting</li>
+        <li>Fix: blank images in Album Detail util fully loaded</li>
+        <li>Modify: no longer start service after device booting on Android N if any AppWidget exists</li>
+        <li>Improve: sort order of track number in the album on some devices</li>
+        <li>Improve: user experience on manipulating playlists</li>
+        <li>Improve: lrc format lyric detection</li>
+        <li>Translation: update Polish (cooky), Spanish (by Dino RTX (rtxdino36))</li>
+        <li>Development: compile with SDK 35</li>
+        <li>Development: upgrade Gradle to 8.10.2, upgrade AGP to 8.7.2, upgrade kotlin to 2.0.21</li>
+        <li>Development: upgrade Jetpack Compose to 1.7.5, update dependencies</li>
+        <li>Development: cleanup code</li>
+    </ol>
+</div>
+
+<h4><b>1.8.4</b> 2024.09.16</h4>
+<div>
+    <ol>
+        <li>Fix: Crash when creating playlists in Search Results, Album Detail, Artist Detail, Genre Detail</li>
+        <li>New: add "Exit" in Main Drawer Menu</li>
+        <li>Improve: quiting from Media Notification in any circumstance</li>
+        <li>Improve: Search function in Playlist Detail</li>
+        <li>Translation: update French (manafy), Portuguese (by azilara), Spanish (by Ulisses_Mello), German (by jande75), Portuguese, Brazilian (by FalaTudo)</li>
+        <li>Development: upgrade kotlin to 2.0.20, upgrade AGP to 8.6.0, upgrade Jetpack Compose to 1.7.1, update dependencies</li>
+        <li>Development: refactor player</li>
+    </ol>
+</div>
+
+<h4><b>1.8.3</b> 2024.08.21</h4>
+<div>
+    <ol>
+        <li>Fix: blinking images in media notification since v1.8.1</li>
+        <li>Fix: minor inappropriate layout abnormalities in Settings</li>
+        <li>Translation: update French (manafy), Portuguese,Brazilian (by Chacal), Italian (by Enrico Storelli)</li>
+        <li>Development: upgrade AGP to 8.5.2, update dependencies, cleanup codes</li>
+    </ol>
+</div>
+
+<h4><b>1.8.2</b> 2024.08.10</h4>
+<div>
+    🎉 Phonograph Plus 3rd Anniversary Version
+    <ol>
+        <li>New: support specify the default action when playing from the external (e.g. File Explorer)</li>
+        <li>Fix: crash when jumping to Artist detail in some rare circumstance</li>
+        <li>Translation: update Portuguese,Brazilian (by FalaTudo), Polish (by cooky)</li>
+    </ol>
+</div>
+
+<h4><b>1.8.1</b> 2024.08.01</h4>
+<div>
+    <ol>
+        <li>Remove: legacy Song Detail</li>
+        <li>New: opt-in option for always using Media Session to display cover for compatibility</li>
+        <li>Fix: low notification image quality on Android Q</li>
+        <li>Improve: Open With dialog for externally playing</li>
+        <li>Improve: some text and descriptions about Updates</li>
+        <li>Modify: forbid upgrading from prior to v1.0.0 & warn upgrading from prior to v1.4.0</li>
+        <li>Translation: update Polish (by cooky), Spanish by (by Dragonrojo)</li>
+    </ol>
+</div>
+
+<h4><b>1.8.0</b> 2024.07.21</h4>
+<div>
+    <ol>
+        <li>Note: Now, we have a special version especially for user on Android 10 and BELOW</li>
+        <li>Fix: not instantly start playing from the external source (like file explorer)</li>
+        <li>Translation: update Spanish (by Dino RTX)，update Polish (by cooky), Portuguese Brazilian (by FalaTudo)</li>
+        <li>Development: upgrade Gradle to 8.8, upgrade AGP to 8.5.1, upgrade dependencies</li>
+    </ol>
+</div>
+
+<h4><b>1.7.2.1</b> 2024.06.26</h4>
+<div>
+    <ol>
+        <li>Fix: crash if enable "Use legacy favorite playlist mechanism"</li>
+        <li>Fix: Android Auto could not read playlists</li>
+    </ol>
+</div>
+
+<h4><b>1.7.2</b> 2024.06.26</h4>
+<div>
+    <ol>
+        <li>Fix: Sleep Timer not working</li>
+        <li>Fix: renaming playlists not working</li>
+        <li>Improve: dialog for creating or renaming playlists</li>
+        <li>Translation: update Spanish (by Dino RTX (rtxdino36)), Arabic (by Ruger Blaze (hima_96))</li>
+        <li>Development: upgrade AGP to 8.4.2, cleanup code</li>
+        <li>Development: some changes for preparing internal stored playlists</li>
+    </ol>
+</div>
+
+<h4><b>1.7.1</b> 2024.06.09</h4>
+<div>
+    <ol>
+        <li>Fix: Albums Page sorting not working</li>
+        <li>Fix: crash when toggling Colored Footers in Artist Detail</li>
+        <li>Fix: wrong cover if scrolling too fast</li>
+        <li>Fix: missing album cover in Artist Detail after going back from Artist Album Detail</li>
+        <li>Improve: accelerate palette color generation for performance</li>
+        <li>Improve: performance for loading some list items</li>
+        <li>Modify: sort Artist Albums by year ascending</li>
+        <li>Modify: forbid upgrading from prior to v0.7.0, drop related compatibility support</li>
+        <li>Development: upgrade AGP to 8.4.1, cleanup code</li>
+    </ol>
+</div>
+
+<h4><b>1.7.0</b> 2024.05.20</h4>
+<div>
+    <ol>
+        <li>New: remember last scroll position in Folders or Files tab till next start</li>
+        <li>New: brand-new ui or Files tab supporting play or shuffle current folder</li>
+        <li>New: Theme and Theme Colors can be corrected exported in backups file</li>
+        <li>New: Auto Theme supporting choosing preferred night Theme (Black or Dark)</li>
+        <li>Modify: make night Theme Black as default for Auto Theme</li>
+        <li>Modify: hide song count of folders when using legacy ways to read files</li>
+        <li>Modify: shrink height of some ui widgets especially in landscape</li>
+        <li>Improve: better information collection on crash (permissions, screen density and so on)</li>
+        <li>Fix: Main Player text color legibility in landscape</li>
+        <li>Fix: uncolored Statusbar when in landscape mode in Card Player</li>
+        <li>Fix: button color of some dialogs are not Accent Color</li>
+        <li>Fix: possible rare crash caused by color animation</li>
+        <li>Fix: albums sorting in Artist Detail</li>
+        <li>Fix: can not exit app instantly due to Folders tab</li>
+        <li>Translation: update Spanish (by Dino RTX (rtxdino36)), Turkish (by volkspolizist), Polish (by cooky), Russian (by Yurt Page), Portuguese Brazilian (by FalaTudo)</li>
+        <li>Development: remove some compatibility support of legacy version</li>
+        <li>Development: cleanup code, refactor a number of Theme related stuffs</li>
+        <li>Modify: forbid upgrading from prior to v0.6.3 & warn upgrading from prior to v1.2.0</li>
+    </ol>
+</div>
+
+<h4><b>1.6.3</b> 2024.05.12</h4>
+<div>
+    <ol>
+        <li>Fix: crash when opening some dialogs or Playlist Detail on Android 13 (only)</li>
+        <li>Fix: duplicated items would be added using Range Selection</li>
+        <li>Fix: wrong title of Backup Export Dialog</li>
+        <li>Translation: update Russian (by Yurt Page)</li>
+        <li>Translation: update Spanish (by Dino RTX (rtxdino36))</li>
+        <li>Translation: update Turkish (by volkspolizist)</li>
+    </ol>
+</div>
+
+<h4><b>1.6.2</b> 2024.04.27</h4>
+<div>
+    <ol>
+        <li>Fix: rare random crash due to cover artwork in Main Player</li>
+        <li>Fix: blank App Widget if app is not running (especially after device booting)</li>
+        <li>Modify: start service when clicking App Widget if app is not running instead of launching app</li>
+        <li>Improve: performance of App Widget</li>
+        <li>Development: upgrade dependencies</li>
+    </ol>
+</div>
+
+<h4><b>1.6.1</b> 2024.04.18</h4>
+<div>
+    <ol>
+        <li>Fix: crash after adding a same track multiple times in a same playlist</li>
+        <li>Fix: removing a track in a playlist would remove all same songs</li>
+        <li>Fix: possible random crash after selecting multiple items</li>
+        <li>Modify: reorder menu items of Playlist Detail</li>
+        <li>Improve: simplify user interactions when modifying a playlist via SAF</li>
+        <li>Improve: speed of deleting multiple playlists</li>
+        <li>Translation: update Polish (by cooky)</li>
+        <li>Translation: update Spanish (by Dderfla_53)</li>
+        <li>Development: upgrade AGP to 8.3.2</li>
+    </ol>
+</div>
+
+<h4><b>1.6.0</b> 2024.04.11</h4>
+<div>
+    <ol>
+        <li>New: customisable Media Notification Actions (up to 3 actions in Compacted and up to 5 actions in Expanded)</li>
+        <li>New: option 'Always Play' - ignore any Audio Focus interruptions and continue to play</li>
+        <li>New: search artists if it has multiple artists on Go To Artist</li>
+        <li>New: support hiding images for list items</li>
+        <li>New: support fast-forward and rewind some seconds from Notification</li>
+        <li>New: support quitting background playback totally from Notification</li>
+        <li>Improve: unnecessary Media Images blinking in the playback notification no longer occurs on switching songs</li>
+        <li>Improve: avoid unresponsive playback notification by system due to updating notification too quick exceeding rate limit when switching songs too fast</li>
+        <li>Improve: redesign Delete Songs Dialog, PathFilter Preference Dialog, Upgrade Dialog</li>
+        <li>Improve: slightly adjust tab width</li>
+        <li>Fix: failed to duplicate multiple playlists</li>
+        <li>Fix: preference Colored Navigation Bar failed</li>
+        <li>Fix: minor text or button color glitches</li>
+        <li>Fix: sometimes abnormal PlayPause button on going back from background</li>
+        <li>Modify: notification (or from connected device) playback control behaviors now are identical to graphical ones</li>
+        <li>Modify: move custom artist images to external storage (/Android/data/) from internal storage</li>
+        <li>Modify: Allow users to select none of Image Source (i.e. disable all image loading)</li>
+        <li>Modify: forbid upgrading from prior to v0.5.4.1 & warn upgrading from prior to v1.0.0</li>
+        <li>Translation: update Polish (by cooky)</li>
+    </ol>
+</div>
+
+<h4><b>1.5.2</b> 2024.03.07</h4>
+<div>
+    <ol>
+        <li>Fix: crash on some devices when playing as long as force-stop once before</li>
+        <li>Translation: update German (by jande75)</li>
+        <li>Development: update dependencies, upgrade Gradle to 8.6, optimize release process</li>
+        <li>Other: add checksums for release artifacts</li>
+    </ol>
+</div>
+
+<h4><b>1.5.1</b> 2024.02.22</h4>
+<div>
+    <ol>
+        <li>Fix: immediately crash after Intro for first time installing</li>
+    </ol>
+</div>
+
+<h4><b>1.5.0</b> 2024.02.20</h4>
+<div>
+    <ol>
+        <li>New: play and shuffle buttons for all pages</li>
+        <li>New: swipe down refresh for all pages</li>
+        <li>New: opted-in Image Cache</li>
+        <li>Improve: App Start-up Performance</li>
+        <li>Improve: do not show Intro again after successful backup import in Intro</li>
+        <li>Fix: palette color would unexpected changed after switch shuffle mode</li>
+        <li>Fix: close button in main sliding player closes app directly</li>
+        <li>Fix: incorrect encoding info for opus format in Detail</li>
+        <li>Fix: banner text displaying in Folders</li>
+        <li>Fix: fix item style changed after dismissing popup in Genres and Playlists</li>
+        <li>Fix: incorrect folder icon in Folder Page</li>
+        <li>Fix: duplicated Folder tabs for new users</li>
+        <li>Fix: issue of tab text color in Search</li>
+        <li>Translation: update Turkish (by volkspolizist), German (by conk), Polish (by cooky), Portuguese (by nemapps)</li>
+        <li>Development: cleanup code, update dependencies</li>
+    </ol>
+</div>
+
+<h4><b>1.4.4</b> 2024.01.30</h4>
+<div>
+    <ol>
+        <li>Fix: problems when opening and playing audio files in physical external SD card from some file managers</li>
+        <li>Fix: abnormally pause when skipping final song from playback notification or connected Bluetooth devices etc., even if in Queue Repeat mode</li>
+        <li>Fix: crash when reordering in Playing Queue on some rare circumstances</li>
+        <li>Fix: some glitch when playing from outside if playing queue is empty</li>
+        <li>New: preload images to avoid lags when scroll in some circumstance</li>
+        <li>Improve: LRC lyrics detections and lyrics display</li>
+        <li>Improve: use LyricsGetterAPi v6</li>
+        <li>Translation: update Polish (by cooky), Portuguese Brazilian (by EddieMattos)</li>
+        <li>Development: upgrade AGP to 8.2.2, upgrade kotlin to 1.9.22, update dependencies</li>
+    </ol>
+</div>
+
+<h4><b>1.4.3</b> 2024.01.07</h4>
+<div>
+    <ol>
+        <li>Fix: images can not be shown on some older devices</li>
+        <li>Fix: some flaws of Open With action dialog</li>
+        <li>Improve: image loading no longer causes serious latency when fast scrolling</li>
+        <li>Translation: update Turkish (by volkspolizist), Spanish (by guwsvnd5t)</li>
+        <li>Development: cleanup code</li>
+    </ol>
+</div>
+
+<h4><b>1.4.2</b> 2023.12.02</h4>
+<div>
+    <ol>
+        <li>Fix: frozen (and then crash) when skipping to previous or next if repeat mode is single-repeated and queue has only one song</li>
+        <li>Fix: reporting error at two ends of queue when skipping to previous or next</li>
+        <li>Fix: rarely incorrect previous song when skipping to previous if repeat mode is queue-repeated</li>
+    </ol>
+</div>
+
+<h4><b>1.4.1</b> 2023.11.24</h4>
+<div>
+    <ol>
+        <li>Improvement: avoid showing error notifications if file format is unsupported in Song Detail</li>
+        <li>Improvement: use fallback method to read song tags if file format is unsupported</li>
+        <li>Improvement: image loading mechanism of Albums and Artists</li>
+        <li>Modify: use alternative means of gaining album art from MediaStore on Android Q and above</li>
+        <li>Translation: update Spanish (by guwsvnd5t)</li>
+    </ol>
+</div>
+
+<h4><b>1.4.0</b> 2023.11.13</h4>
+<div>
+    <ol>
+        <li>New: customizable list item layout style with more options</li>
+        <li>Fix: spamming error notifications after device reboot (merely mute)</li>
+        <li>Fix: playback notification may be canceled if losing audio focus (e.g. other media player starts playing)</li>
+        <li>Improvement: Dark/Light Mode would be switched after system dark mode changed instantly without closing and reopening the app</li>
+        <li>Improvement: add Shuffle Mode and Repeat Mode buttons in Notification (since Android T) and Android Auto</li>
+        <li>Improvement: display album artwork in Android Auto (basic support)</li>
+        <li>Improvement: MediaStore scanning (may fix the problem of scanning media in some devices)</li>
+        <li>Improvement: various minor miscellaneous ui refinements</li>
+        <li>Modify: replace some icons</li>
+        <li>Modify: show song order instead of images in Playlist Detail</li>
+        <li>Translation: update Finnish (by Latzze), Arabic (by Yrando) , Portuguese, Brazilian (by EddieMattos) , Japanese (by aorinngoDo) , Turkish (by evladifatihan)
+        <li>Modify: forbid upgrading from v0.3.4 and older, warn upgrading from v0.7.1 and older</li>
+        <li>Development: use webp and svg formats in assets and resources to shrink artifacts size</li>
+        <li>Development: upgrade dependencies, cleanup code</li>
+    </ol>
+</div>
+
+<h4><b>1.3.2</b> 2023.10.20</h4>
+<div>
+    <ol>
+        <li>Fix: in Main Player, PlayPause button sometimes gets frozen and has glitchy animation</li>
+        <li>Fix: in Main Player, palette color is not correctly updated when changing current song too quickly</li>
+        <li>Fix: in Main Player, legibility of "Up Next" text (color)</li>
+        <li>Fix: in Main Player, sometimes controls and queue may disappear or cover the partial of images</li>
+        <li>Fix: playback and queue got frozen at startup</li>
+    </ol>
+</div>
+
+<h4><b>1.3.1</b> 2023.10.04</h4>
+<div>
+    <ol>
+        <li>Fix: crash when sending the playback notification on Android U</li>
+        <li>Fix: some albums cover artworks not showing</li>
+        <li>Fix: various minor bugs in Android Auto</li>
+        <li>Improvement: show Genres and Playlists in Android Auto</li>
+        <li>Improvement: check existences of songs in playing queue at start-up</li>
+        <li>Improvement: loading of Artists and Albums</li>
+        <li>Development: upgrade AGP to 8.1.2, upgrade dependencies, cleanup code</li>
+    </ol>
+</div>
+
+<h4><b>1.3.0</b> 2023.09.27</h4>
+<div>
+    <ol>
+        <li>Development: upgrade targetSdk to 34</li>
+        <li>Fix: albums color footer in Artist Detail can not refresh after changing</li>
+        <li>Improvement: add 'Disable realtime local search' option, this would be helpful for fixing some IMEs can not show Candidate Bar if inline composition enabled, especially for some CJK IMEs</li>
+        <li>Improvement: avoid sending internal error notifications if failing to load lyrics</li>
+        <li>Development: upgrade dependencies, cleanup code</li>
+        <li>Translation: update Portuguese, Brazilian (by EddieMattos)</li>
+    </ol>
+</div>
+
+<h4><b>1.2.0</b> 2023.09.23</h4>
+<div>
+    <ol>
+        <li>New: brand-new Wiki/Bio Dialog for Album/Artist with more detailed information from last.fm</li>
+        <li>New: support searching information (releases, artists, tracks) online from last.fm and MusicBrainz</li>
+        <li>Remove: feature "Auto Download Metadata (from last.fm)"</li>
+        <li>Improve: merge Detail and Tag Editor</li>
+        <li>Improve: add shortcut of Online Search, for Tag Editor and Detail</li>
+        <li>Improve: support importing results as tags from Online Search in Tag Editor</li>
+        <li>Improve: Tag Editor</li>
+        <li>Improve: customizable upgrade check interval</li>
+        <li>Improve: customizable last added playlist cutoff interval</li>
+        <li>Modify: make playback notification cancelable after 5 seconds if paused</li>
+        <li>Translation: update Turkish (by TolDYuThad)</li>
+        <li>Translation: update Spanish (by Leoh)</li>
+        <li>Translation: update Portuguese (by drcor)</li>
+        <li>Development: upgrade dependencies</li>
+        <li>Development: cleanup code</li>
+        <li>Development: introduce koin as dependency injection framework (may cause performance issues)</li>
+        <li>Development: upgrade Kotlin to 1.9.10, compile with SDK 34, upgrade Compose to 1.5.1 etc.</li>
+        <li>Development: upgrade AGP to 8.1.1, upgrade gradle to 8.3.</li>
+    </ol>
+</div>
+
+<h4><b>1.1.0</b> 2023.08.29</h4>
+<div>
+    <ol>
+        <li>New: Search Result now are well cataloged</li>
+        <li>New: support viewing adding or editing more tags in Song Detail or in TagEditor</li>
+        <li>New: show raw tag information in Song Detail/TagEditor</li>
+        <li>Modify: do not show other tags in Song Detail/TagEditor</li>
+        <li>Improve: (Android Auto) allow browse all catalogs</li>
+        <li>Improve: (Android Auto) in playing queue, change playing position when clicking item</li>
+        <li>Fix: crash when resizing window</li>
+        <li>Fix: statusbar transparent issue in Card player style</li>
+        <li>Fix: possible crash after devices rebooted</li>
+        <li>Fix: crash when load lyrics manually</li>
+        <li>Translation: update Russian (by Роман Калинин (n0viceaf))</li>
+        <li>Translation: update Portuguese, Brazilian (by EddieMattos)</li>
+        <li>Translation: update Finish (by Jiri Grönroos (spammemoreplease))</li>
+        <li>Translation: update Japanese (by aorinngoDo)</li>
+        <li>Modify: forbid upgrading from v0.2.5 and older</li>
+        <li>Modify: warn when upgrading from v0.6.0 and older</li>
+        <li>Development: upgrade dependencies, clean up codes</li>
+    </ol>
+</div>
+
+<h4><b>1.0.2</b> 2023.08.24</h4>
+<div>
+    <ol>
+        <li>Fix: playlist search may not work expectedly</li>
+        <li>Fix: selecting 0 item when clicking an item in list</li>
+        <li>Fix: crash when switching main player styles </li>
+        <li>Fix: no images for horizontal albums in Artist Detail</li>
+        <li>Fix: duplicated descriptions for horizontal albums in Artist Detail</li>
+        <li>Translation: update Russian (by Evgeniy Khramov (thejenja))</li>
+        <li>Translation: update Turkish (by TolDYuThad)</li>
+    </ol>
+</div>
+
+<h4><b>1.0.1</b> 2023.08.13</h4>
+<div>
+    <ol>
+        <li>Fix: incorrect layout after changing grid size in Playlist page and Genre page</li>
+        <li>Fix: playback controls not working via some bluetooth devices</li>
+    </ol>
+</div>
+
+<h4><b>1.0.0</b> 2023.08.10</h4>
+<div>
+    🎉 Phonograph Plus 2nd Anniversary Version
+    <ol>
+        <li>New: playback speed control</li>
+        <li>New: automatically resume playing after interruptions</li>
+        <li>New: add scrollbar for Playing Queue</li>
+        <li>New: basic support for Android Auto (as well as Assistant and so on)</li>
+        <li>New: support invert selection and range (adjacent) selection</li>
+        <li>New: support searching playlists and playing queue</li>
+        <li>Fix: crash after changing now playing screen style</li>
+        <li>Fix: no item displayed after changing between grid and list</li>
+        <li>Fix: crashes when playing a blocked file from the external (e.g. file explorer)</li>
+        <li>Fix: shuffle not working for the selected</li>
+        <li>Modify: disallow canceling media notification when paused(to avoid getting killed)</li>
+        <li>Improve: lyrics following in lyrics dialog</li>
+        <li>Improve: highlight the current line for synchronized lyrics in lyrics dialog</li>
+        <li>Improve: long texts display in Playing Queue</li>
+        <li>Translation: update Germany (by txp_uli)</li>
+        <li>Translation: update Italian (by gdonisi)</li>
+        <li>Translation: update Portuguese (Brazilian) (by EddieMattos)</li>
+        <li>Translation: update Japanese (by aorinngoDo)</li>
+        <li>Development: implement MediaBrowserService</li>
+        <li>Development: refactor adapters, clean up codes</li>
+    </ol>
+</div>
+
+<h4><b>0.7.2.1</b> 2023.07.25</h4>
+<div>
+    <ol>
+        <li>Translation: update Japanese (by aorinngoDo)</li>
+        <li>Improve: app start-up performance</li>
+    </ol>
+</div>
+
+<h4><b>0.7.2</b> 2023.07.22</h4>
+<div>
+    <ol>
+        <li>Translation: update Portuguese (Brazilian) by EddieMattos</li>
+        <li>Translation: update Finnish by Jiri Grönroos (spammemoreplease)</li>
+        <li>Improve: app start-up performance</li>
+        <li>New: support LyricGetter API for latest StatusBar Lyrics</li>
+        <li>Modify: use LyricGetter API by default (You can switch to legacy API in Setting-Compatibility)</li>
+        <li>Development: improve version migration</li>
+        <li>Development: support changing repeat mode and shuffle mode from MediaSession callback (helpful for Bluetooth devices and so on)</li>
+        <li>Development: store Git commit hash in Manifest metadata now</li>
+    </ol>
+</div>
+
+<h4><b>0.7.1</b> 2023.07.09</h4>
+<div>
+    <b>Note</b>: you may need to process AppIntro again
+    <ol>
+        <li>New: support choosing different monet colors</li>
+        <li>Modify: Monet color would not override your configured colors</li>
+        <li>Fix: crash when clicking any artist in Search Result</li>
+        <li>Improve: app start-up performance</li>
+        <li>Translation: update Japanese (by aorinngoDo), Italian (by gdonisi)</li>
+        <li>Development: clean up codes</li>
+    </ol>
+</div>
+
+<h4><b>0.7.0</b> 2023.06.27</h4>
+<div>
+    <b>NOTE</b> Please backup your Settings and upgrade then
+    <ol>
+        <li>New: manually load lyrics</li>
+        <li>New: sort order `Album Artist` and `Composer` for songs</li>
+        <li>New: support pinning playlists</li>
+        <li>New: support searching in playlists</li>
+        <li>New: support sorting order of playlists (name, path, date)</li>
+        <li>New: support multi-selection in Search Result</li>
+        <li>New: support per-app language preference for Android T (13) and above</li>
+        <li>New: add more options in Main Drawer Menu</li>
+        <li>Fix: new created playlists would not be appeared in list util next entrance</li>
+        <li>Fix: palette color of player is incorrect or lacking of update</li>
+        <li>Fix: app language is trapped in or out the spelling of British English (for English users only) </li>
+        <li>Fix: sort order of flat-folders could not be remembered</li>
+        <li>Fix: the incorrect message on ClearPlaylistDialog</li>
+        <li>Translation: update Japanese (by aorinngo)</li>
+        <li>Development: refactor Setting UI using Jetpack Compose</li>
+        <li>Improve: redesign Setting UI and make minor changes</li>
+        <li>Improve: avoid random crash caused by the file browser</li>
+        <li>Improve: Title and Buttons of some dialog (like Upgrade Dialog) are not fixed but scrollable with dialog content</li>
+        <li>Improve: check upgrade</li>
+        <li>Improve: m3u playlist management</li>
+        <li>Modify: in Intro, do not allow to continue if no permission granted</li>
+        <li>Development: use Jetpack Datastore Preference</li>
+        <li>Development: refactor player ui, lyrics loading and more</li>
+        <li>Development: improve dispatching the changes of states</li>
+        <li>Development: upgrade JDK to 17</li>
+        <li>Development: upgrade Gradle to 8.1</li>
+        <li>Development: AGP to 8.0.2</li>
+        <li>Development: clean up codes</li>
+    </ol>
+</div>
+
+<h4><b>0.6.3</b> 2023.04.30</h4>
+<div>
+    <ol>
+        <li>Remove: Feature Show Album Cover on Lockscreen and related setting</li>
+        <li>Improve: crop non-square image unless in Song Detail</li>
+        <li>Improve: navigate to setting if no storage permission granted</li>
+        <li>Improve: mute some unnecessary exception notifications</li>
+        <li>Improve: support zipped old backup files format</li>
+        <li>Translation: update German (by conk), Hebrew (by Yaron Shahrabani (YaronSh)), Russian (by Макар Разин
+            (Atrafon))
+        </li>
+        <li>Development: enable `fullmode` of R8 obfuscator</li>
+        <li>Development: better plurals string</li>
+    </ol>
+</div>
+
+<h4><b>0.6.2.1</b> 2023.04.23</h4>
+<div>
+    <ol>
+        <li>Note: Feature "Show Album Cover on Lockscreen" would be removed in next versions! (Applications should not
+            be responsible for this!)
+        </li>
+        <li>Fix: Progress bar on Notification would not be refreshed after rewinding to beginning</li>
+        <li>Modify: On Android R (11) and above, always ignore preference "Show Album Cover on Lockscreen", to fix
+            incorrect aspect ratio of Notification Image (due to conflict)
+        </li>
+        <li>Improve: Image quality on Media Notification [for Android T]</li>
+        <li>Development: On Android R (11) and above, set Notification Image via setting MediaSession Metadata Album
+            Artwork
+        </li>
+        <li>Development: refactor Media Notification Image loader mechanises</li>
+    </ol>
+</div>
+
+
+<h4><b>0.6.2</b> 2023.04.22</h4>
+<div>
+    <ol>
+        <li>New: [Android S and above] support to read system Material You dynamic colors</li>
+        <li>New: [Android S and above] support to follow system Material You dynamic colors ("Monet") [experimental,
+            only color support, <i>NO FULL</i> Material You support]
+        </li>
+        <li>New: Better Backup mechanises</li>
+        <li>Improve: All backup files are zipped in one file</li>
+        <li>Improve: Allow to choose what content to import or export</li>
+        <li>Improve: better user interface for backup</li>
+        <li>Fix: generated playlist can not be cleared (since v0.6.0)</li>
+        <li>Fix: color and style of some dialogs</li>
+        <li>Fix: some text not capitalized (by Porkepix)</li>
+        <li>Translation: update German (by cvzi &amp; conk), Italian (by Jacopo Norcini Pala (iagomago))</li>
+        <li>Development: upgrade AGP to 7.4.2, remove unused strings, cleanup codes</li>
+    </ol>
+</div>
+
+<h4><b>0.6.1</b> 2023.03.17</h4>
+<div>
+    <ol>
+        <li>New: a brand-new App Introduction</li>
+        <li>Modify: request permissions in App Intro, ask auto-upgrade-check in App Intro, recover setting backup in App
+            Intro
+        </li>
+        <li>Translation: updated Italian (by gdonisi)</li>
+    </ol>
+</div>
+
+<h4><b>0.6.0.1</b> 2023.03.13</h4>
+<div>
+    <ol>
+        <li>Improve: support mp4(m4a) format</li>
+        <li>Fix: an incorrect name of backup file</li>
+        <li>Development: small miscellaneous changes for F-Droid</li>
+    </ol>
+</div>
+
+<h4><b>0.6.0</b> 2023.03.08</h4>
+<div>
+    <ol>
+        <li>Add: Flatten Folder Page</li>
+        <li>Add: brand-new music tag editors (including Single Edit and Batch Edit)</li>
+        <li>Add: support backup of Path Filter, Playing Queue, Favorites Songs which can be migrated crossing different
+            devices (as long as song locations unchanged)
+        </li>
+        <li>Remove: legacy music tag editors</li>
+        <li>Improve: allow multi tag editing for the multi-selected and artist</li>
+        <li>Improve: order of Tab pages</li>
+        <li>Improve: playlists save and delete</li>
+        <li>Modify: the exported setting json format (WARNING: Incompatible with previous versions)</li>
+        <li>Modify: force reboot app after clearing all settings</li>
+        <li>Modify: forbid upgrading from old versions (versions before v0.2.4-RC1)</li>
+        <li>Fix: glitch of interactions in Image Source Config</li>
+        <li>Fix: crash while clearing all settings</li>
+        <li>Fix: crash after importing backups of setting</li>
+        <li>Translation: update Italian (by gdonisi)</li>
+        <li>Development: store player state in separate preference file</li>
+        <li>Development: cleanup code, refactor project structure</li>
+        <li>Development: upgrade AGP to 7.4.1, kotlin to 1.8.10 and other dependencies</li>
+    </ol>
+</div>
+
+<h4><b>0.5.4.1</b> 2023.1.30</h4>
+<div>
+    <ol>
+        <li>Fix: report the error NoSuchMethodException: ba.r</li>
+    </ol>
+</div>
+
+<h4><b>0.5.4</b> 2023.1.26</h4>
+<div>
+    <ol>
+        <li>Improve: using Kaned1as version of jaudiotagger, to support reading tags of opus format</li>
+        <li>Fix: random crashes when going back to Main Player from background</li>
+        <li>Fix: missing header of Artist Detail (Since v0.5.3)</li>
+        <li>Development: cleanup and refactor codes</li>
+    </ol>
+</div>
+
+<h4><b>0.5.3</b> 2023.1.19</h4>
+<div>
+    <ol>
+        <li>Fix: sort mode Duration is invalid</li>
+        <li>Fix: can't turn off Check for update automatically (since v0.4.0)</li>
+        <li>Development: cleanup and refactor code</li>
+    </ol>
+</div>
+
+<h4><b>0.5.2</b> 2023.1.13</h4>
+<div>
+    <ol>
+        <li>Translation: updated Japanese (by aorinngo)</li>
+        <li>New: support manage embed image source of song files</li>
+        <li>Fix: lyrics can not be shown unless write storage permission granted since v0.5.1</li>
+        <li>Fix: crash when moving same songs in Playing Queue</li>
+        <li>Development: enable Java 11 support, clean up codes</li>
+    </ol>
+</div>
+
+<h4><b>0.5.1</b> 2022.12.31</h4>
+<div>
+    <ol>
+        <li>Translation: updated Italian (by gdonisi &amp; Andrea Enzo Lattmann), German (by worldtest), Polish (by
+            Robert Biś)
+        </li>
+        <li>Improve: permission grant</li>
+        <li>Improve: try to avoid crashes due to main player animations</li>
+    </ol>
+</div>
+
+<h4><b>0.5.0</b> 2022.11.27</h4>
+<div>
+    <ol>
+        <li>Fix: on large tablets, the number of list columns cannot be adjusted and locked to 6 columns when the screen
+            is landscaped
+        </li>
+        <li>Fix: low contrast color of the text and icon on Search Page if using a light primary color</li>
+        <li>Fix: some color glitch</li>
+        <li>New: playing queue snapshot: track the current queue, record and save when playing queue is entirety
+            replaced (keep till app rebooted), only store recent changes, to recovery queues, goto player menu (playing
+            queue history)
+        </li>
+        <li>New: custom click-behavior: allow custom click-behavior for song items or file items in list: There are 8
+            modes and 2 extra behaviors allowing defining what player should do when clicking item in a list.
+        </li>
+        <li>Remove: the option &quot;Remember Shuffle&quot; (It's a very vague option, causing conflict with some
+            intended playing actions and custom click-behavior)
+        </li>
+        <li>Remove: the option &quot;Keep the playing queue intact&quot; (It's useless now since queue snapshot and
+            custom click-behavior were added)
+        </li>
+        <li>New: a confirm dialog when playing from outside (like open from file explorer): The options are similar to
+            custom click-behavior.
+        </li>
+        <li>Fix: playing from shortcut won't work</li>
+        <li>Optimise: lyrics fetching and loading performance</li>
+        <li>Translation: updated Russian (by ElinaAndreeva)</li>
+        <li>Development: refactor Queue Manager, clean up code, update dependencies, using Gradle VersionCatalog</li>
+    </ol>
+</div>
+
+<h4><b>0.4.1</b> 2022.10.28</h4>
+<div>
+    <ol>
+        <li>Fix: stuck when opening song details</li>
+        <li>Fix: terrible contrast of the text and icon on Search Page when under light primary color (Partial Fix)</li>
+        <li>Add: a general switch for all lyrics functions</li>
+        <li>Improve: Crash Report Page - to distinguish between crash and internal error</li>
+        <li>Improve: menu</li>
+        <li>Development: clean up code</li>
+    </ol>
+</div>
+
+<h4><b>0.4.0</b> 2022.10.23</h4>
+<div>
+    🎉 Phonograph Plus 1st Renaming Anniversary Version<br/>
+    One year ago, first canonical stable Phonograph Plus version
+    <a href="https://github.com/chr56/Phonograph_Plus/releases/tag/v0.0.1)">v.0.0.1</a> was released.<br>
+    <ol>
+        <li>Translation: update Russian (by Photon Gilbert), Turkish(by Erdem Özdemir)</li>
+        <li>Translation: clean up translations for all language</li>
+        <li>Fix: crash when importing databases</li>
+        <li>Remove: Blacklist</li>
+        <li>New: the Path filter, support &quot;exclude mode&quot; (blacklist) and &quot;include mode&quot; (whitelist),
+            currently they can not be enabled at the same time
+        </li>
+        <li>New: Song Details Page</li>
+        <li>New: brand new and detailed Upgrade Dialog and more</li>
+        <li>Improve: menus (almost all lists provide &quot;Play&quot;, &quot;Shuffle Play&quot;, &quot;Play Next&quot;,
+            &quot;Add To Queues&quot;, etc.)
+        </li>
+        <li>Development: Refactor media reading</li>
+        <li>Development: Introduce Jetpack Compose</li>
+        <li>Other: APK is bloated, no longer &quot;tiny but versatile&quot;</li>
+    </ol>
+</div>
+
+<h4><b>0.3.5.2 LTS</b> 2022.10.11</h4>
+<div>
+    <ol>
+        <li>Fix: Low pixel images appearing in the main player due to image cache policy misconfiguration</li>
+        <li>Fix: Scan Media Dialog crashes if early exit before the loading finished</li>
+    </ol>
+</div>
+
+
+<h4><b>0.3.5.1 LTS</b> 2022.10.8</h4>
+<div>
+    <ol>
+        <li>Fix: Delete Dialog does not show delete results</li>
+        <li>Fix: songs can not being parsed when using the old way to browse files</li>
+        <li>Fix: crash when embedded images in songs are too large</li>
+        <li>Fix: crash when resizing app window</li>
+    </ol>
+</div>
+
+<h4><b>0.3.5 LTS</b> 2022.10.6</h4>
+<div>
+    <ol>
+        <li>Translation: update Japanese (by aorinngo), Spanish (by Armando de Nazareth)</li>
+        <li>Fix: could not scroll Delete Dialog</li>
+    </ol>
+</div>
+
+
+<h4><b>0.3.4</b> 2022.10.3</h4>
+<div>
+    <ol>
+        <li>New: delete song along with the lyrics file with the same name (requires <code>Manage all external
+            files</code> permission)
+        </li>
+        <li>Fix: when play a folder, it cannot recursively select all subfolders</li>
+        <li>Fix: player interface crash, e.g. when resizing the window (partially fixed)</li>
+        <li>Improve: limit image size limit when loading to prevent crashes due to oversize images</li>
+        <li>Improve: mute error notifications when encountering <code>opus</code> format (currently we cannot read tags
+            of <code>opus</code> )
+        </li>
+        <li>Development: add missing licenses of some libraries</li>
+        <li>Development: update Gradle to 7.5.1, update AGP to 7.3.0, update dependencies</li>
+    </ol>
+</div>
+
+<h4><b>0.3.3</b> 2022.9.18</h4>
+<div>
+    <ol>
+        <li>Fix: randomly refresh playing queue on opening</li>
+        <li>Improve: move swapping-queue operations (e.g. shuffle all, play a playlist, play an album/artist) to
+            background, to
+            fix getting frozen when changing queue especially for users having to many song
+        </li>
+        <li>Improve: designate a rational images size when loading cover artworks, to try to not crash app if the image
+            is too
+            large
+        </li>
+    </ol>
+</div>
+
+<h4><b>0.3.2</b> 2022.9.13</h4>
+<div>
+    <ol>
+        <li>Translation: updated Russian (by Photon_Gilber), French (by Exylos)</li>
+        <li>Development: upgrade targetSdk to 33 (Android 13) (experimental)</li>
+        <li>Development: remove <code>Glide</code>, use <code>Coil</code> to load images</li>
+        <li>Development: remove <code>Gson</code>, use <code>kotlin.serialization</code> to handle Json</li>
+        <li>Fix: the icon color is still white under light background</li>
+        <li>Add: &quot;play all&quot; buttons in the top bar of all songs page</li>
+        <li>Improve: add shortcut to grant &quot;Manage All Files&quot; permission</li>
+        <li>Improve: use new UI in &quot;Scan Media&quot; and &quot;Add To Blacklist&quot; dialogs</li>
+        <li>Improve: rewrite many strings, clean up useless strings</li>
+        <li>Improve: Improve changelog dialog</li>
+        <li>Improve: the check update procedure (and prevent popping up the update prompt repeatedly)</li>
+        <li>Remove: issues reporting page (use a smaller dialog instead now)</li>
+        <li>Remove: the feature of logging into GitHub to submit an issue (useless for most people)</li>
+        <li>Development: clean up and upgrade dependencies, upgrade AGP to 7.2.2, upgrade kotlin to 1.7.10, enhance
+            obfuscation
+        </li>
+        <li>Release: adding fastlane metadata</li>
+    </ol>
+</div>
+
+<h4><b>0.3.1 </b> 2022.8.18</h4>
+<div>
+    <ol>
+        <li>Translation: updated Italian (by Andrea Enzo Lattmann (Gh0stz0x)), French (by Exylos), Russian (by
+            Photon_Gilbert)
+        </li>
+        <li>Translation: clean up English(British), English(Canadian) translations (only keep words that are different
+            from default English(US))
+        </li>
+        <li>Translation: Remove Swedish and Norwegian Nynorsk translations (missing too many translations)</li>
+        <li>New: Initial support for changing language in app (imperfect yet)</li>
+        <li>Fix: Crash after rotation to landscape</li>
+        <li>Fix: After the playlist is modified, when the current track is finished, the audio of &quot;Next Track&quot;
+            to play is still be &quot;Next Track&quot; of the PREVIOUS playlist, but player display the &quot;correct&quot;
+            &quot;Next Track&quot; of the NEW playlist
+        </li>
+        <li>Fix: Couldn&quot;t play new queue by clicking a Song item (including starting position and tracks order),
+            when &quot;Please do NOT touch my playing queue arbitrarily&quot; option is turned off
+        </li>
+        <li>Fix: In main player, total time of subsequent tracks (after &quot;Up Next&quot;) incorrectly</li>
+        <li>Improve: The design of Crash Report</li>
+        <li>Improve: Save crash report to external cache dir (/Android/data)</li>
+        <li>Development: clean code</li>
+    </ol>
+</div>
+
+<h4><b>0.3.0</b> 2022.8.10</h4>
+<div>
+    🎉 This is Phonograph Plus 1st Anniversary Version!
+</div>
+<div>
+    <ol>
+        <li>Fix: when the app widgets exist, application would crash and widgets won't be refreshed</li>
+        <li>Development: optimize obfuscation and shrink configuration</li>
+    </ol>
+</div>
+
+<h4><b>0.3.0-RC02</b> 2022.8.8</h4>
+<div>
+    <ol>
+        <li>Add: a brand new <code>Folders Page</code>:<br/>
+            ├ Read song files from <code>MediaStore</code> (significantly better performance on Android 10 and above),
+            but you can still use old method to read song files; <br/>
+            ├ (Try to) fully support browsing external removable storage devices (such as SD cards, etc.);<br/>
+            ├ Use sweep-down-refresh;<br/>
+            └ Allow sorting files by file name, file size, date added, date modified;
+        </li>
+        <li>Remove: the legacy <code>Folders Page</code>, and update drawer</li>
+        <li>Improve: refactor <code>Playlist Detail</code> and simplify editing</li>
+        <li>Improve: calculation for &quot;My Top Tracks&quot;</li>
+        <li>Add: support for force to refresh and recalculate &quot;My Top Tracks&quot; playlists</li>
+        <li>Add: responding <code>last.fm</code> link in Artist&amp;Album Detail(Note: Currently, wiki of last.fm is
+            still working, there is no plan to maintain.).
+        </li>
+        <li>Add: Preference Item &quot;Please do NOT touch my playing queue arbitrarily&quot;, which would make app try
+            not to clear or override playing queue without user's specific request (instead, just add songs to queue) if
+            preference enabled.
+        </li>
+        <li>Add: a menu item to change the current Now Playing Screen in the Now Playing Screen</li>
+        <li>Fix: crash when opening sleep timer dialog for first time.</li>
+        <li>Fix: wrong color of context menu icon when multiple selection</li>
+        <li>Development: clean up the code of Album Details Page, and begin to handle with the plan about redesigning
+        </li>
+        <li>Development: refactoring of plenty of historical codes, including<br/>
+            ├ Background Music Service (possibly a HUGE number of potential bugs related to music playing)<br/>
+            ├ Album Detail<br/>
+            ├ Playlist Detail<br/>
+            ├ Now Playing Screen / Main Player (about Song Cover Images)<br/>
+            ├ File Scanning<br/>
+            ├ Sort Order<br/>
+            ├ List Appearance Popup Menu<br/>
+            ├ Theme<br/>
+            ├ Multi-selection<br/>
+            └ Sliding Player Panel
+        </li>
+        <li>Development: cleanup Gradle build script and project structure</li>
+    </ol>
+    <p>Known Issues:</p>
+    <ol>
+        <li>Glitch Album Detail Transition Animation</li>
+        <li>Multi-selection conflict in Artist Detail</li>
+        <li>No path history for brand new File Page (currently)</li>
+        <li>
+            <del>Glitch song cover in the main player (most circumstances were fix in beta02)</del>
+        </li>
+    </ol>
+</div>
+
+<h4><b>0.2.6</b> 2022.6.6</h4>
+<div>
+    <ol>
+        <li>Improve: saving of playlists, and try to fix playlists on PHYSICAL SD cards that could not be saved</li>
+        <li>Add: allow to modify the operation behaviour of playlist files (located in Settings -&gt; Compatibility -&gt;
+            Operational Behaviour for playlist files), which can force to use SAF (or the legacy method) to operate the
+            playlist files
+        </li>
+        <li>Add: "Last Added" playlist interval now supports "Last 14 days" and "Last month"</li>
+        <li>Add: shortcut for modifying the "Last Added" playlist time interval in the "Last Added" playlist details (in
+            three-dots popup menu)
+        </li>
+        <li>Fix: the crash when create or modify playlists due to Toast for users on Android 9 and below</li>
+        <li>Development: updated Kotlin to 1.6.21, updated AGP to 7.2.1</li>
+        <li>Development: upgrade targetSdk to 32 (Android12.1)</li>
+    </ol>
+</div>
+
+<h4><b>0.2.5</b> 2022.6.3</h4>
+<div>
+    <ol>
+        <li>Add: backup and restore settings (experimental)</li>
+        <li>Fix: crash when resizing window</li>
+        <li>Improve: avoid now-playing page crashes or constantly reporting error notifications</li>
+        <li>Development: use productFlavors in building project</li>
+        <li>Development: use white-background vector outline icons for all Debug builds</li>
+    </ol>
+</div>
+
+<h4><b>0.2.4-RC1</b> 2022.5.15</h4>
+<div>
+    <h5>Note:</h5>
+    <ol>
+        <li>This update involves changes to the database storing playing queue . If you find that the current play queue
+            is abnormal or corrupted, please erase app data
+        </li>
+        <li>This update involves changes to the "sort order" settings, and current sort orders would be reset</li>
+    </ol>
+</div>
+<div>
+    <ol>
+        <li>Fix: crashes after toggling system dark mode</li>
+        <li>Fix: elements transition animations for album details and artist details have been lost since v0.2.0</li>
+        <li>Fix: occasional glitches of matching(parsing) songs with the album or the artist (in the case of "a same
+            album but songs have different artists") in the album and artist page
+        </li>
+        <li>Optimize: album and artist matching(parsing) mechanism (this may cause more loading time)</li>
+        <li>Add: new sort order "sort by number of songs (or albums)" for albums and artists and genres</li>
+        <li>Fix: the fast scroll bar does not prompt the date when the songs are sorted by "Date Added"</li>
+        <li>Improve: notifications for most time-consuming operations instead of using dialogs</li>
+        <li>Improve: notification for more internal errors</li>
+        <li>Development: enhance code obfuscation</li>
+        <li>Development: clean up code, replace all AsyncTask</li>
+        <li>Development: upgrade AGP to 7.2.0, upgrade kotlin to 1.6.20</li>
+    </ol>
+</div>
+
+<h4><b>0.2.3-RC2</b> 2022.4.21</h4>
+<div>
+    <ol>
+        <li>Fix: occasional crashes caused by <a href="https://github.com/Block-Network/StatusBarLyric">status bar
+            lyrics</a> (e.g. when clearing now-playing music notification)
+        </li>
+        <li>Fix: crashes when multi-selecting some certain albums</li>
+    </ol>
+</div>
+
+<h4><b>0.2.3-RC1</b> 2022.4.20</h4>
+<div>
+    <ol>
+        <li>Fix: a crash when sorting in the setting item "Library Category"</li>
+        <li>Fix: the setting item "Library Category" could not be saved correctly</li>
+        <li>Fix: music notifications could not be swiped or canceled after music paused or stopped</li>
+        <li>Fix(or not): now-playing notification hasn't been refreshed in time or displays incorrect song information
+            (suspiciously)
+        </li>
+        <li>Fix: always show the first line of LRC lyrics, even if the song has not been gone to the position of first
+            line
+        </li>
+        <li>Optimize: <a href="https://github.com/Block-Network/StatusBarLyric">Status Bar Lyrics</a> adaptation &sol;
+            support
+        </li>
+        <li>Fix: <a href="https://github.com/Block-Network/StatusBarLyric">status bar lyrics</a> disappears after
+            exiting the app or after the app waits in the background tasks for too long
+        </li>
+        <li>Optimize: locate the line in LRC lyrics now basing on binary search algorithm</li>
+        <li>Add: parse &Backslash;n and &Backslash;r in LRC lyrics</li>
+        <li>Change: show song cover images in search results</li>
+        <li>Change: notify via notifications instead of dialogs while scanning files</li>
+        <li>Optimize: file scanning</li>
+        <li>Development: clean up and optimize code</li>
+        <li>Development: replace all AsyncTaskLoader</li>
+    </ol>
+</div>
+
+<h4><b>0.2.2</b> 2022.4.14</h4>
+<div>
+    <ol>
+        <li>Fix: crash in landscape or when switching orientation</li>
+        <li>Change: turn off a meaningless error report notification</li>
+    </ol>
+</div>
+
+<h4><b>0.2.1</b> 2022.4.13</h4>
+<div>
+    <ol>
+        <li>Fix: crash when loading some song lyrics with special characters</li>
+        <li>Change: optimize lyrics loading</li>
+        <li>Change: display all matching lyrics</li>
+    </ol>
+</div>
+
+<h4><b>0.2.0-RC2</b> 2022.4.8</h4>
+<div>
+    <ul>
+        <li>Fix: Crash when playing some types of media files due to misconfiguration of Proguard</li>
+    </ul>
+</div>
+
+<h4><b>0.2.0-RC1</b> 2022.4.7</h4>
+<div>
+    <ol>
+        <li>Development: refactor most lyrics related code</li>
+        <li>Development: Clean up the main player UI code, and improve its performance</li>
+        <li>Change: rewrite lyrics dialog UI</li>
+        <li>Change: increase size of the lyrics dialog</li>
+        <li>Change: update Chinese Traditional translation(by me via OpenCC)</li>
+        <li>New: manually select lyrics source (embedded or external) in lyrics dialog</li>
+        <li>New: automatically lyrics scrolling along with song playback (experimental support)</li>
+        <li>Fix: occasionally now-playing notification hasn't been refreshed in time or display incorrect song
+            information in the notification bar (suspiciously)
+        </li>
+        <li>New: error report notifications, only record and notify non-critical internal errors for better debugging
+        </li>
+        <li>Development: try to record occasionally error layout of playing queue card in the card main player</li>
+        <li>Development: partially turns off annoying Glide irrelevant log output</li>
+        <li>Development: upgrade gradle to 7.4, upgrade AGP to 7.1.2</li>
+        <li>Development: upgrade kotlin 1.6.10, and use kotlin DSL in build.gradle</li>
+        <li>Development: cleanup code</li>
+    </ol>
+</div>
+
+<h4><b>0.1.2</b> 2022.3.25</h4>
+<div>
+    <ol>
+        <li>Add: Store favorite songs in internal databases (you can switch back to the original way of storing in
+            external storage as m3u playlist files as well)
+        </li>
+        <li>Add: Internal databases export and import (experimental, in the upper right menu of the settings page)</li>
+        <li>Add: Reset all settings</li>
+        <li>Add: Directly open settings page in the crash page</li>
+        <li>Improve: batch delete of playlists</li>
+        <li>Translation: Update Turkish translation (by @TolDYuThad)</li>
+        <li>Development: Cleanup code &amp; resources</li>
+    </ol>
+</div>
+
+<h4><b>0.1.1</b> 2022.3.18</h4>
+<div>
+    <ol>
+        <li>Fix: crashes caused by the favorite playlist</li>
+        <li>Fix: changelog's night mode not working</li>
+        <li>Fix: it gets stuck after adding a blacklist via shortcut</li>
+        <li>Add: a setting entry for directly resetting the media library category</li>
+        <li>Add: split changelog and update popup into Simplified Chinese version and English version</li>
+        <li>Improve: author information and translation entrance in About</li>
+    </ol>
+</div>
+
+<h4><b>0.1.0</b> 2022.3.15</h4>
+<div>
+    <b>Tips:</b>
+    <ol>
+        <li>You may need to set the theme color again in this version.</li>
+        <li>For users of Android 10 (Q) and above, there are still some big problems with playlist editing (reordering
+            &amp; removing songs)
+        </li>
+    </ol>
+
+    <b>Changes:</b>
+    <ol>
+        <li>Fix: the crashes caused by sleep timer on Android12</li>
+        <li>Improve: Major change to "media library" (but some parts are not done yet)</li>
+        <li>Add: the feature of cleaning up the configuration of historical residual files of old versions from now</li>
+
+        <li>Fix: After the playlist is changed (creating / renaming / deleting), it cannot be refreshed in time (but
+            only in-app operation)
+        </li>
+        <li>Improve: If deleting the playlist fails, you can try to use the SAF (Storage Access Framework) to authorize
+            permission for its directory and try to delete it again (but the current interactive experience is horrible,
+            and the file may be deleted
+            by mistake!!!)
+        </li>
+        <li>Improve: For users of Android 10 (Q) and above, use SAF to create playlists (including creating an empty
+            list and saving the player's current play queue)
+        </li>
+        <li>Improve: Use SAF to copy (or save) playlists (Currently, single playlist can be set a custom name, while
+            multiple playlists would be added a time suffix and save in the same selected directory)
+        </li>
+        <li>Improve: For users of Android 10 (Q) and above, SAF authorization is required to add songs to an existing
+            playlist (Currently horrible user experience)
+        </li>
+
+        <li>Development: Refactor the code structure, optimize the code, clean up the dependencies (so need to set the
+            theme color again)
+        </li>
+        <li>Development: Remove ButterKnife</li>
+        <li>Development: Build app with AGP 7.0.4 (along with Gradle 7.1.1)</li>
+        <li>Development: Upgrade Glide from 3.8.0 to 4.12.0 (so may cause some cover loading issues)</li>
+        <li>Development: Extreme code confusion, for keeping Apk small and petty</li>
+
+    </ol>
+</div>
+
+<div><b>Older changelogs are not in English. (They are in Chinese)</b></div>

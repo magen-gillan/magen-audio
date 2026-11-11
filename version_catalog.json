@@ -1,0 +1,60 @@
+{
+    "versions": [
+        {
+            "channel": "stable",
+            "versionName": "2.0.2",
+            "versionCode": 20002,
+            "date": 1790760000,
+            "link": [
+                {
+                    "name": "Github Release (Website)",
+                    "uri": "https://github.com/magen-gillan/magen-audio/releases/tag/v2.0.2"
+                },
+                {
+                    "name": "Github Release Modern Variant APK (File Download Link)",
+                    "uri": "https://github.com/magen-gillan/magen-audio/releases/download/v2.0.2/MagenAudio_2.0.2_ModernStableRelease.apk"
+                },
+                {
+                    "name": "Github Release Modern Intermediate Variant APK (File Download Link)",
+                    "uri": "https://github.com/magen-gillan/magen-audio/releases/download/v2.0.2/MagenAudio_2.0.2_ModernStableIntermediateRelease.apk"
+                },
+                {
+                    "name": "Github Release Legacy Variant APK (File Download Link)",
+                    "uri": "https://github.com/magen-gillan/magen-audio/releases/download/v2.0.2/MagenAudio_2.0.2_LegacyStableRelease.apk"
+                }
+            ],
+            "releaseNote": {
+                "zh-cn": "<ol><li>修复 特定情况下对播放队列重新排序可能失败或导致崩溃</li><li>修复 部分设备上在媒体扫描期间切换标签页偶发崩溃</li><li>修复 部分设备上应用处于后台时切换系统深色模式导致崩溃</li><li>修复 解析多音乐标签时可能存在末尾空格残留</li><li>新增 支持全屏查看专辑封面</li><li>优化 卡片播放器同样添加可选的顶部渐变遮罩，以提升可读性</li><li>翻译 更新德语 (jande75)</li><li>开发 使用 JDK 25 和 Gradle 9.5.1 构建, 更新依赖</li></ol>",
+                "en": "<ol><li>Fix: reordering playing queue may fail or cause crashes under some circumstances</li><li>Fix: occasional crashes when switching tabs during media scanning on some devices</li><li>Fix: crash when toggling system dark mode while the app is in the background on some devices</li><li>Fix: possibly trailing spaces remained in the parsed multiple music tags</li><li>New: full-screen image viewer for album artwork</li><li>Improve: add an optional top gradient scrim to the Card player as well, to enhance legibility</li><li>Translation: update German (by jande75)</li><li>Development: build with JDK 25 and Gradle 9.7.1, update dependencies</li></ol>"
+            }
+        },
+        {
+            "channel": "preview",
+            "versionName": "2.0.2-dev1",
+            "versionCode": 20001,
+            "date": 1790520000,
+            "link": [
+                {
+                    "name": "Github Release (Website)",
+                    "uri": "https://github.com/magen-gillan/magen-audio/releases/tag/preview_2.0.2-dev1"
+                },
+                {
+                    "name": "Github Release Modern Variant APK (File Download Link)",
+                    "uri": "https://github.com/magen-gillan/magen-audio/releases/download/preview_2.0.2-dev1/MagenAudio_2.0.2-dev1_ModernPreviewRelease.apk"
+                },
+                {
+                    "name": "Github Release Modern Intermediate Variant APK (File Download Link)",
+                    "uri": "https://github.com/magen-gillan/magen-audio/releases/download/preview_2.0.2-dev1/MagenAudio_2.0.2-dev1_ModernPreviewIntermediateRelease.apk"
+                },
+                {
+                    "name": "Github Release Legacy Variant APK (File Download Link)",
+                    "uri": "https://github.com/magen-gillan/magen-audio/releases/download/preview_2.0.2-dev1/MagenAudio_2.0.2-dev1_LegacyPreviewRelease.apk"
+                }
+            ],
+            "releaseNote": {
+                "zh-cn": "<ol><li>新增 支持全屏查看专辑封面</li><li>修复 部分设备上对播放队列重新排序可能失败或导致崩溃</li><li>修复 特定情况下在媒体扫描期间切换标签页偶发崩溃</li><li>修复 解析多音乐标签时可能存在末尾空格残留</li><li>优化 卡片播放器同样添加可选的顶部渐变遮罩，以提升可读性</li><li>开发 更新依赖</li></ol>",
+                "en": "<ol><li>New: full-screen image viewer for album artwork</li><li>Fix: reordering playing queue may fail or cause crashes on some devices</li><li>Fix: occasional crashes when switching tabs during media scanning under some circumstances</li><li>Fix: possibly trailing spaces remained in the parsed multiple music tags</li><li>Improve: add an optional top gradient scrim to the Card player as well, to enhance legibility</li><li>Development: update dependencies</li></ol>"
+            }
+        }
+    ]
+}

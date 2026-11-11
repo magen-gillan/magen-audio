@@ -1,0 +1,75 @@
+name: Bug Report
+description: Report bugs or unintended behaviors
+title: "[Bug] "
+labels: ["Bug"]
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of this bug or unexpected behaviors. You should introduce the bug you report objectively, sharply and accurately, with less narrative content.
+    validations:
+      required: true
+
+  - type: input
+    id: summary
+    attributes:
+      label: Bug Summary
+      description: Describe it in just one sentence. You should make a very short summary.
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: Version
+      description: The version you are currently using when it happened.
+      placeholder: "2.x.x (the concrete version, NEVER say 'latest')"
+    validations:
+      required: true
+
+  - type: textarea
+    id: step-to-reproduce
+    attributes:
+      label: Steps to reproduce the bug
+      description: (Optional) Steps to reproduce the bugs or unexpected behaviors.
+      placeholder: When and how this happened? Steps to reproduce?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm with this checklist.
+      options:
+        - label: I have searched the existing issues (and FAQ) and confirmed that no similar issue has been found.
+          required: true
+        - label: This bug can be reproduced every time.
+          required: false
+
+  - type: upload
+    id: screenshots
+    attributes:
+      label: Screenshots or Screen recordings
+      description: (Optional) Media references.
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: (Optional) Your environment.
+      placeholder: Environment? (e.g. Android OS version, phone vendor/OEM)
+    validations:
+      required: false
+
+  - type: textarea
+    id: supplementary
+    attributes:
+      label: Supplementary information
+      description: (Optional) Other helpful information such as further discussion, technical information, trivial details, external references
+    validations:
+      required: false

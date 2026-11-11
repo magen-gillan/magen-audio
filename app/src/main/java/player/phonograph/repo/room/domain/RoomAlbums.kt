@@ -1,0 +1,30 @@
+/*
+ *  Copyright (c) 2022~2023 chr_56
+ */
+
+package player.phonograph.repo.room.domain
+
+import player.phonograph.model.Album
+import player.phonograph.model.repo.loader.IAlbums
+import player.phonograph.model.sort.SortMode
+import player.phonograph.repo.room.converter.EntityConverter
+import android.content.Context
+
+object RoomAlbums : RoomLoader(), IAlbums {
+
+    override suspend fun all(context: Context): List<Album> =
+        db.AlbumQueryDao().all().map(EntityConverter::toAlbumModel)
+
+    override suspend fun all(context: Context, sortMode: SortMode): List<Album> =
+        db.AlbumQueryDao().all(sortMode).map(EntityConverter::toAlbumModel)
+
+    override suspend fun id(context: Context, id: Long): Album =
+        db.AlbumQueryDao().id(id)?.let(EntityConverter::toAlbumModel) ?: Album()
+
+    override suspend fun searchByName(context: Context, query: String): List<Album> =
+        db.AlbumQueryDao().searchByName("%$query%").map(EntityConverter::toAlbumModel)
+
+    override suspend fun artist(context: Context, artistId: Long): List<Album> =
+        db.ArtistQueryDao().artistAlbums(artistId).map(EntityConverter::toAlbumModel)
+
+}

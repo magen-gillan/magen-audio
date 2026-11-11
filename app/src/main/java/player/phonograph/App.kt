@@ -1,0 +1,152 @@
+/*
+ *  Copyright (c) 2022~2023 chr_56
+ */
+
+package player.phonograph
+
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.GlobalContext
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
+import player.phonograph.BuildConfig.DEBUG
+import player.phonograph.foundation.Reboot
+import player.phonograph.foundation.concurrent.HandlerContainer
+import player.phonograph.foundation.concurrent.postDelayedOnceHandlerCallback
+import player.phonograph.foundation.error.crashActivity
+import player.phonograph.foundation.error.startCrashActivity
+import player.phonograph.foundation.localization.ContextLocaleDelegate
+import player.phonograph.mechanism.coil.createPhonographImageLoader
+import player.phonograph.repo.moduleLoaders
+import player.phonograph.service.moduleQueue
+import player.phonograph.service.queue.QueueManager
+import player.phonograph.ui.moduleViewModels
+import player.phonograph.ui.modules.auxiliary.CrashActivity
+import player.phonograph.ui.theme.ThemeSettingsDelegate
+import player.phonograph.ui.theme.changeGlobalNightMode
+import player.phonograph.ui.theme.systemNightMode
+import androidx.appcompat.app.AppCompatDelegate
+import android.app.Application
+import android.content.Context
+import android.content.res.Configuration
+import android.os.Handler
+import android.os.Looper
+import android.os.Process
+import android.util.Log
+import kotlin.system.exitProcess
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+
+/**
+ * @author Karim Abou Zeid (kabouzeid)
+ */
+class App : Application(), ImageLoaderFactory {
+
+    companion object {
+        @JvmStatic
+        lateinit var instance: App
+            private set
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        // Localization
+        super.attachBaseContext(
+            ContextLocaleDelegate.attachBaseContext(base)
+        )
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        // Night Mode
+        val nightMode = systemNightMode(newConfig)
+        postDelayedOnceHandlerCallback(Handler(Looper.getMainLooper()), 550, 536870912) {
+            changeGlobalNightMode(nightMode)
+            ThemeSettingsDelegate.onConfigurationChanged(newConfig)
+        }
+        // Localization
+        super.onConfigurationChanged(
+            ContextLocaleDelegate.onConfigurationChanged(this, newConfig)
+        )
+    }
+
+    override fun onCreate() {
+        if (Reboot.isRebootingProcess(this)) return
+        debug { logMetrics("App.onCreate()") }
+        super.onCreate()
+        instance = this
+
+        // Exception Handler
+        crashActivity = CrashActivity::class.java
+        Thread.setDefaultUncaughtExceptionHandler { _, exception ->
+            if (!CrashActivity.isCrashProcess(this)) {
+                startCrashActivity(this, exception, CrashActivity::class.java)
+            } else {
+                Log.e("Phonograph", "Recursively crash!", exception)
+            }
+            Process.killProcess(Process.myPid())
+            exitProcess(1)
+        }
+
+        if (CrashActivity.isCrashProcess(this)) return
+
+        // Migration: force songItemClickMode to QUEUE_SWITCH_TO_POSITION for users
+        // who installed v2.0.0 (which had SONG_PLAY_NOW as default — caused
+        // songs from the previous folder to remain in the queue after switching folders).
+        // The DataStore default only applies on first install; for upgraded users
+        // the old value persists, so we explicitly overwrite it once.
+        appScope.launch {
+            try {
+                val settings = player.phonograph.settings.Settings(this@App)
+                val migrationKey = player.phonograph.settings.PrimitiveKey<Boolean>(
+                    androidx.datastore.preferences.core.booleanPreferencesKey("v201_queue_fix_migration_done")
+                ) { false }
+                val migrated = settings[migrationKey].data
+                if (!migrated) {
+                    // Force the new default: QUEUE_SWITCH_TO_POSITION replaces the
+                    // queue with the songs from the current folder/album and starts
+                    // playback at the clicked position (not position 0).
+                    settings[player.phonograph.settings.Keys.songItemClickMode].edit {
+                        player.phonograph.model.SongClickMode.QUEUE_SWITCH_TO_POSITION
+                    }
+                    settings[migrationKey].edit { true }
+                }
+            } catch (_: Exception) { /* ignore — non-fatal */ }
+        }
+
+        handlerContainer.onCreate()
+
+        // night mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
+        startKoin {
+            androidLogger(if (DEBUG) Level.DEBUG else Level.WARNING)
+            androidContext(this@App)
+
+            modules(moduleQueue, moduleLoaders, moduleViewModels)
+        }
+
+        // Color
+        ThemeSettingsDelegate.startObserve(this, appScope)
+    }
+
+    override fun onTerminate() {
+        GlobalContext.get().get<QueueManager>().release()
+        handlerContainer.onDestroy()
+        super.onTerminate()
+    }
+
+    // for coil ImageLoader singleton
+    override fun newImageLoader(): ImageLoader = createPhonographImageLoader(this)
+
+    //region Concurrent
+    val appScope by lazy { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
+
+    private val handlerContainer: HandlerContainer = HandlerContainer("app")
+    val appHandler: Handler get() = handlerContainer.handler
+    val appHandlerThread get() = handlerContainer.thread
+    //endregion
+
+}
