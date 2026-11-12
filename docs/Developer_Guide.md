@@ -1,0 +1,113 @@
+# **Developer Guide** / **开发指南**
+
+This document describes the overview of this project for developers.
+
+See also [Build Instruction](./Build_Instructions.md).
+
+_Last Update: 2026.10.02_
+
+## Toolchain & Dependencies
+
+This is a Kotlin Android Application.
+
+Gradle Version Catalogs is used in this project:
+
+Please refer [libs.versions.toml](../gradle/libs.versions.toml) for all the libraries and all gradle plugins.
+
+**Toolchain**
+
+- Gradlew 9.7.1, along with JDK 25
+- Android Gradle Plugin 9.4.1
+- Android SDK 37
+- kotlin for JVM(Android) 2.4.10
+
+**Libraries**
+
+Highlight:
+
+- `Jetpack Compose`
+- `Jetpack Datastore`
+- `kotlinx.serialization`
+- `kotlinx.parcelize`
+- `koin` as a lightweight Dependency Injection solution
+
+See [List of Libraries and Gradle Plugins in Use](./List_of_Libraries.md) for details
+
+## Build Variants
+
+Since 1.8[^1], we have two Flavor Dimension currently: `channel` (for different release channels), `target` (for Android platforms).
+
+Typically, there are two default `BuildType`s (`debug`/`release`); all `release` shrinks and minifies. 
+
+However, since 2.0, due to replacement of signing key, `BuildType` named `intermediateRelease` has been added.
+`intermediateRelease` is used to be signed with rotated keys, signed with both old and new keys 
+(in APK signature scheme v3 format for Android 9 and higher), to make users transit smoothly. It is just a temporary `BuildType`.
+
+[^1]: Before 1.8, there is only one flavor `channel`(or `purpose`), without `target`.
+
+#### Dimension `channel`
+
+| Dimension `channel`[^2] | Extra Package Name Suffix |                     Usage                     | Note              |
+|:-----------------------:|:-------------------------:|:---------------------------------------------:|-------------------|
+|        `stable`         |         _(None)_          |   **Stable** & **LTS**<br/> channel release   |                   |
+|        `fdroid`         |         _(None)_          |    **Fdroid** _reproducible build_ release    | based on `stable` |
+|        `preview`        |        `.preview`         |       **Preview**<br/> channel release        |                   |
+|         `next`          |          `.eap`           | **Early Access Preview**<br/> channel release |                   |
+|       `checkout`        |        `.checkout`        |           (`Github Action` Build )            | for locating bug  |
+
+[^2]: Before v0.4.0, there are more variants (like `common` as `stable`, `ci` for `Github Action`).
+
+#### Dimension `target`
+
+We make this distinction mostly for bypassing _Scope Storage_ for Android 10.
+
+| Dimension `target` | Target SDK | Min SDK | Descriptions                                                                           |
+|:------------------:|:----------:|:-------:|----------------------------------------------------------------------------------------|
+|      `modern`      | _(Latest)_ |   26    | for mainstream android device users                                                    |
+|      `legacy`      |     28     |   24    | for legacy android device user <br/>(especially Android 10, to bypass _Scope Storage_) |
+
+## Project Structure
+
+#### Gradle Module
+
+Currently:
+
+- _app_(`app/`): source code of the Magen Audio
+- _changelog-generator_(`tools/changelog-generator`): utility for generating formated changelogs and release notes
+
+#### Repository Structure
+
+Except files relative to gradle or building:
+
+- `.github/`: `Github Action` and templates
+- `.idea/`: Android Studio's config including code style config and run config
+- `app/`, `tools/changelog-generator`: Gradle Module
+- `docs/`: documents
+- `scripts/`: utility scripts
+- `fastlane/metadata/android/`: F-droid metadata, like summary, screenshot, changelogs
+- `crowdin.yml`: Crowdin configuration
+- `ReleaseNote.yaml`, `ReleaseNoteStable.yaml`: Pending release notes as well as metadata, used for generating changelogs and release note everywhere on releasing 
+- `fdroid.properties`: metadata of current latest version, unused
+- `version_catalog.json`: containing the latest version metadata that Magen Audio used for checking updates
+
+#### Source Code Structure of Magen Audio
+
+For main source set (`app/src/main`):
+
+```
+main/
+├── assets
+├── java/
+│   └── player.phonograph
+│       ├── foundation (foundamental infrastructures, low-level utilities, compatibility)
+│       ├── mechanism (core or business logics that contribute the main features)
+│       ├── model (model and interface definations)
+│       ├── repo (music library data source, internal databases)
+│       ├── service (background music playback service)
+│       ├── settings (preference storages)
+│       ├── ui (user interface)
+│       ├── App.kt
+│       └── Constants.kt
+├── res
+└── AndroidManifest.xml
+```

@@ -1,0 +1,270 @@
+[versions]
+
+## Plugins
+
+kotlin = "2.4.10"
+ksp = "2.3.6"
+
+agp = "9.4.1"
+
+versionChecker = "0.53.0"
+
+## Libraries
+#### Jetpack Start
+core-ktx = "1.19.1"
+appcompat = "1.8.0"
+activity = "1.13.0"
+fragment = "1.9.0"
+lifecycle = "2.11.0"
+annotation = "1.11.0"
+preference = "1.2.1"
+recyclerview = "1.4.0"
+viewpager = "1.1.0"
+viewpager2 = "1.1.0"
+constraintlayout = "2.2.1"
+percentlayout = "1.0.0"
+swiperefreshlayout = "1.2.0"
+media = "1.7.1"
+media3 = "1.10.1"
+browser = "1.9.0"
+cardview = "1.0.0"
+palette = "1.0.0"
+compose = "1.12.1"
+datastore = "1.1.7"
+documentfile = "1.1.0"
+material = "1.12.0"
+room = "2.8.5"
+#### Jetpack End
+
+
+#### Popular Start
+ktxc = "1.11.0"
+ktxs-json = "1.11.0"
+ktxs-ktoml = "0.7.0"
+ktxs-kaml = "0.90.0"
+okhttp = "4.12.0"
+retrofit = "2.11.0"
+moshi = "1.15.2"
+coil = "2.7.0"
+koin = "4.2.2"
+#### Popular End
+
+#### Others Start
+composeMaterialDialogs = "0.9.0"
+themeUtil = "0.3.2"
+#### Others End
+
+## Test
+junit = "4.13.2"
+mockito = "5.23.0"
+testCore = "1.7.0"
+testExtJunit = "1.3.0"
+testEspresso = "3.7.0"
+testng = "7.12.0"
+
+leakcanary = "2.14"
+
+[libraries]
+
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
+androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+androidx-lifecycle_runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
+androidx-preference = { module = "androidx.preference:preference-ktx", version.ref = "preference" }
+
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+androidx-viewpager = { module = "androidx.viewpager:viewpager", version.ref = "viewpager" }
+
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+androidx-percentlayout = { module = "androidx.percentlayout:percentlayout", version.ref = "percentlayout" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
+
+androidx-media = { module = "androidx.media:media", version.ref = "media" }
+androidx-browser = { module = "androidx.browser:browser", version.ref = "browser" }
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+androidx-palette = { module = "androidx.palette:palette-ktx", version.ref = "palette" }
+androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile" }
+
+#
+# Room
+#
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+
+#
+# Datastore
+#
+androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
+androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastore" }
+
+#
+# Exoplayer3 (Media3)
+#
+
+androidx-media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
+
+
+#
+# Material Design
+#
+
+google-material = { module = "com.google.android.material:material", version.ref = "material" }
+
+#
+# Jetpack Compose
+#
+
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "compose" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
+compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
+compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core", version = "1.7.8" } # removed since 1.8.0
+
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
+compose-fragment = { group = "androidx.fragment", name = "fragment-compose", version.ref = "fragment" }
+
+#
+# popular
+#
+
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "ktxc" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "ktxs-json" }
+kotlinx-serialization-ktoml = { module = "com.akuleshov7:ktoml-core", version.ref = "ktxs-ktoml" }
+kotlinx-serialization-kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "ktxs-kaml" }
+
+koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose-base", version.ref = "coil" }
+
+okhttp3 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+retrofit2 = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit2-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+moshi-core = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-adapters = { group = "com.squareup.moshi", name = "moshi-adapters", version.ref = "moshi" }
+
+leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+
+#
+# Test
+#
+junit = { module = "junit:junit", version.ref = "junit" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockito" }
+androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "testCore" }
+androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "testExtJunit" }
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "testEspresso" }
+testng = { group = "org.testng", name = "testng", version.ref = "testng" }
+
+#
+# other
+#
+
+androidGradlePluginAPI = { module = "com.android.tools.build:gradle-api", version.ref = "agp" } # for Plugin development
+
+composeMaterialDialogs = { module = "io.github.vanpra.compose-material-dialogs:core", version.ref = "composeMaterialDialogs" }
+
+themeUtils-materials = { group = "com.github.chr56.ThemeUtils", name = "materials-util", version.ref = "themeUtil" }
+themeUtils-color = { group = "com.github.chr56.ThemeUtils", name = "color-util", version.ref = "themeUtil" }
+themeUtils-tint = { group = "com.github.chr56.ThemeUtils", name = "tint-util", version.ref = "themeUtil" }
+
+musicMetadataSource = { module = "io.github.phonographplus:music-metadata-source", version = "0.1.1" }
+jaudiotagger = { module = "com.github.chr56:jaudiotagger", version = "0.1.0" }
+menuDsl = { module = "io.github.chr56:android-menu-dsl", version = "0.1.3" }
+storageUtilities = { module = "io.github.chr56:android-storage-utilities", version = "0.3.1" }
+observablescrollview = { module = "com.github.chr56:Android-ObservableScrollView-Retro", version = "0.0.1" }
+slidingUpPanel = { module = "com.github.chr56:AndroidSlidingUpPanel", version = "1.0" }
+seekArc = { module = "com.github.chr56:SeekArc", version = "1.0" }
+
+appIntro = { module = "com.github.AppIntro:AppIntro", version = "6.3.1" }
+advrecyclerview = { module = "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview", version = "1.0.0" }
+composePipette = { module = "dev.zt64.compose.pipette:compose-pipette", version = "1.0.1" }
+composeReorderable = { module = "org.burnoutcrew.composereorderable:reorderable", version = "0.9.6" }
+composeAnnotatedText = { module = "io.github.aghajari:AnnotatedText", version = "1.0.3" }
+licensesdialog = { module = "de.psdev.licensesdialog:licensesdialog", version = "2.2.0" }
+recyclerviewFastscroll = { module = "com.simplecityapps:recyclerview-fastscroll", version = "2.0.1" }
+jsoup = { module = "org.jsoup:jsoup", version = "1.16.1" }
+photoView = { module = "com.github.chrisbanes:PhotoView", version = "2.3.0" }
+
+statusBarLyricsApi = { module = "com.github.577fkj:StatusBarApiExample", version = "2.0" }
+lyricsGetterAPi = { module = "com.github.xiaowine:Lyric-Getter-Api", version = "6.0.0" }
+
+[bundles]
+
+compose = [
+    "compose-runtime",
+    "compose-foundation",
+    "compose-ui",
+    "compose-material",
+    "compose-material-icons",
+    "compose-activity",
+    "compose-fragment",
+]
+
+androidx-datastore = [
+    "androidx-datastore-preferences",
+    "androidx-datastore-preferences-core",
+    "androidx-datastore",
+    "androidx-datastore-core",
+]
+
+androidx-room = [
+    "androidx-room-runtime",
+    "androidx-room-ktx",
+]
+
+androidx-media3 =[
+    "androidx-media3-common",
+    "androidx-media3-exoplayer"
+]
+
+themeUtil = [
+    "themeUtils-materials",
+    "themeUtils-color",
+    "themeUtils-tint",
+]
+
+
+# Test
+
+test-unit = [
+    "junit",
+    "mockito-core",
+    "mockito-android",
+    # "testng",
+]
+
+test-androidx-suite = [
+    "androidx-test-core",
+    "androidx-test-junit",
+    "androidx-test-espresso-core",
+]
+
+
+[plugins]
+
+androidGradlePlugin = { id = "com.android.application", version.ref = "agp" }
+#androidGradlePluginLibrary = { id = "com.android.library", version.ref = "agp" }
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+versionChecker = { id = "com.github.ben-manes.versions", version.ref = "versionChecker" }
+
+artifactsRelease = { id = "io.github.chr56.tools.release", version = "0.1.5" }

@@ -1,0 +1,171 @@
+/*
+ *  Copyright (c) 2022~2024 chr_56
+ */
+
+package player.phonograph.ui.modules.main.pages
+
+import com.github.chr56.android.menu_dsl.attach
+import com.github.chr56.android.menu_dsl.menuItem
+import com.github.chr56.android.menu_model.MenuContext
+import com.google.android.material.appbar.AppBarLayout
+import player.phonograph.App
+import player.phonograph.R
+import player.phonograph.databinding.FragmentFilePageBinding
+import player.phonograph.foundation.concurrent.coroutineToast
+import player.phonograph.mechanism.event.EventHub
+import player.phonograph.model.Song
+import player.phonograph.model.file.FileItem
+import player.phonograph.model.service.ShuffleMode
+import player.phonograph.model.sort.SortMode
+import player.phonograph.model.sort.SortRef
+import player.phonograph.repo.loader.Songs
+import player.phonograph.settings.Keys
+import player.phonograph.settings.Settings
+import player.phonograph.ui.actions.actionPlay
+import player.phonograph.ui.modules.explorer.FileExplorerViewModel
+import player.phonograph.ui.modules.explorer.FilesPageExplorerFragment
+import player.phonograph.ui.modules.popup.ListOptionsPopup
+import player.phonograph.ui.theme.getTintedDrawableOnBackground
+import player.phonograph.ui.theme.textColorPrimary
+import player.phonograph.ui.util.observe
+import androidx.fragment.app.commitNow
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withResumed
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.res.Resources
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu.NONE
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import kotlin.random.Random
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+class FilesPage : AbsPage() {
+
+    private var _viewBinding: FragmentFilePageBinding? = null
+    private val binding get() = _viewBinding!!
+
+    private lateinit var explorer: FilesPageExplorerFragment
+    private val model: FileExplorerViewModel by viewModels({ requireActivity() })
+
+    private lateinit var listener: MediaStoreListener
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        listener = MediaStoreListener(requireContext())
+        lifecycle.addObserver(listener)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+
+        explorer = FilesPageExplorerFragment()
+        _viewBinding = FragmentFilePageBinding.inflate(inflater, container, false)
+
+        childFragmentManager.commitNow {
+            replace(R.id.file_explore_container, explorer, "FilesPageExplorer")
+        }
+
+        return binding.root
+    }
+
+    private var outerAppbarOffsetListener =
+        AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            binding.fileExploreContainer.setPadding(
+                binding.fileExploreContainer.paddingLeft,
+                binding.fileExploreContainer.paddingTop,
+                binding.fileExploreContainer.paddingRight,
+                mainFragment.totalAppBarScrollingRange + verticalOffset
+            )
+        }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainFragment.addOnAppBarOffsetChangedListener(outerAppbarOffsetListener)
+    }
+
+    override fun onDestroyView() {
+        mainFragment.removeOnAppBarOffsetChangedListener(outerAppbarOffsetListener)
+        super.onDestroyView()
+    }
+
+    override fun showOptionsPopup() {
+        if (view == null) return
+        mainFragment.popup.onShow = ::configPopup
+        mainFragment.popup.onDismiss = ::dismissPopup
+        mainFragment.popup.showAtLocation(
+            binding.root, Gravity.TOP or Gravity.END, 0,
+            8 + mainFragment.totalHeaderHeight
+        )
+    }
+
+    //region Popup
+    private fun configPopup(popup: ListOptionsPopup) {
+        val currentSortMode = Settings(popup.contentView.context)[Keys.fileSortMode].data
+        popup.allowRevert = true
+        popup.revert = currentSortMode.revert
+
+        popup.sortRef = currentSortMode.sortRef
+        popup.sortRefAvailable =
+            arrayOf(SortRef.DISPLAY_NAME, SortRef.ADDED_DATE, SortRef.MODIFIED_DATE, SortRef.SIZE)
+
+        popup.showFileOption = true
+        popup.useLegacyListFiles = useLegacyListFile
+        popup.showFilesImages = showFilesImages
+    }
+
+    private fun dismissPopup(popup: ListOptionsPopup) {
+        val context = popup.contentView.context
+        Settings(context)[Keys.fileSortMode].data =
+            SortMode(popup.sortRef, popup.revert)
+        useLegacyListFile = popup.useLegacyListFiles
+        @SuppressLint("NotifyDataSetChanged")
+        if (showFilesImages != popup.showFilesImages) {
+            showFilesImages = popup.showFilesImages
+            Settings(context)[Keys.showFileImages].data = showFilesImages
+        }
+        model.refreshFiles(context)
+    }
+    //endregion
+
+    var useLegacyListFile: Boolean
+        get() = Settings(App.instance)[Keys.useLegacyListFilesImpl].data
+        set(value) {
+            Settings(App.instance)[Keys.useLegacyListFilesImpl].data = value
+        }
+
+    var showFilesImages: Boolean
+        get() = Settings(App.instance)[Keys.showFileImages].data
+        set(value) {
+            Settings(App.instance)[Keys.showFileImages].data = value
+        }
+
+    //region MediaStore
+    private inner class MediaStoreListener(context: Context) :
+            EventHub.LifeCycleEventReceiver(context, EventHub.EVENT_MUSIC_LIBRARY_CHANGED) {
+        override fun onEventReceived(context: Context, intent: Intent) {
+            lifecycleScope.launch {
+                lifecycle.withResumed {
+                    model.refreshFiles(requireContext())
+                }
+            }
+        }
+
+        override fun onDestroy(owner: LifecycleOwner) {
+            super.onDestroy(owner)
+            owner.lifecycle.removeObserver(this)
+        }
+    }
+    //endregion
+}

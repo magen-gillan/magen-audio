@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="TouchTargetSizeCheck">
+
+    <LinearLayout
+        android:id="@+id/linear_layout_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10sp">
+
+        <TextView
+            android:id="@+id/title_sort_order_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:paddingTop="8sp"
+            android:text="@string/label_sort_order"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:id="@+id/group_sort_order_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/sort_method_a_z"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_a_z" />
+
+            <RadioButton
+                android:id="@+id/sort_method_z_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_z_a" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/title_sort_order_ref"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:paddingTop="8sp"
+            android:text="@string/label_sort_order"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:id="@+id/group_sort_order_ref"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/sort_order_song"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_song"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_album"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_artist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_artist"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_album_artist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_album_artist"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_composer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_composer"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_year"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_date_added"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_date_added"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_date_modified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_date_modified"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_duration"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_name_plain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/label_name"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_song_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_song_count"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_album_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_album_count"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_size"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/sort_order_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/sort_order_path"
+                android:visibility="gone" />
+
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/title_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:paddingTop="8sp"
+            android:text="@string/action_item_layout"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:id="@+id/group_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/item_layout_list_single_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/_default"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/item_layout_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/item_layout_list"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/item_layout_list_extended"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/item_layout_list_extended"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/item_layout_list_no_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/item_layout_list_no_image"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/item_layout_list_3l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/item_layout_list_3l"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/item_layout_list_3l_extended"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/item_layout_list_3l_extended"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/item_layout_list_3l_no_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/item_layout_list_3l_no_image"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/item_layout_grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/item_layout_grid"
+                android:visibility="gone" />
+
+        </RadioGroup>
+
+
+        <TextView
+            android:id="@+id/title_grid_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:paddingTop="8sp"
+            android:text="@string/label_grid_size"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:id="@+id/group_grid_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grid_size_1"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grid_size_2"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grid_size_3"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grid_size_4"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grid_size_5"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grid_size_6"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grid_size_7"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grid_size_8"
+                android:visibility="gone" />
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/action_colored_footers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/label_colored_footers"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/show_file_imagines"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="@string/option_load_images_for_files"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/use_legacy_list_Files"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="@string/option_use_legacy_list_Files"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</ScrollView>

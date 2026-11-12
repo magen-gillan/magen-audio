@@ -1,0 +1,25 @@
+package player.phonograph.ui.views
+
+import androidx.core.view.WindowInsetsCompat
+import android.content.Context
+import android.util.AttributeSet
+import android.view.View
+import android.view.WindowInsets
+
+class StatusBarView : View {
+
+    constructor(context: Context?) : super(context) {}
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+
+    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
+        val windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(insets, this)
+        val statusBarHeight = windowInsetsCompat.getInsets(WindowInsetsCompat.Type.statusBars()).top
+        if (statusBarHeight != layoutParams.height) {
+            layoutParams = layoutParams.apply {
+                height = statusBarHeight
+            }
+        }
+        return super.onApplyWindowInsets(insets)
+    }
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="true"
+    android:foreground="@drawable/rect_selector_auto"
+    android:minHeight="@dimen/list_item_height"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/list_item_padding_content"
+    android:paddingLeft="@dimen/list_item_padding_content"
+    android:paddingEnd="@dimen/list_item_padding_content"
+    android:paddingRight="@dimen/list_item_padding_content"
+    tools:gravity="start|center_vertical">
+
+    <player.phonograph.ui.views.AccentColorCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center_vertical" />
+
+    <FrameLayout
+        android:id="@+id/content_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/list_item_height"
+        android:paddingStart="@dimen/list_item_margin_control"
+        android:paddingTop="@dimen/list_item_margin_vertical"
+        android:paddingEnd="@dimen/list_item_margin_control"
+        android:paddingBottom="@dimen/list_item_margin_vertical"
+        tools:text="Item" />
+
+    <player.phonograph.ui.views.IconImageView
+        android:id="@+id/drag_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end|center_vertical"
+        android:clickable="false"
+        android:focusable="false"
+        android:minHeight="@dimen/list_item_height"
+        android:tintMode="src_in"
+        app:srcCompat="@drawable/ic_drag_vertical_white_24dp"
+        tools:ignore="ContentDescription" />
+
+</LinearLayout>

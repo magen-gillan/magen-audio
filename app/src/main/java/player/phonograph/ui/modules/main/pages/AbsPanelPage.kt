@@ -1,0 +1,269 @@
+/*
+ *  Copyright (c) 2022~2025 chr_56
+ */
+
+package player.phonograph.ui.modules.main.pages
+
+import com.github.chr56.android.menu_dsl.attach
+import com.github.chr56.android.menu_dsl.menuItem
+import com.github.chr56.android.menu_model.MenuContext
+import com.google.android.material.appbar.AppBarLayout
+import player.phonograph.R
+import player.phonograph.databinding.FragmentDisplayPageBinding
+import player.phonograph.debug
+import player.phonograph.logMetrics
+import player.phonograph.mechanism.event.EventHub
+import player.phonograph.model.sort.SortMode
+import player.phonograph.model.ui.ItemLayoutStyle
+import player.phonograph.ui.modules.popup.ListOptionsPopup
+import player.phonograph.ui.theme.getTintedDrawableOnBackground
+import player.phonograph.ui.theme.textColorPrimary
+import player.phonograph.ui.util.isOrientationLandscape
+import player.phonograph.ui.util.isScreenWiderThanExpected
+import player.phonograph.ui.util.isTablet
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withResumed
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu.NONE
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import kotlinx.coroutines.launch
+
+sealed class AbsPanelPage : AbsPage() {
+
+    private var _viewBinding: FragmentDisplayPageBinding? = null
+    protected val binding get() = _viewBinding!!
+
+    protected lateinit var statusFragment: StatusFragment
+
+    //region Lifecycles
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        prepareMediaStoreListener()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        onPrefetchContentDataset()
+        _viewBinding = FragmentDisplayPageBinding.inflate(inflater, container, false)
+        statusFragment = childFragmentManager.findFragmentById(R.id.status_fragment) as StatusFragment
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        prepareContentView()
+
+        prepareAppbars()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        debug { logMetrics("BasicDisplayPage.onResume()") }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        cleanupAppbars()
+        _viewBinding = null
+    }
+    //endregion
+
+    //region Content
+    protected abstract fun onPrefetchContentDataset()
+    protected abstract fun onContentChanged()
+    protected abstract fun prepareContentView()
+    protected abstract fun updateContentSetting(
+        sortMode: SortMode,
+        layout: ItemLayoutStyle,
+        gridSize: Int,
+        coloredFooter: Boolean,
+        shouldRecreate: Boolean,
+        shouldReload: Boolean,
+    )
+
+    //endregion
+
+    //region Header
+    protected var outerAppbarOffsetListener =
+        AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            binding.container.setPadding(
+                binding.container.paddingLeft,
+                binding.container.paddingTop,
+                binding.container.paddingRight,
+                mainFragment.totalAppBarScrollingRange + verticalOffset
+            )
+        }
+
+    private fun prepareAppbars() {
+        mainFragment.addOnAppBarOffsetChangedListener(outerAppbarOffsetListener)
+    }
+
+    private fun cleanupAppbars() {
+        mainFragment.removeOnAppBarOffsetChangedListener(outerAppbarOffsetListener)
+    }
+
+    override fun showOptionsPopup() {
+        if (view == null) return
+        val optionsPopup = mainFragment.popup
+        optionsPopup.onShow = ::preparePopup
+        optionsPopup.onDismiss = ::dismissPopup
+        optionsPopup.showAtLocation(
+            binding.root, Gravity.TOP or Gravity.END, 0,
+            8 + mainFragment.totalHeaderHeight
+        )
+    }
+    //endregion
+
+    //region Popup
+    protected abstract val displayConfig: PageDisplayConfig
+
+    protected open fun preparePopup(popup: ListOptionsPopup) {
+        with(popup) {
+            viewBinding.titleGridSize.text =
+                if (isOrientationLandscape(resources)) {
+                    resources.getText(R.string.label_grid_size_land)
+                } else {
+                    resources.getText(R.string.label_grid_size)
+                }
+            maxGridSize = displayConfig.maxGridSize
+            gridSize = displayConfig.gridSize
+
+            colorFooterVisibility = displayConfig.allowColoredFooter
+            if (displayConfig.allowColoredFooter) {
+                colorFooterEnability = displayConfig.layout == ItemLayoutStyle.GRID // available in grid mode
+                colorFooter = displayConfig.colorFooter
+            }
+
+            if (displayConfig.availableSortRefs.isNotEmpty()) {
+
+                val currentSortMode = displayConfig.sortMode
+
+                sortRef = currentSortMode.sortRef
+                sortRefAvailable = displayConfig.availableSortRefs
+
+                allowRevert = displayConfig.allowRevertSort
+                revert = currentSortMode.revert
+            }
+
+            if (displayConfig.availableLayouts.isNotEmpty()) {
+
+                val currentLayout = displayConfig.layout
+
+                itemLayout = currentLayout
+                itemLayoutAvailable = displayConfig.availableLayouts
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    protected fun dismissPopup(popup: ListOptionsPopup) {
+        val currentDisplayConfig = displayConfig
+        var shouldUpdate = false
+        var shouldRecreate = false
+        var shouldReload = false
+
+        // sort order
+        val sortModeSelected = SortMode(popup.sortRef, popup.revert)
+        if (sortModeSelected != currentDisplayConfig.sortMode) {
+            currentDisplayConfig.sortMode = sortModeSelected
+            shouldUpdate = true
+            shouldReload = true
+        }
+
+        // layout
+        val layoutSelected = popup.itemLayout
+        if (layoutSelected != currentDisplayConfig.layout) {
+            currentDisplayConfig.layout = layoutSelected
+            shouldUpdate = true
+            shouldRecreate = true
+        }
+
+        // grid size
+        val gridSizeSelected = popup.gridSize
+        if (gridSizeSelected > 0 && gridSizeSelected != currentDisplayConfig.gridSize) {
+            currentDisplayConfig.gridSize = gridSizeSelected
+            shouldUpdate = true
+        }
+
+        // color footer
+        if (currentDisplayConfig.allowColoredFooter) {
+            val coloredFootersSelected = popup.colorFooter
+            if (coloredFootersSelected != currentDisplayConfig.colorFooter) {
+                currentDisplayConfig.colorFooter = coloredFootersSelected
+                shouldUpdate = true
+                shouldRecreate = true
+            }
+        }
+
+        if (shouldUpdate) {
+            updateContentSetting(
+                sortModeSelected,
+                layoutSelected,
+                gridSizeSelected,
+                popup.colorFooter,
+                shouldRecreate,
+                shouldReload,
+            )
+        }
+
+        validConfig(currentDisplayConfig)
+    }
+
+    private fun validConfig(displayConfig: PageDisplayConfig) {
+        val layout = displayConfig.layout
+        val warningLayout: Boolean =
+            if (layout.isGrid) {
+                displayConfig.gridSize < (if (isOrientationLandscape(resources) || isScreenWiderThanExpected(resources)) 3 else 2)
+            } else if (layout.compatInWidth) {
+                displayConfig.gridSize > (if (isOrientationLandscape(resources) || isTablet(resources)) 5 else 3)
+            } else {
+                displayConfig.gridSize > (if (isOrientationLandscape(resources) || isTablet(resources)) 4 else 2)
+            }
+        if (warningLayout) {
+            Toast.makeText(
+                requireContext(),
+                R.string.warning_inappropriate_display_item_grid_size,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+    //endregion
+
+
+    //region MediaStoreListener
+    private fun prepareMediaStoreListener() {
+        lifecycle.addObserver(MediaStoreListener(requireContext()))
+    }
+
+    private inner class MediaStoreListener(context: Context) :
+            EventHub.LifeCycleEventReceiver(context, EventHub.EVENT_MUSIC_LIBRARY_CHANGED) {
+        override fun onEventReceived(context: Context, intent: Intent) {
+            lifecycleScope.launch {
+                lifecycle.withResumed {
+                    onContentChanged()
+                }
+            }
+        }
+
+        override fun onDestroy(owner: LifecycleOwner) {
+            super.onDestroy(owner)
+            owner.lifecycle.removeObserver(this)
+        }
+    }
+    //endregion
+
+}

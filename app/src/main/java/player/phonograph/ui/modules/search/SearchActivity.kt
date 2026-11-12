@@ -1,0 +1,276 @@
+/*
+ *  Copyright (c) 2022~2023 chr_56
+ */
+
+package player.phonograph.ui.modules.search
+
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import lib.activityresultcontract.registerActivityResultLauncherDelegate
+import lib.storage.launcher.CreateFileStorageAccessDelegate
+import lib.storage.launcher.ICreateFileStorageAccessible
+import lib.storage.launcher.IOpenDirStorageAccessible
+import lib.storage.launcher.IOpenFileStorageAccessible
+import lib.storage.launcher.OpenDirStorageAccessDelegate
+import lib.storage.launcher.OpenFileStorageAccessDelegate
+import player.phonograph.R
+import player.phonograph.databinding.ActivitySearchBinding
+import player.phonograph.databinding.PopupWindowSearchBinding
+import player.phonograph.mechanism.event.EventHub
+import player.phonograph.settings.Keys
+import player.phonograph.settings.Settings
+import player.phonograph.ui.modules.panel.AbsSlidingMusicPanelActivity
+import player.phonograph.ui.modules.popup.OptionsPopup
+import player.phonograph.ui.theme.SystemBarsControllerDelegate
+import player.phonograph.ui.theme.ThemeSettingsDelegate.accentColor
+import player.phonograph.ui.theme.ThemeSettingsDelegate.primaryColor
+import player.phonograph.ui.theme.getTintedDrawable
+import player.phonograph.ui.theme.secondaryTextColorOn
+import player.phonograph.ui.theme.textColorOn
+import player.phonograph.ui.util.hideKeyboard
+import player.phonograph.ui.util.menuProvider
+import player.phonograph.ui.util.observe
+import util.theme.color.darkenColor
+import util.theme.view.searchview.setSearchViewContentColor
+import util.theme.view.toolbar.setToolbarColor
+import util.theme.view.toolbar.tintCollapseIcon
+import androidx.activity.viewModels
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
+import androidx.viewpager2.widget.ViewPager2
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.EditorInfo
+
+class SearchActivity : AbsSlidingMusicPanelActivity(), SearchView.OnQueryTextListener,
+                       ICreateFileStorageAccessible, IOpenFileStorageAccessible, IOpenDirStorageAccessible {
+
+    companion object {
+        private const val EXTRA_PAGE = "page"
+        fun launchingIntent(context: Context, page: String? = null): Intent =
+            Intent(context, SearchActivity::class.java).apply {
+                this.putExtra(EXTRA_PAGE, page)
+            }
+    }
+
+    private var viewBinding: ActivitySearchBinding? = null
+    val binding get() = viewBinding!!
+
+    private val viewModel: SearchActivityViewModel by viewModels()
+
+    override val createFileStorageAccessDelegate: CreateFileStorageAccessDelegate = CreateFileStorageAccessDelegate()
+    override val openFileStorageAccessDelegate: OpenFileStorageAccessDelegate = OpenFileStorageAccessDelegate()
+    override val openDirStorageAccessDelegate: OpenDirStorageAccessDelegate = OpenDirStorageAccessDelegate()
+
+    private lateinit var searchResultPageAdapter: SearchResultPageAdapter
+    private lateinit var mediator: TabLayoutMediator
+
+    private var searchView: SearchView? = null
+    private var isKeyboardVisible = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        viewBinding = ActivitySearchBinding.inflate(layoutInflater)
+
+        registerActivityResultLauncherDelegate(
+            createFileStorageAccessDelegate,
+            openFileStorageAccessDelegate,
+            openDirStorageAccessDelegate,
+        )
+
+        super.onCreate(savedInstanceState)
+
+        setUpToolBar()
+        setUpPager()
+
+        SystemBarsControllerDelegate.updateSystemBarsColor(this, darkenColor(primaryColor()), Color.TRANSPARENT)
+
+        observe(viewModel.query) { text -> searchView?.setQuery(text, false) }
+        observe(Settings(this@SearchActivity)[Keys.disableRealTimeSearch].flow) { disableRealTimeSearch = it }
+        lifecycle.addObserver(MediaStoreListener())
+        viewModel.start(this)
+    }
+
+    override fun createContentView(): View = wrapSlidingMusicPanel(binding.root)
+
+    private fun setUpPager() {
+        val primaryColor = primaryColor()
+        val accentColor = accentColor()
+        searchResultPageAdapter = SearchResultPageAdapter(this)
+        with(binding) {
+            with(pager) {
+                adapter = searchResultPageAdapter
+                orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                offscreenPageLimit = 1
+                for (view in children) {
+                    view.setOnTouchListener { view, _ ->
+                        if (isKeyboardVisible) {
+                            hideSoftKeyboard()
+                            true
+                        } else {
+                            view.performClick()
+                        }
+                    }
+                }
+            }
+            with(tabs) {
+                tabMode = TabLayout.MODE_SCROLLABLE
+                setTabTextColors(
+                    secondaryTextColorOn(this@SearchActivity, primaryColor()),
+                    textColorOn(this@SearchActivity, primaryColor)
+                )
+                setSelectedTabIndicatorColor(accentColor)
+            }
+            with(actionBarContainer) {
+                setBackgroundColor(primaryColor)
+            }
+        }
+        mediator = TabLayoutMediator(binding.tabs, binding.pager) { tab: TabLayout.Tab, i: Int ->
+            tab.text = getText(SearchType.entries[i].nameRes)
+        }
+        mediator.attach()
+        with(binding.config) {
+            setImageDrawable(
+                getTintedDrawable(
+                    R.drawable.ic_settings_white_24dp,
+                    textColorOn(this@SearchActivity, primaryColor)
+                )
+            )
+            setBackgroundDrawable(null)
+            setOnClickListener {
+                if (popup == null) {
+                    popup = SearchOptionsPopup(this@SearchActivity)
+                }
+                popup?.showAsDropDown(this)
+            }
+        }
+        with(binding.pager) {
+            val page = intent.getStringExtra(EXTRA_PAGE)
+            if (page != null) {
+                val target = searchResultPageAdapter.lookup(page)
+                setCurrentItem(target, false)
+                viewModel.switch(this@SearchActivity, SearchType.entries[target])
+            }
+            registerOnPageChangeCallback(pageChangeListener)
+        }
+    }
+
+    private val pageChangeListener = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            val selectedType = SearchType.entries[position]
+            viewModel.switch(this@SearchActivity, selectedType)
+        }
+    }
+
+    private fun setUpToolBar() {
+        setSupportActionBar(binding.toolbar)
+        binding.toolbar.setNavigationOnClickListener {
+            if (!isTaskRoot) onBackPressedDispatcher.onBackPressed()
+        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        addMenuProvider(menuProvider(this::setupMenu))
+        setToolbarColor(binding.toolbar, primaryColor())
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            isKeyboardVisible = windowInsets.isVisible(WindowInsetsCompat.Type.ime())
+            windowInsets
+        }
+    }
+
+    private fun setupMenu(menu: Menu) {
+        menuInflater.inflate(R.menu.menu_search, menu)
+
+        val searchItem = menu.findItem(R.id.search).apply {
+            expandActionView()
+            setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                    return true
+                }
+
+                override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                    if (isKeyboardVisible) {
+                        hideSoftKeyboard()
+                    } else {
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                    return false
+                }
+            })
+        }
+
+
+        searchView = (searchItem.actionView as SearchView).apply {
+            queryHint = getString(R.string.tips_search_hint)
+            maxWidth = Int.MAX_VALUE
+            imeOptions = EditorInfo.IME_ACTION_SEARCH
+            post {
+                setOnQueryTextListener(this@SearchActivity)
+            }
+        }
+
+        val textColor = textColorOn(this@SearchActivity, primaryColor())
+
+        binding.toolbar.tintCollapseIcon(textColor)
+        setSearchViewContentColor(searchView, textColor)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.pager.unregisterOnPageChangeCallback(pageChangeListener)
+    }
+
+    override fun onQueryTextSubmit(query: String): Boolean {
+        viewModel.submit(query)
+        hideSoftKeyboard()
+        return false
+    }
+
+    private var disableRealTimeSearch: Boolean = false
+    override fun onQueryTextChange(newText: String): Boolean {
+        if (!disableRealTimeSearch) {
+            viewModel.submit(newText)
+        }
+        return false
+    }
+
+    private fun hideSoftKeyboard() {
+        hideKeyboard(this)
+        searchView?.clearFocus()
+    }
+
+    private inner class MediaStoreListener :
+            EventHub.LifeCycleEventReceiver(this, EventHub.EVENT_MUSIC_LIBRARY_CHANGED) {
+        override fun onEventReceived(context: Context, intent: Intent) {
+            viewModel.refresh(this@SearchActivity)
+        }
+    }
+
+    private var popup: SearchOptionsPopup? = null
+
+    inner class SearchOptionsPopup private constructor(
+        private val popupBinding: PopupWindowSearchBinding,
+    ) : OptionsPopup(popupBinding) {
+
+        constructor(context: Context) : this(PopupWindowSearchBinding.inflate(LayoutInflater.from(context)))
+
+        override fun onShow() {
+            super.onShow()
+            prepareColors(contentView.context)
+            popupBinding.checkboxDisableRealTimeSearch.isChecked = disableRealTimeSearch
+            popupBinding.checkboxDisableRealTimeSearch.buttonTintList = widgetColor
+        }
+
+        override fun dismiss() {
+            super.dismiss()
+            disableRealTimeSearch = popupBinding.checkboxDisableRealTimeSearch.isChecked
+        }
+
+    }
+}

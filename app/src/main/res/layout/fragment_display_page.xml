@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/status_fragment"
+            android:name="player.phonograph.ui.modules.main.pages.StatusFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            tools:layout="@layout/fragment_display_page_status" />
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/main_content_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                app:layout_anchor="@+id/container"
+                app:layout_anchorGravity="center"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_new_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="64dp"
+        android:clickable="true"
+        android:contentDescription="@string/action_add"
+        android:focusable="true"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

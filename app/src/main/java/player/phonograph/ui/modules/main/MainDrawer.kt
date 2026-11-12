@@ -1,0 +1,271 @@
+/*
+ *  Copyright (c) 2022~2024 chr_56
+ */
+
+package player.phonograph.ui.modules.main
+
+import com.github.chr56.android.menu_dsl.attach
+import com.github.chr56.android.menu_dsl.menuItem
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import player.phonograph.ACTUAL_PACKAGE_NAME
+import player.phonograph.R
+import player.phonograph.foundation.Reboot
+import player.phonograph.foundation.concurrent.runOnMainHandler
+import player.phonograph.foundation.error.warning
+import player.phonograph.model.pages.PagesConfig
+import player.phonograph.model.service.ACTION_EXIT_OR_STOP
+import player.phonograph.model.service.ShuffleMode
+import player.phonograph.model.ui.GeneralTheme
+import player.phonograph.model.ui.GeneralTheme.Companion.THEME_BLACK
+import player.phonograph.model.ui.GeneralTheme.Companion.THEME_DARK
+import player.phonograph.model.ui.GeneralTheme.Companion.THEME_LIGHT
+import player.phonograph.repo.loader.Songs
+import player.phonograph.service.MusicService
+import player.phonograph.settings.Keys
+import player.phonograph.settings.Settings
+import player.phonograph.ui.navigateToAppDetailSetting
+import player.phonograph.ui.navigateToStorageSetting
+import player.phonograph.ui.actions.actionPlay
+import player.phonograph.ui.modules.auxiliary.AboutActivity
+import player.phonograph.ui.modules.auxiliary.DatabaseMaintenanceDialog
+import player.phonograph.ui.modules.setting.SettingsActivity
+import player.phonograph.ui.modules.web.WebSearchLauncher
+import player.phonograph.ui.resource.Icons
+import player.phonograph.ui.resource.Texts
+import player.phonograph.ui.theme.getTintedDrawable
+import player.phonograph.ui.theme.textColorPrimary
+import androidx.core.net.toUri
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
+import android.app.PendingIntent
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.os.Handler
+import android.os.Looper
+import android.view.Menu
+import kotlin.random.Random
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+
+/**
+ * inflate drawer menu
+ */
+fun setupDrawerMenu(
+    activity: FragmentActivity,
+    menu: Menu,
+    switchPageTo: (Int) -> Unit,
+    closeDrawer: () -> Unit,
+    pagesConfig: PagesConfig?,
+): Unit = with(activity) {
+    menu.clear()
+    attach(activity, menu) {
+
+        val textColorPrimary: Int = textColorPrimary(context)
+
+        // page chooser
+        if (pagesConfig != null) {
+            val mainGroupId = 999999
+            for ((page, tab) in pagesConfig.withIndex()) {
+                menuItem {
+                    groupId = mainGroupId
+                    icon = getTintedDrawable(Icons.page(tab), textColorPrimary)
+                    title = Texts.page(activity.resources, tab)
+                    itemId = 1000 + page
+                    onClick {
+                        closeDrawer()
+                        switchPageTo(page)
+                        true
+                    }
+                }
+            }
+            rootMenu.setGroupCheckable(mainGroupId, true, true)
+        }
+
+        // normal items
+        val groupIds = intArrayOf(0, 1, 2, 3)
+        val theme = Settings(context)[Keys.theme].data
+        if (theme != GeneralTheme.THEME_AUTO_LIGHTBLACK && theme != GeneralTheme.THEME_AUTO_LIGHTDARK) {
+            menuItem {
+                groupId = groupIds[1]
+                itemId = R.id.action_theme_toggle
+                icon = getTintedDrawable(R.drawable.ic_theme_switch_white_24dp, textColorPrimary)
+                titleRes(R.string.action_theme_switch)
+                onClick {
+                    activity.lifecycleScope.launch {
+                        if (toggleTheme(activity)) {
+                            withContext(Dispatchers.Main) { recreate() }
+                        }
+                    }
+                    true
+                }
+            }
+        }
+
+        menuItem {
+            groupId = groupIds[2]
+            itemId = R.id.action_shuffle_all
+            icon = getTintedDrawable(R.drawable.ic_shuffle_white_24dp, textColorPrimary)
+            titleRes(R.string.action_shuffle_all)
+            onClick {
+                closeDrawer()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val songs = Songs.all(activity)
+                    if (songs.isNotEmpty()) songs.actionPlay(ShuffleMode.SHUFFLE, Random.nextInt(songs.size))
+                }
+                true
+            }
+        }
+        menuItem {
+            groupId = groupIds[2]
+            itemId = R.id.action_scan
+            icon = getTintedDrawable(R.drawable.ic_scan_white_24dp, textColorPrimary)
+            titleRes(R.string.action_scan_media)
+            onClick {
+                closeDrawer()
+                ScanMediaDialog().show(activity.supportFragmentManager, null)
+                true
+            }
+        }
+
+        menuItem {
+            groupId = groupIds[3]
+            itemId = R.id.nav_settings
+            icon = getTintedDrawable(R.drawable.ic_settings_white_24dp, textColorPrimary)
+            titleRes(R.string.action_settings)
+            onClick {
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        startActivity(
+                            Intent(activity, SettingsActivity::class.java)
+                        )
+                    }, 200
+                )
+            }
+        }
+        menuItem {
+            groupId = groupIds[3]
+            itemId = R.id.nav_about
+            icon = getTintedDrawable(R.drawable.ic_help_white_24dp, textColorPrimary)
+            titleRes(R.string.action_about)
+            onClick {
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        startActivity(
+                            Intent(activity, AboutActivity::class.java)
+                        )
+                    }, 200
+                )
+            }
+        }
+
+
+        menuItem {
+            groupId = groupIds[3]
+            icon = getTintedDrawable(R.drawable.ic_more_vert_white_24dp, textColorPrimary)
+            titleRes(R.string.action_more)
+            onClick {
+                val items = listOf(
+                    activity.getString(R.string.label_database_maintenance) to {
+                        DatabaseMaintenanceDialog.create().show(activity.supportFragmentManager, "DATABASE_MAINTENANCE")
+                    },
+                    activity.getString(R.string.action_grant_storage_permission) to {
+                        navigateToStorageSetting(activity)
+                    },
+                    activity.getString(R.string.label_app_info) to {
+                        navigateToAppDetailSetting(activity)
+                    },
+                    activity.getString(R.string.action_reboot) to {
+                        Reboot.reboot(activity)
+                    },
+                    activity.getString(R.string.action_search_online) to {
+                        activity.startActivity(WebSearchLauncher.launchIntent(activity))
+                    },
+                    context.getString(R.string.action_view_external_files) to {
+                        viewFiles(activity)
+                    },
+                    context.getString(R.string.action_exit) to {
+                        val pendingIntent = PendingIntent.getService(
+                            context, 0,
+                            Intent(ACTION_EXIT_OR_STOP).apply {
+                                component = ComponentName(context, MusicService::class.java)
+                            }, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+                        )
+                        runOnMainHandler {
+                            pendingIntent.send()
+                            activity.finishAffinity()
+                        }
+                    },
+                )
+                MaterialAlertDialogBuilder(activity)
+                    .setTitle(R.string.action_more)
+                    .setItems(items.map { it.first }.toTypedArray()) { dialog, index ->
+                        dialog.dismiss()
+                        items[index].second.invoke()
+                    }
+                    .show()
+                true
+            }
+        }
+
+        for (id in groupIds) {
+            rootMenu.setGroupEnabled(id, true)
+            rootMenu.setGroupCheckable(id, false, false)
+        }
+    }
+
+}
+
+private suspend fun toggleTheme(context: Context): Boolean = withContext(Dispatchers.IO) {
+    val preference = Settings(context)[Keys.theme]
+    val oldTheme = preference.read()
+    val newTheme = when (oldTheme) {
+        THEME_DARK, THEME_BLACK -> THEME_LIGHT
+        THEME_LIGHT             -> THEME_DARK
+        else                    -> null
+    }
+    if (newTheme != null) {
+        preference.edit { newTheme }
+        true
+    } else {
+        false
+    }
+}
+
+
+private fun viewFiles(activity: FragmentActivity) {
+    val uri =
+        "content://com.android.externalstorage.documents/document/primary%3AAndroid%2Fdata%2F$ACTUAL_PACKAGE_NAME".toUri()
+    val activityName = "com.android.documentsui.files.FilesActivity"
+    try {
+        activity.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                uri
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                component = ComponentName(
+                    "com.android.documentsui",
+                    activityName,
+                )
+            }
+        )
+    } catch (_: Exception) {
+        try {
+            activity.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    uri
+                ).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                    component = ComponentName("com.google.android.documentsui", activityName)
+                }
+            )
+        } catch (e: Exception) {
+            warning(activity, "OpenDocumentsUi", "Failed to open Documents UI", e)
+        }
+    }
+}
+

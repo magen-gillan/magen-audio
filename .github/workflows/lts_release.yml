@@ -1,0 +1,107 @@
+name: lts_release
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "*LTS"
+    paths-ignore:
+      - '.github/**'
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        PRODUCT_VARIANT: [ ModernStableRelease, LegacyStableRelease ]
+    env:
+      RELEASE_KEYSTORE_FILE: ${{ github.workspace }}/signing-key.jdk
+      RELEASE_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      RELEASE_KEY_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+      RELEASE_KEY_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up JDK
+        uses: actions/setup-java@v6
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Recover Signing Keystore
+        run: |
+          bash ${{ github.workspace }}/scripts/recover_signing_key.sh \
+            --secrets-key "${{ secrets.KEYSTORE_FILE_BASE64 }}" \
+            --keystore-file "${RELEASE_KEYSTORE_FILE}"
+
+      - name: Prepare Gradlew
+        # just download gradle wrapper, start gradle daemon, make actual build logs clean
+        run: |
+          ./gradlew clean
+
+      - name: Build with Gradle
+        run: |
+          mkdir products
+          ./gradlew assemble${{ matrix.PRODUCT_VARIANT }} Publish${{ matrix.PRODUCT_VARIANT }} --stacktrace
+          echo "Artifacts: $(tree -aF ./products)"
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: Artifacts_${{ matrix.PRODUCT_VARIANT }}
+          path: |
+            products/${{ matrix.PRODUCT_VARIANT }}/*.apk
+            products/${{ matrix.PRODUCT_VARIANT }}/*.sha*
+            products/${{ matrix.PRODUCT_VARIANT }}/MagenAudio*.txt.gz
+          retention-days: 30
+
+      - name: Clean up
+        run: |
+          rm -r -v ./products/${{ matrix.PRODUCT_VARIANT }}
+
+  upload:
+    name: Release & Upload
+    runs-on: ubuntu-24.04
+    needs:
+      - build
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: products
+          pattern: Artifacts_*
+          merge-multiple: true
+
+      - name: Check Files
+        run: |
+          tree -aF ./products
+
+      - name: Release New Version
+        uses: softprops/action-gh-release@v3
+        id: release_github
+        # if: startsWith(github.ref, 'refs/tags/preview_')
+        with:
+          name: "LTS Release ${{ github.ref_name }}"
+          files: |
+            products/MagenAudio_*.apk
+            products/MagenAudio_*.apk.sha256
+            products/MagenAudio*.txt.gz
+          prerelease: false
+          draft: true
+          tag_name: ${{ github.ref }}
+          body: LTS Release - ${{ github.ref }}
+          body_path: ${{ github.workspace }}/GitHubReleaseNote.md
+          token: ${{ secrets.TOKEN }}

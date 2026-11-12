@@ -1,0 +1,154 @@
+/*
+ *  Copyright (c) 2022~2025 chr_56
+ */
+
+package player.phonograph.ui.modules.setting
+
+import player.phonograph.R
+import player.phonograph.foundation.compat.checkEqualizer
+import player.phonograph.foundation.compat.openEqualizer
+import player.phonograph.settings.Keys
+import player.phonograph.ui.modules.setting.components.BooleanPreference
+import player.phonograph.ui.modules.setting.components.DialogPreference
+import player.phonograph.ui.modules.setting.components.ExternalPreference
+import player.phonograph.ui.modules.setting.components.FloatPreference
+import player.phonograph.ui.modules.setting.components.SettingsGroup
+import player.phonograph.ui.modules.setting.dialog.ClickModeSettingDialog
+import player.phonograph.ui.modules.setting.dialog.ExternalPlayRequestSettingDialog
+import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
+import android.widget.Toast
+
+
+@Composable
+fun PreferenceScreenBehaviour() {
+    Column(
+        Modifier.verticalScroll(rememberScrollState())
+    ) {
+        SettingsGroup(titleRes = R.string.pref_header_audio) {
+            BooleanPreference(
+                key = Keys.audioDucking,
+                summaryRes = R.string.pref_summary_audio_ducking,
+                titleRes = R.string.pref_title_audio_ducking,
+            )
+            BooleanPreference(
+                key = Keys.resumeAfterAudioFocusGain,
+                summaryRes = R.string.pref_summary_resume_after_audio_focus_gain,
+                titleRes = R.string.pref_title_resume_after_audio_focus_gain,
+            )
+            BooleanPreference(
+                key = Keys.alwaysPlay,
+                summaryRes = R.string.pref_summary_always_play,
+                titleRes = R.string.pref_title_always_play,
+            )
+            EqualizerSetting()
+        }
+        SettingsGroup(titleRes = R.string.pref_header_interactions) {
+            DialogPreference(
+                dialog = ClickModeSettingDialog::class.java,
+                titleRes = R.string.pref_title_click_behavior,
+                summaryRes = R.string.pref_summary_click_behavior,
+                reset = {
+                    resetPreference(
+                        it,
+                        R.string.pref_title_click_behavior,
+                        Keys.songItemClickMode,
+                        Keys.songItemClickExtraFlag,
+                    )
+                }
+            )
+            DialogPreference(
+                dialog = ExternalPlayRequestSettingDialog::class.java,
+                titleRes = R.string.pref_title_external_play_request,
+                summaryRes = R.string.pref_summary_external_play_request,
+                reset = {
+                    resetPreference(
+                        it,
+                        R.string.pref_title_external_play_request,
+                        Keys.externalPlayRequestMultipleMode,
+                        Keys.externalPlayRequestSingleMode,
+                        Keys.externalPlayRequestShowPrompt,
+                        Keys.externalPlayRequestSilence,
+                    )
+                }
+            )
+        }
+        SettingsGroup(titleRes = R.string.pref_header_player_behaviour) {
+            BooleanPreference(
+                key = Keys.gaplessPlayback,
+                summaryRes = R.string.pref_summary_gapless_playback,
+                titleRes = R.string.pref_title_gapless_playback,
+            )
+            BooleanPreference(
+                key = Keys.stopOnTaskRemoved,
+                summaryRes = R.string.pref_summary_service_stop_on_task_removed,
+                titleRes = R.string.pref_title_service_stop_on_task_removed,
+            )
+            BooleanPreference(
+                key = Keys.broadcastCurrentPlayerState,
+                summaryRes = R.string.pref_summary_broadcast_current_player_state,
+                titleRes = R.string.pref_title_broadcast_current_player_state,
+            )
+            BooleanPreference(
+                key = Keys.autoSkipUnplayable,
+                summaryRes = R.string.pref_summary_auto_skip_unplayable_files,
+                titleRes = R.string.pref_title_auto_skip_unplayable_files,
+            )
+            FloatPreference(
+                key = Keys.seekJumpInterval,
+                titleRes = R.string.pref_title_seek_jump_interval,
+                summaryRes = R.string.pref_summary_seek_jump_interval,
+                valueRange = 5f..30f,
+                steps = 4
+            )
+            BooleanPreference(
+                key = Keys.enableHistory,
+                summaryRes = R.string.pref_summary_enable_history,
+                titleRes = R.string.pref_title_enable_history,
+            )
+        }
+        Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+    }
+}
+
+@Composable
+private fun EqualizerSetting() {
+    val activity = if (!LocalInspectionMode.current) LocalActivity.current else null
+    var hasEqualizer by remember { mutableStateOf(false) }
+    if (!LocalInspectionMode.current) {
+        LaunchedEffect(activity) {
+            val packageManager = activity?.packageManager
+            val resolveInfo = if (packageManager != null) checkEqualizer(packageManager) else null
+            hasEqualizer = resolveInfo != null
+        }
+    }
+
+    ExternalPreference(
+        titleRes = R.string.label_equalizer,
+        summaryRes = if (hasEqualizer) R.string.err_no_equalizer else 0
+    ) {
+        if (activity != null) {
+            if (!openEqualizer(activity)) {
+                Toast.makeText(
+                    activity,
+                    activity.resources.getString(R.string.err_no_equalizer),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+}

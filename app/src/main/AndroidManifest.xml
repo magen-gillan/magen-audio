@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="AllFilesAccessPolicy,ScopedStorage" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"
+        tools:ignore="ForegroundServicesPolicy" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupOnly="true"
+        android:hasFragileUserData="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
+        android:requestLegacyExternalStorage="true"
+        android:resizeableActivity="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Phonograph.Auto.LightBlack"
+        tools:ignore="UnusedAttribute">
+
+        <!--                                          -->
+        <!--               Activities                 -->
+        <!--                                          -->
+        <activity
+            android:name=".ui.modules.main.MainActivity"
+            android:exported="true">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true" />
+        </activity>
+        <activity
+            android:name=".ui.modules.auxiliary.LauncherActivity"
+            android:exported="true"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.modules.auxiliary.StarterActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/action_play"
+            android:theme="@style/Theme.Phonograph.StarterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.APP_MUSIC" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="content" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="application/ogg" />
+                <data android:mimeType="application/x-ogg" />
+                <data android:mimeType="application/itunes" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="file" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="application/ogg" />
+                <data android:mimeType="application/x-ogg" />
+                <data android:mimeType="application/itunes" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="application/ogg" />
+                <data android:mimeType="application/x-ogg" />
+                <data android:mimeType="application/itunes" />
+            </intent-filter>
+            <!--  TODO: AppLinkUrlError   -->
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.dir/playlist" />
+                <data android:mimeType="vnd.android.cursor.dir/albums" />
+                <data android:mimeType="vnd.android.cursor.dir/artists" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.cyanogenmod.eleven.AUDIO_PLAYER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="vnd.android.cursor.dir/audio" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.modules.auxiliary.PhonographIntroActivity"
+            android:exported="true"
+            android:label="@string/label_intro"
+            android:theme="@style/Theme.AppIntro">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true" />
+        </activity>
+        <activity
+            android:name=".ui.modules.album.AlbumDetailActivity"
+            android:label="@string/label_album" />
+        <activity
+            android:name=".ui.modules.artist.ArtistDetailActivity"
+            android:label="@string/label_artist" />
+        <activity
+            android:name=".ui.modules.genre.GenreDetailActivity"
+            android:label="@string/label_genre" />
+        <activity
+            android:name=".ui.modules.playlist.PlaylistDetailActivity"
+            android:label="@string/label_playlists" />
+        <activity
+            android:name="player.phonograph.ui.modules.playlist.dialogs.AddToPlaylistDialogActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/title_add_playlist"
+            android:theme="@style/Theme.Phonograph.DialogActivity.Auto" />
+        <activity
+            android:name="player.phonograph.ui.modules.playlist.dialogs.CreatePlaylistDialogActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/title_new_playlist"
+            android:theme="@style/Theme.Phonograph.DialogActivity.Auto" />
+        <activity
+            android:name="player.phonograph.ui.modules.playlist.dialogs.RenamePlaylistDialogActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/title_rename_playlist"
+            android:theme="@style/Theme.Phonograph.DialogActivity.Auto" />
+        <activity
+            android:name="player.phonograph.ui.modules.playlist.dialogs.ClearPlaylistDialogActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/action_clear"
+            android:theme="@style/Theme.Phonograph.DialogActivity.Auto" />
+        <activity
+            android:name=".ui.modules.tag.TagBrowserActivity"
+            android:exported="true"
+            android:label="@string/action_details"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.modules.tag.MultiTagBrowserActivity"
+            android:exported="true"
+            android:label="@string/action_details"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.modules.search.SearchActivity"
+            android:label="@string/action_search"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
+            android:name=".ui.modules.explorer.PathSelectorDialogActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/label_path_selector"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Phonograph.DialogActivity.Auto" />
+        <activity
+            android:name=".ui.modules.web.WebSearchActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.modules.setting.SettingsActivity"
+            android:exported="true"
+            android:label="@string/action_settings" />
+        <activity
+            android:name=".ui.modules.auxiliary.MigrationActivity"
+            android:exported="true"
+            android:label="@string/version_migration" />
+        <activity
+            android:name=".ui.modules.auxiliary.AboutActivity"
+            android:label="@string/action_about" />
+        <activity
+            android:name=".ui.modules.auxiliary.CrashActivity"
+            android:exported="true"
+            android:label="@string/title_crash"
+            android:launchMode="singleInstance"
+            android:process="player.phonograph.crash" />
+        <activity
+            android:name=".foundation.Reboot$RebootActivity"
+            android:launchMode="singleInstance"
+            android:process="player.phonograph.reboot" />
+
+
+        <!--                                          -->
+        <!--               service(s)                 -->
+        <!--                                          -->
+        <service
+            android:name=".service.MusicService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            android:icon="@mipmap/ic_launcher_foreground">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="false" />
+        </service>
+
+
+        <!--                                          -->
+        <!--                receivers                 -->
+        <!--                                          -->
+        <receiver
+            android:name=".service.util.MediaButtonIntentReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+        <!-- Widgets -->
+        <receiver
+            android:name=".ui.appwidgets.AppWidgetBig"
+            android:exported="false"
+            android:label="@string/app_widget_big_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_big_info" />
+        </receiver>
+        <receiver
+            android:name=".ui.appwidgets.AppWidgetClassic"
+            android:exported="false"
+            android:label="@string/app_widget_classic_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_classic_info" />
+        </receiver>
+        <receiver
+            android:name=".ui.appwidgets.AppWidgetSmall"
+            android:exported="false"
+            android:label="@string/app_widget_small_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_small_info" />
+        </receiver>
+        <receiver
+            android:name=".ui.appwidgets.AppWidgetCard"
+            android:exported="false"
+            android:label="@string/app_widget_card_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_card_info" />
+        </receiver>
+
+
+        <!--                                          -->
+        <!--                providers                 -->
+        <!--                                          -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
+        <!--                                          -->
+        <!--                metadata                  -->
+        <!--                                          -->
+
+        <meta-data
+            android:name="GitCommitHash"
+            android:value="${GIT_COMMIT_HASH}" />
+
+        <!-- multi windows support for legacy Samsung devices -->
+        <meta-data
+            android:name="com.samsung.android.sdk.multiwindow.multiinstance.enable"
+            android:value="true" />
+        <!-- multi windows support for legacy LG devices -->
+        <meta-data
+            android:name="com.lge.support.SPLIT_WINDOW"
+            android:value="true" />
+
+        <!-- Android Auto -->
+        <meta-data
+            android:name="androidx.car.app.TintableAttributionIcon"
+            android:resource="@mipmap/ic_launcher_foreground" />
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
+        <!-- XStatusBarLyric -->
+        <meta-data
+            android:name="XStatusBarLyric"
+            android:value="true" />
+
+    </application>
+
+</manifest>

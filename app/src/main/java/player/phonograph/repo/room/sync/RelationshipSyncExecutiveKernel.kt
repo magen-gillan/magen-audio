@@ -1,0 +1,642 @@
+/*
+ *  Copyright (c) 2022~2026 chr_56
+ */
+
+package player.phonograph.repo.room.sync
+
+import player.phonograph.mechanism.metadata.RelationshipResolver
+import player.phonograph.mechanism.metadata.RelationshipResolver.AccumulatedSongRelationship
+import player.phonograph.mechanism.metadata.RelationshipResolver.SongRelationship
+import player.phonograph.model.Song
+import player.phonograph.model.repo.sync.ProgressConnection
+import player.phonograph.model.repo.sync.DataSource
+import player.phonograph.model.repo.sync.SyncReport
+import player.phonograph.model.sort.SortMode
+import player.phonograph.model.sort.SortRef
+import player.phonograph.repo.room.converter.EntityConverter
+import player.phonograph.repo.room.entity.AlbumEntity
+import player.phonograph.repo.room.entity.ArtistEntity
+import player.phonograph.repo.room.entity.GenreEntity
+import player.phonograph.repo.room.entity.LinkageAlbumAndArtist
+import player.phonograph.repo.room.entity.LinkageGenreAndSong
+import player.phonograph.repo.room.entity.LinkageSongAndArtist
+import player.phonograph.repo.room.entity.LinkageSongAndArtist.Companion.ROLE_ALBUM_ARTIST
+import player.phonograph.repo.room.entity.LinkageSongAndArtist.Companion.ROLE_ARTIST
+import player.phonograph.repo.room.entity.LinkageSongAndArtist.Companion.ROLE_COMPOSER
+import player.phonograph.repo.room.entity.LinkageSongAndArtist.Companion.ROLE_FEATURE_ARTIST
+import player.phonograph.repo.room.entity.MediastoreSongEntity
+
+
+class RelationshipSyncExecutiveKernel(
+    private val musicDatabase: MusicDatabaseDataSink,
+    private val musicDataSource: DataSource,
+    private val relationshipResolver: RelationshipResolver,
+    private val withGenres: Boolean,
+    private val channel: ProgressConnection?,
+) {
+    private val songQueryDao = musicDatabase.SongQueryDao()
+    private val songManipulateDao = musicDatabase.SongManipulateDao()
+    private val albumQueryDao = musicDatabase.AlbumQueryDao()
+    private val albumManipulateDao = musicDatabase.AlbumManipulateDao()
+    private val artistQueryDao = musicDatabase.ArtistQueryDao()
+    private val artistManipulateDao = musicDatabase.ArtistManipulateDao()
+    private val genreQueryDao = musicDatabase.GenreQueryDao()
+    private val genreManipulateDao = musicDatabase.GenreManipulateDao()
+    private val relationshipQueryDao = musicDatabase.RelationshipQueryDao()
+    private val relationshipManipulateDao = musicDatabase.RelationshipManipulateDao()
+
+    // process
+    private var process: Int = 0
+    private var total: Int = 0
+
+
+    private fun onProcessUpdate(current: Int, total: Int, message: String? = null) {
+        if (message != null) {
+            channel?.onProcessUpdate(current, total, message)
+        } else {
+            channel?.onProcessUpdate(current, total)
+        }
+    }
+
+    suspend fun execute(): SyncReport {
+        // Stage I: Update or insert
+        val modified = stageRefresh()
+        // Stage II: Delete
+        val removed = stageClean()
+
+        return SyncReport(success = true, modified = modified, removed = removed)
+    }
+
+    /**
+     * Insert new ones or update modified ones
+     */
+    suspend fun stageRefresh(): Int {
+        val latestInDatabase = songQueryDao.latest()
+        val cutoff = latestInDatabase?.dateModified ?: 0
+
+        val newOrUpdated = musicDataSource.songs(timestamp = cutoff)
+        if (newOrUpdated.isNotEmpty()) doRefresh(newOrUpdated)
+
+        return newOrUpdated.size
+    }
+
+    private lateinit var relationships: List<SongRelationship>
+    private lateinit var affected: AccumulatedSongRelationship
+    private lateinit var affectedSongs: List<MediastoreSongEntity>
+    private lateinit var affectedArtists: List<ArtistEntity>
+    private lateinit var newArtistNames: List<String>
+    private lateinit var newArtists: List<ArtistEntity>
+    private lateinit var affectedAlbums: List<AlbumEntity>
+    private lateinit var newAlbumNames: Map<Long, String>
+    private lateinit var newAlbums: List<AlbumEntity>
+    private lateinit var modifiedAlbums: List<AlbumEntity>
+    private lateinit var genreMap: MutableMap<String, GenreEntity>
+    private lateinit var newGenres: MutableList<GenreEntity>
+    private lateinit var songToGenreMap: MutableMap<Long, List<String>>
+
+    private suspend fun doRefresh(newOrUpdated: List<Song>) {
+
+        onProcessUpdate(0, 1, "Reducing relationships")
+        relationships = newOrUpdated.map(relationshipResolver::solve)
+        affected = relationshipResolver.reduce(relationships)
+
+        process = 1
+        total = 1 + 5 + affected.albums.size * 2 + affected.artists.size * 2 + relationships.size * 3
+
+        onProcessUpdate(process, total, "Calculate relationships")
+
+        // Songs
+        affectedSongs = affected.songs.map(EntityConverter::fromSongModel)
+
+        // Artists
+        val artistsLookup = lookupExistedArtists(affected.artists, process, total)
+        affectedArtists = artistsLookup.first
+        newArtistNames = artistsLookup.second
+        process += affected.artists.size
+        newArtists = newArtistNames.map { name ->
+            ArtistEntity(artistId = name.hashCode().toLong(), artistName = name)
+        }
+
+        val artistNameToId: Map<String, Long> =
+            (affectedArtists + newArtists).associate { it.artistName to it.artistId }
+
+        // Albums
+        val relationshipsByAlbumId: Map<Long, List<SongRelationship>> =
+            relationships.groupBy { it.albumId }
+        val relationshipsByAlbumName: Map<String, List<SongRelationship>> =
+            relationships.filter { it.albumName != null }.groupBy { it.albumName!! }
+
+        val albumsLookup = lookupExistedAlbums(affected.albums, process, total)
+        affectedAlbums = albumsLookup.first
+        newAlbumNames = albumsLookup.second
+        process += affected.albums.size
+        newAlbums = createNewAlbums(
+            newAlbumNames, artistNameToId, relationshipsByAlbumId, process, total
+        )
+        process += newAlbumNames.size
+        modifiedAlbums = modifyAlbums(
+            affectedAlbums, artistNameToId, relationshipsByAlbumId, relationshipsByAlbumName, process, total
+        )
+        process += affectedAlbums.size
+
+        // LinkageAlbumAndArtist
+        val (linkageSongAndArtists, linkageAlbumAndArtists) =
+            createLinkages(relationships, artistNameToId, process, total)
+        process += relationships.size
+
+        // Genres
+        onProcessUpdate(process, total, "Analyzing Genres")
+        if (withGenres) { // Genres are optional for sync
+            genreMap =
+                genreQueryDao.all(SortMode(SortRef.MODIFIED_DATE, true))
+                    .associateBy { it.name }
+                    .toMutableMap()
+            newGenres = mutableListOf()
+            songToGenreMap = mutableMapOf()
+            analyzeGenres(newOrUpdated, songToGenreMap, genreMap, newGenres, process, total)
+        }
+        process += newOrUpdated.size
+
+        musicDatabase.withTransaction {
+            onProcessUpdate(process, total, "Write all affected items")
+            // Step I: Songs registry
+            songManipulateDao.update(affectedSongs)
+            process += 1
+
+            // Step II: Artists registry
+            artistManipulateDao.update(newArtists)
+            process += 1
+
+            // Step III: Albums registry
+            albumManipulateDao.update(newAlbums)
+            albumManipulateDao.update(modifiedAlbums)
+            process += 1
+
+            // Step IV: Cross-reference registry
+            relationshipManipulateDao.overrideAlbumArtists(linkageAlbumAndArtists)
+            process += 1
+
+            relationshipManipulateDao.overrideArtistSongs(linkageSongAndArtists)
+            process += 1
+
+            // Step V: counter updating
+            onProcessUpdate(process, total, "Update artist songs/album counters")
+            for (artist in newArtists + affectedArtists) {
+                process += 1
+                val artistId = artist.artistId
+                artistManipulateDao.updateCounter(
+                    queryDao = artistQueryDao,
+                    artistId = artistId,
+                    songCount = artistQueryDao.artistSongCount(artistId),
+                    albumCount = artistQueryDao.artistAlbumCount(artistId),
+                )
+                if (process % PBI == 0)
+                    onProcessUpdate(process, total, "Update artist songs/album counters")
+            }
+
+            if (withGenres) {
+                // Step VI: Genres update
+                onProcessUpdate(process, total, "Update all affected genres")
+                for (newGenre in newGenres) {
+                    // insert new Genres and update genre map with concrete id
+                    val newId = genreManipulateDao.update(newGenre)
+                    // Update map with the concrete DB ID for linkage
+                    genreMap[newGenre.name] = newGenre.copy(id = newId)
+                }
+
+                // Step VII: Genres song relationships
+                val affectedGenreIds = mutableSetOf<Long>()
+                val updatedSongIds = newOrUpdated.map { it.id }
+                val newGenreLinkages = mutableListOf<LinkageGenreAndSong>()
+                for (song in newOrUpdated) {
+                    onProcessUpdate(process, total, "Analyzing genre-songs relationship")
+                    // Build new linkages
+                    val genreNames = songToGenreMap[song.id] ?: emptyList()
+                    for (name in genreNames) {
+                        val genreEntity = genreMap[name]
+                        if (genreEntity != null) {
+                            newGenreLinkages.add(LinkageGenreAndSong(genreEntity.id, song.id))
+                            affectedGenreIds.add(genreEntity.id) // for updating counter
+                        }
+                    }
+                    process += 1
+                }
+                onProcessUpdate(process, total, "Update genre-songs relationships")
+                if (updatedSongIds.isNotEmpty()) relationshipManipulateDao.removeSongs(updatedSongIds)
+                if (newGenreLinkages.isNotEmpty()) relationshipManipulateDao.overrideGenreSongs(newGenreLinkages)
+
+                // Step VII: Genres song counter
+                onProcessUpdate(process, total, "Update genre-songs counter")
+                for (genreId in affectedGenreIds) {
+                    val count = relationshipQueryDao.songIdsOfGenre(genreId).size
+                    genreManipulateDao.updateCounter(genreQueryDao, genreId, count)
+                }
+            } // withGenre
+        }
+        onProcessUpdate(total, total, "All done")
+    }
+
+    private suspend fun lookupExistedArtists(
+        artists: Set<String?>,
+        process: Int,
+        total: Int,
+    ): Pair<List<ArtistEntity>, List<String>> {
+        onProcessUpdate(process, total, "Compare with existed artists")
+        val targetArtistNames = artists.filterNotNull().filterNot(String::isEmpty)
+        if (targetArtistNames.isEmpty()) {
+            return emptyList<ArtistEntity>() to emptyList()
+        }
+        if (artistQueryDao.count() == 0) {
+            // Create for first time, all are new
+            val empty = emptyList<ArtistEntity>()
+            val all = targetArtistNames.toList()
+            onProcessUpdate(process + artists.size, total, "No artists")
+            return empty to all
+        } else {
+            val existedByName = artistQueryDao.named(targetArtistNames).associateBy { it.artistName }
+            val affectedArtists = mutableListOf<ArtistEntity>()
+            val newArtistNames = mutableListOf<String>()
+            var subprocess = 0
+            for (name in artists) {
+                subprocess += 1
+                if (name.isNullOrEmpty()) continue
+                val searched = existedByName[name]
+                if (searched != null) {
+                    affectedArtists.add(searched)
+                } else {
+                    newArtistNames.add(name)
+                }
+                if (subprocess % PBI == 0)
+                    onProcessUpdate(process + subprocess, total, "Compare with existed artists")
+            }
+            return affectedArtists.toList() to newArtistNames.toList()
+        }
+    }
+
+    private suspend fun lookupExistedAlbums(
+        albums: Map<Long, String?>,
+        process: Int,
+        total: Int,
+    ): Pair<List<AlbumEntity>, Map<Long, String>> {
+        onProcessUpdate(process, total, "Compare with existed albums")
+        if (albums.isEmpty()) {
+            return emptyList<AlbumEntity>() to emptyMap()
+        }
+        if (albumQueryDao.count() == 0) {
+            // Create for first time, all are new
+            val empty = emptyList<AlbumEntity>()
+            val all = albums.mapValues { it.value.orEmpty() }
+            onProcessUpdate(process + albums.size, total, "No albums")
+            return empty to all
+        } else {
+            val existedById = albumQueryDao.ids(albums.keys).associateBy { it.albumId }
+            val affectedAlbums = mutableListOf<AlbumEntity>()
+            val newAlbumNames = mutableMapOf<Long, String>()
+            var subprocess = 0
+            for ((id, name) in albums) {
+                subprocess += 1
+                if (name.isNullOrEmpty()) continue
+                val searched = existedById[id]
+                if (searched != null) {
+                    affectedAlbums.add(searched)
+                } else {
+                    newAlbumNames.put(id, name)
+                }
+                if (subprocess % PBI == 0)
+                    onProcessUpdate(process + subprocess, total, "Compare with existed albums")
+            }
+            return affectedAlbums.toList() to newAlbumNames.toMap()
+        }
+    }
+
+    private suspend fun analyzeGenres(
+        newOrUpdated: List<Song>,
+        songToGenreMap: MutableMap<Long, List<String>>,
+        genreNameMap: MutableMap<String, GenreEntity>,
+        newGenresToInsert: MutableList<GenreEntity>,
+        process: Int,
+        total: Int,
+    ) {
+        val genresBySong = musicDataSource.songGenres(newOrUpdated.map { it.id })
+        for ((index, song) in newOrUpdated.withIndex()) {
+            val genres = genresBySong[song.id] ?: emptyList()
+            val splitNamesForSong = mutableSetOf<String>()
+
+            for (genre in genres) {
+                // Split the raw genre string (e.g. "Pop, Rock")
+                val splitNames = relationshipResolver.split(genre)
+
+                for (realName in splitNames) {
+                    if (realName.isBlank()) continue
+
+                    if (!genreNameMap.containsKey(realName)) {
+                        val entity = GenreEntity(
+                            id = 0, name = realName, mediastoreId = genre.id
+                        )
+                        newGenresToInsert.add(entity)
+                        genreNameMap[realName] = entity // Prevent duplicate "new" entities
+                    }
+                    splitNamesForSong.add(realName)
+                }
+            }
+            songToGenreMap[song.id] = splitNamesForSong.toList()
+            if (index % PBI == 0) onProcessUpdate(process + index, total, "Analyzing Genres")
+        }
+    }
+
+    private fun createNewAlbums(
+        newAlbumNames: Map<Long, String>,
+        artistNameToId: Map<String, Long>,
+        relationshipsByAlbumId: Map<Long, List<SongRelationship>>,
+        process: Int,
+        total: Int,
+    ): List<AlbumEntity> {
+        var subprocess = 0
+        onProcessUpdate(process, total, "Create new albums")
+        return newAlbumNames.map { (id, name) ->
+            subprocess += 1
+            val albumSongs = relationshipsByAlbumId[id] ?: emptyList()
+            if (subprocess % PBI == 0) onProcessUpdate(process + subprocess, total, "Create new albums")
+            createNewAlbum(albumSongs, artistNameToId, id, name)
+        }
+    }
+
+    private fun createNewAlbum(
+        albumSongs: List<SongRelationship>,
+        artistNameToId: Map<String, Long>,
+        id: Long,
+        name: String,
+    ): AlbumEntity {
+        val year = albumSongs.maxOf { it.song.year }
+        val dateModified = albumSongs.maxOf { it.song.dateModified }
+        val candidateArtistList =
+            albumSongs.flatMap { it.albumArtists }.ifEmpty { albumSongs.flatMap { it.defaultArtists } }
+        val candidateArtist = candidateArtistList.firstOrNull().orEmpty()
+        val artistId = artistNameToId[candidateArtist] ?: 0
+        return AlbumEntity(
+            albumId = id,
+            albumName = name,
+            artistId = artistId,
+            albumArtistName = candidateArtist,
+            year = year,
+            dateModified = dateModified,
+            songCount = albumSongs.size
+        )
+    }
+
+    private fun modifyAlbums(
+        affectedAlbums: List<AlbumEntity>,
+        artistNameToId: Map<String, Long>,
+        relationshipsByAlbumId: Map<Long, List<SongRelationship>>,
+        relationshipsByAlbumName: Map<String, List<SongRelationship>>,
+        process: Int,
+        total: Int,
+    ): List<AlbumEntity> {
+        var subprocess = 0
+        onProcessUpdate(process, total, "Refresh existed albums")
+        return affectedAlbums.map { album ->
+            subprocess += 1
+            val byId = relationshipsByAlbumId[album.albumId].orEmpty()
+            val byName = album.albumName.let { relationshipsByAlbumName[it].orEmpty() }
+            val albumSongs = if (byName.isEmpty()) byId else (byId + byName).distinct()
+            modifyAlbum(album, albumSongs, artistNameToId).also {
+                if (subprocess % PBI == 0) onProcessUpdate(process + subprocess, total, "Refresh existed albums")
+            }
+        }
+    }
+
+    private fun modifyAlbum(
+        album: AlbumEntity,
+        newAlbumSongs: List<SongRelationship>,
+        artistNameToId: Map<String, Long>,
+    ): AlbumEntity {
+        var year = album.year
+        var dateModified = album.dateModified
+        val updateAlbumArtist = album.albumArtistName.isEmpty() || album.artistId <= 0
+        var albumArtistName: String? = null
+
+        for (songRelationship in newAlbumSongs) {
+            if (songRelationship.song.year > year) year = songRelationship.song.year
+            if (songRelationship.song.dateModified > dateModified) dateModified = songRelationship.song.dateModified
+            if (updateAlbumArtist || albumArtistName == null) {
+                albumArtistName =
+                    songRelationship.albumArtists.firstOrNull() ?: songRelationship.defaultArtists.firstOrNull()
+            }
+        }
+        return if (albumArtistName != null) {
+            album.copy(
+                year = year,
+                dateModified = dateModified,
+                songCount = album.songCount + newAlbumSongs.size,
+                albumArtistName = albumArtistName,
+                artistId = artistNameToId[albumArtistName] ?: 0,
+            )
+        } else {
+            album.copy(
+                year = year,
+                dateModified = dateModified,
+                songCount = album.songCount + newAlbumSongs.size
+            )
+        }
+    }
+
+    private fun createLinkages(
+        relationships: List<SongRelationship>,
+        artistNameToId: Map<String, Long>,
+        process: Int,
+        total: Int,
+    ): Pair<List<LinkageSongAndArtist>, List<LinkageAlbumAndArtist>> {
+        onProcessUpdate(process, total, "Create relationships")
+        val linkageSongAndArtists = mutableListOf<LinkageSongAndArtist>()
+        val linkageAlbumAndArtists = mutableListOf<LinkageAlbumAndArtist>()
+        var subprocess = 0
+        for (relationship in relationships) {
+            subprocess += 1
+            linkageAlbumAndArtists.addAll(
+                relationship.artists.map { name ->
+                    LinkageAlbumAndArtist(
+                        albumId = relationship.albumId,
+                        artistId = artistNameToId[name] ?: 0
+                    )
+                }
+            )
+            linkageSongAndArtists.addAll(
+                relationship.albumArtists.map { name ->
+                    LinkageSongAndArtist(
+                        songId = relationship.song.id,
+                        artistId = artistNameToId[name] ?: 0,
+                        role = ROLE_ALBUM_ARTIST,
+                    )
+                }
+            )
+            linkageSongAndArtists.addAll(
+                relationship.defaultArtists.map { name ->
+                    LinkageSongAndArtist(
+                        songId = relationship.song.id,
+                        artistId = artistNameToId[name] ?: 0,
+                        role = ROLE_ARTIST,
+                    )
+                }
+            )
+            linkageSongAndArtists.addAll(
+                relationship.composerArtists.map { name ->
+                    LinkageSongAndArtist(
+                        songId = relationship.song.id,
+                        artistId = artistNameToId[name] ?: 0,
+                        role = ROLE_COMPOSER,
+                    )
+                }
+            )
+            linkageSongAndArtists.addAll(
+                relationship.featureArtists.map { name ->
+                    LinkageSongAndArtist(
+                        songId = relationship.song.id,
+                        artistId = artistNameToId[name] ?: 0,
+                        role = ROLE_FEATURE_ARTIST,
+                    )
+                }
+            )
+
+
+            if (subprocess % PBI == 0)
+                onProcessUpdate(process + subprocess, total, "Create relationships")
+        }
+        return linkageSongAndArtists.toList() to linkageAlbumAndArtists.toList()
+    }
+
+    /**
+     * Remove deleted ones
+     */
+    suspend fun stageClean(): Int {
+        val existedCount = songQueryDao.total()
+        val songCount = musicDataSource.songCount()
+        val deleted = if (songCount != existedCount) doClean() else 0
+        return deleted
+    }
+
+    private suspend fun doClean(): Int {
+        val allSize = songQueryDao.total()
+
+        process = 0
+        total = 3 + allSize
+
+        onProcessUpdate(0, total, "Find deleted songs")
+        // Firstly search missing
+        val allIdsInDatabase = songQueryDao.allIds()
+        process += 1
+
+        val allInMediastore = musicDataSource.songIds()
+        process += 1
+
+        val missingSongIds = mutableListOf<Long>()
+        for ((index, id) in allIdsInDatabase.withIndex()) {
+            if (id !in allInMediastore) {
+                missingSongIds.add(id)
+            }
+            if (index % PBI == 0) onProcessUpdate(process + index, total, "Find deleted songs")
+        }
+        val missingEntities = if (missingSongIds.isNotEmpty()) songQueryDao.ids(missingSongIds) else emptyList()
+        process += allSize
+
+        onProcessUpdate(process, total, "Check relationships")
+        // And relationships
+        val allArtistRelationships: MutableList<LinkageSongAndArtist> = mutableListOf()
+        val allAffectedArtists: MutableSet<Long> = mutableSetOf()
+        val allAffectedAlbums: MutableSet<Long> = mutableSetOf()
+
+        val allGenreRelationships: MutableList<LinkageGenreAndSong> = mutableListOf()
+        val allAffectedGenres: MutableSet<Long> = mutableSetOf()
+
+        if (missingSongIds.isNotEmpty()) {
+            val artistRelationships = relationshipQueryDao.artistsOfSongs(missingSongIds)
+            allArtistRelationships.addAll(artistRelationships)
+            allAffectedArtists.addAll(artistRelationships.map { it.artistId })
+
+            val albumIds = missingEntities.map { it.albumId }.toSet()
+            if (albumIds.isNotEmpty()) {
+                allAffectedAlbums.addAll(albumQueryDao.ids(albumIds).map { it.albumId })
+            }
+
+            if (withGenres) {
+                val genreRelationships = relationshipQueryDao.genresOfSongs(missingSongIds)
+                allGenreRelationships.addAll(genreRelationships)
+                allAffectedGenres.addAll(genreRelationships.map { it.genreId })
+            }
+        }
+        process += 1
+        onProcessUpdate(process, total, "Check relationships")
+
+        total += 1 + allAffectedArtists.size * 2 + allAffectedAlbums.size + allAffectedGenres.size // update total
+
+        // Then actual deletion
+        musicDatabase.withTransaction {
+            // Step I: Songs
+            onProcessUpdate(process, total, "Remove deleted songs")
+            songManipulateDao.delete(missingEntities)
+            process += 1
+
+            // Step II: Artists relationship & song count
+            relationshipManipulateDao.removeArtistSongs(allArtistRelationships)
+            val deletedArtistIds: MutableSet<Long> = mutableSetOf()
+            for (artistId in allAffectedArtists) {
+                if (process % PBI == 0) onProcessUpdate(process, total, "Remove or update artists")
+                process += 1
+                val songCount = artistQueryDao.artistSongCount(artistId)
+                if (songCount <= 0) {
+                    artistManipulateDao.delete(artistQueryDao, artistId)
+                    deletedArtistIds.add(artistId)
+                } else {
+                    artistManipulateDao.updateCounter(queryDao = artistQueryDao, artistId = artistId, songCount = songCount)
+                }
+            }
+            if (deletedArtistIds.isNotEmpty()) relationshipManipulateDao.removeArtists(deletedArtistIds)
+
+            // Step III: Albums song count
+            val deletedAlbumIds: MutableSet<Long> = mutableSetOf()
+            for (albumId in allAffectedAlbums) {
+                if (process % PBI == 0) onProcessUpdate(process, total, "Remove or update albums")
+                process += 1
+                val songCount = albumQueryDao.albumSongCount(albumId)
+                if (songCount <= 0) {
+                    albumManipulateDao.delete(albumQueryDao, albumId)
+                    deletedAlbumIds.add(albumId)
+                } else {
+                    albumManipulateDao.updateCounter(queryDao = albumQueryDao, albumId = albumId, songCount = songCount)
+                }
+            }
+            if (deletedAlbumIds.isNotEmpty()) relationshipManipulateDao.removeAlbums(deletedAlbumIds)
+
+            // Step IV: Artists album count
+            for (artistId in allAffectedArtists) {
+                if (process % PBI == 0) onProcessUpdate(process, total, "Recounting artist albums")
+                process += 1
+                val albumCount = artistQueryDao.artistAlbumCount(artistId)
+                artistManipulateDao.updateCounter(queryDao = artistQueryDao, artistId = artistId, albumCount = albumCount)
+            }
+
+            // Step V: Genres & their relationships
+            if (withGenres) {
+                relationshipManipulateDao.removeGenreSongs(allGenreRelationships)
+                for (genreId in allAffectedGenres) {
+                    if (process % PBI == 0) onProcessUpdate(process, total, "Remove or update genres")
+                    process += 1
+
+                    // Recount or delete if empty
+                    val count = relationshipQueryDao.songIdsOfGenre(genreId).size
+                    if (count <= 0) {
+                        genreManipulateDao.delete(genreQueryDao, genreId)
+                    } else {
+                        genreManipulateDao.updateCounter(genreQueryDao, genreId, count)
+                    }
+                }
+            }
+        }
+        onProcessUpdate(total, total, "All done")
+
+        return missingEntities.size
+    }
+
+    companion object {
+        private const val PBI = 32 // Progress bump interval
+    }
+}

@@ -1,0 +1,195 @@
+/*
+ *  Copyright (c) 2022~2024 chr_56
+ */
+
+package player.phonograph.mechanism.playlist
+
+import player.phonograph.R
+import player.phonograph.foundation.concurrent.coroutineToast
+import player.phonograph.foundation.mediastore.mediastoreUriPlaylist
+import player.phonograph.foundation.mediastore.mediastoreUriPlaylistMembers
+import player.phonograph.mechanism.event.EventHub
+import player.phonograph.mechanism.playlist.m3u.SAFPlaylistUtil
+import player.phonograph.model.Song
+import player.phonograph.model.playlist.DatabasePlaylistLocation
+import player.phonograph.model.playlist.FilePlaylistLocation
+import player.phonograph.model.playlist.PLAYLIST_TYPE_FAVORITE
+import player.phonograph.model.playlist.PLAYLIST_TYPE_HISTORY
+import player.phonograph.model.playlist.PLAYLIST_TYPE_LAST_ADDED
+import player.phonograph.model.playlist.PLAYLIST_TYPE_MY_TOP_TRACK
+import player.phonograph.model.playlist.PLAYLIST_TYPE_RANDOM
+import player.phonograph.model.playlist.Playlist
+import player.phonograph.model.playlist.PlaylistProcessor
+import player.phonograph.model.playlist.PlaylistReader
+import player.phonograph.model.playlist.PlaylistWriter
+import player.phonograph.model.playlist.VirtualPlaylistLocation
+import player.phonograph.repo.database.domain.DynamicTracks
+import player.phonograph.repo.loader.FavoriteTracks
+import player.phonograph.repo.loader.Songs
+import player.phonograph.repo.mediastore.MediaStorePlaylists
+import player.phonograph.repo.mediastore.MediaStorePlaylistsActions
+import player.phonograph.repo.room.MusicDatabase
+import player.phonograph.repo.room.domain.RoomPlaylists
+import player.phonograph.repo.room.domain.RoomPlaylistsActions
+import player.phonograph.settings.Keys
+import player.phonograph.settings.Settings
+import android.content.Context
+import android.net.Uri
+
+object PlaylistSongsActions {
+
+    fun reader(playlist: Playlist): PlaylistReader = of(playlist) as PlaylistReader
+    fun writer(playlist: Playlist, preferSAF: Boolean = true): PlaylistWriter? =
+        of(playlist, preferSAF) as? PlaylistWriter
+
+    private fun of(playlist: Playlist, preferSAF: Boolean = true): PlaylistProcessor =
+        when (val location = playlist.location) {
+            is FilePlaylistLocation     -> FilePlaylistProcessor.by(location, preferSAF)
+            is DatabasePlaylistLocation -> DatabasePlaylistProcessor(location)
+            is VirtualPlaylistLocation  -> when (location.type) {
+                PLAYLIST_TYPE_FAVORITE     -> FavoriteSongsPlaylistProcessor
+                PLAYLIST_TYPE_LAST_ADDED   -> LastAddedPlaylistProcessor
+                PLAYLIST_TYPE_HISTORY      -> HistoryPlaylistProcessor
+                PLAYLIST_TYPE_MY_TOP_TRACK -> MyTopTracksPlaylistProcessor
+                PLAYLIST_TYPE_RANDOM       -> ShuffleAllPlaylistProcessor
+                else                       -> throw RuntimeException("Unsupported playlist type: ${location.type}")
+            }
+        }
+
+}
+
+private sealed class FilePlaylistProcessor(val location: FilePlaylistLocation) : PlaylistReader, PlaylistWriter {
+
+    fun playlistUri(): Uri = mediastoreUriPlaylist(location.storageVolume, location.mediastoreId)
+    fun playlistMembersUri(): Uri = mediastoreUriPlaylistMembers(location.storageVolume, location.mediastoreId)
+
+    override suspend fun allSongs(context: Context): List<Song> =
+        MediaStorePlaylists.songs(context, location).map { it.song }
+
+    override suspend fun containsSong(context: Context, songId: Long): Boolean =
+        MediaStorePlaylists.contains(context, location, songId)
+
+    override suspend fun removeSong(context: Context, song: Song, index: Long): Boolean =
+        MediaStorePlaylistsActions.removeSong(context, playlistMembersUri(), song.id, index)
+
+    override suspend fun moveSong(context: Context, from: Int, to: Int): Boolean =
+        MediaStorePlaylistsActions.moveSong(context, playlistUri(), from, to)
+
+    override suspend fun rename(context: Context, newName: String): Boolean =
+        MediaStorePlaylistsActions.rename(context, playlistUri(), newName)
+
+    override suspend fun appendSong(context: Context, song: Song) = appendSongImpl(context, listOf(song))
+
+    override suspend fun appendSongs(context: Context, songs: List<Song>) = appendSongImpl(context, songs)
+
+    abstract suspend fun appendSongImpl(context: Context, songs: List<Song>)
+
+    private class MediaStoreImplementation(location: FilePlaylistLocation) : FilePlaylistProcessor(location) {
+        override suspend fun appendSongImpl(context: Context, songs: List<Song>) {
+            MediaStorePlaylistsActions.amendSongs(context, playlistUri(), songs)
+        }
+    }
+
+    private class SafImplementation(location: FilePlaylistLocation) : FilePlaylistProcessor(location) {
+        override suspend fun appendSongImpl(context: Context, songs: List<Song>) {
+            coroutineToast(context, R.string.tips_open_file_with_saf)
+            SAFPlaylistUtil.appendPlaylist(context, location.path, songs)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun by(location: FilePlaylistLocation, useSaf: Boolean): FilePlaylistProcessor =
+            if (useSaf) SafImplementation(location) else MediaStoreImplementation(location)
+    }
+
+}
+
+private class DatabasePlaylistProcessor(val location: DatabasePlaylistLocation) : PlaylistReader, PlaylistWriter {
+    private val database get() = MusicDatabase.koinInstance
+    private val id get() = location.databaseId
+
+    override suspend fun allSongs(context: Context): List<Song> =
+        RoomPlaylists.songs(context, location).map { it.song }
+
+    override suspend fun containsSong(context: Context, songId: Long): Boolean =
+        RoomPlaylists.contains(context, location, songId)
+
+    override suspend fun removeSong(context: Context, song: Song, index: Long): Boolean =
+        RoomPlaylistsActions.removeSong(database, id, song.id, index.toInt())
+
+    override suspend fun moveSong(context: Context, from: Int, to: Int): Boolean =
+        RoomPlaylistsActions.moveSong(database, id, from, to)
+
+    override suspend fun appendSong(context: Context, song: Song) {
+        RoomPlaylistsActions.amendSongs(database, id, listOf(song))
+    }
+
+    override suspend fun appendSongs(context: Context, songs: List<Song>) {
+        RoomPlaylistsActions.amendSongs(database, id, songs)
+    }
+
+    override suspend fun rename(context: Context, newName: String): Boolean =
+        RoomPlaylistsActions.rename(database, id, newName)
+}
+
+private data object FavoriteSongsPlaylistProcessor : PlaylistReader, PlaylistWriter {
+
+    override suspend fun allSongs(context: Context): List<Song> =
+        FavoriteTracks.all(context)
+
+    override suspend fun containsSong(context: Context, songId: Long): Boolean {
+        val song = Songs.id(context, songId) ?: return false
+        return FavoriteTracks.isFavorite(context, song)
+    }
+
+    override suspend fun removeSong(context: Context, song: Song, index: Long): Boolean =
+        FavoriteTracks.remove(context, song)
+
+    override suspend fun appendSong(context: Context, song: Song) {
+        FavoriteTracks.add(context, song)
+        EventHub.sendEvent(context, EventHub.EVENT_FAVORITES_CHANGED)
+    }
+
+    override suspend fun appendSongs(context: Context, songs: List<Song>) {
+        for (song in songs) FavoriteTracks.add(context, song)
+        EventHub.sendEvent(context, EventHub.EVENT_FAVORITES_CHANGED)
+    }
+
+    override suspend fun moveSong(context: Context, from: Int, to: Int): Boolean = false
+}
+
+private data object HistoryPlaylistProcessor : PlaylistReader {
+    override suspend fun allSongs(context: Context): List<Song> = DynamicTracks.RecentTracks.all(context)
+
+    override suspend fun containsSong(context: Context, songId: Long): Boolean = false //todo
+
+}
+
+private data object LastAddedPlaylistProcessor : PlaylistReader {
+
+    override suspend fun allSongs(context: Context): List<Song> =
+        Songs.since(context, Settings(context)[Keys.lastAddedCutoffTimeStamp].data / 1000)
+
+    override suspend fun containsSong(context: Context, songId: Long): Boolean =
+        allSongs(context).find { it.id == songId } != null
+
+}
+
+private data object MyTopTracksPlaylistProcessor : PlaylistReader {
+
+
+    override suspend fun allSongs(context: Context): List<Song> = DynamicTracks.TopTracks.all(context)
+
+    override suspend fun containsSong(context: Context, songId: Long): Boolean = false // todo
+
+    override suspend fun refresh(context: Context) = DynamicTracks.TopTracks.refresh(context)
+
+}
+
+private data object ShuffleAllPlaylistProcessor : PlaylistReader {
+    override suspend fun allSongs(context: Context): List<Song> = Songs.all(context)
+    override suspend fun containsSong(context: Context, songId: Long): Boolean = true
+}
+
+private const val TAG = "PlaylistProcessors"

@@ -1,0 +1,73 @@
+name: Crash Report
+description: Report serious bugs, like crashes
+title: "[Crash Report] "
+labels: [ "Bug", "Crash" ]
+
+body:
+  - type: textarea
+    id: crash-log
+    attributes:
+      label: Crash log
+      description: Crash log
+      value: |
+        ```
+        [REPLACE ME: if crash report is available, copy your logs to here.]
+        [REPLACE ME: do NOT remove these three backquotes (`)]
+        [REPLACE ME: put your report inside these backquotes (`)]
+        ```
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: Version
+      description: "The version you are currently using when it happened."
+      placeholder: "2.x.x (concrete version, NEVER say 'latest')"
+    validations:
+      required: false
+
+  - type: textarea
+    id: step-to-reproduce
+    attributes:
+      label: Steps to reproduce the bug
+      description: (Optional) Steps to reproduce the bugs or unexpected behaviors.
+      placeholder: When and how this happened? Steps to reproduce?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm that you searched existing issues and did not find a similar one.
+      options:
+        - label: I have searched the existing issues and confirmed that no similar issue has been opened.
+          required: true
+        - label: It would crash every time.
+          required: false
+
+  - type: upload
+    id: screenshots
+    attributes:
+      label: Screenshots or Screen recordings
+      description: (Optional)
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: (Optional) Your environment.
+      placeholder: Environment? (e.g. Android OS version, phone vendor/OEM)
+    validations:
+      required: false
+
+  - type: textarea
+    id: other-info
+    attributes:
+      label: Other helpful information
+      description: (Optional)
+    validations:
+      required: false
