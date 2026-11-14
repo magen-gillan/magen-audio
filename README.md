@@ -1,30 +1,62 @@
-# Magen Audio
+<p align="center">
+  <img src="docs/logo.gif" width="120" alt="Magen Audio Logo">
+</p>
 
-**مشغل موسيقى حديث لأندرويد | A modern Android music player**
+<h1 align="center">Magen Audio</h1>
 
-Magen Audio is a focused Android music player based on [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) by chr_56, rebuilt with Kotlin, Jetpack Compose, and Media3, with custom anime iconography and Magen Audio branding.
+<p align="center">
+  <img src="docs/alisha_chibi.webp" width="180" alt="Alisha">
+</p>
 
-Magen Audio مشغل موسيقى لأندرويد مشتق من مشروع [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) ببناء Kotlin وJetpack Compose وMedia3، مع أيقونات أنمي مخصصة وهوية خاصة.
+<p align="center">
+  <strong>مشغل موسيقى أنيق وخفيف لأندرويد</strong>
+</p>
 
-## Features | المميزات
+<p align="center">
+  <a href="https://github.com/magen-gillan/magen-audio/releases/latest">
+    <img src="https://img.shields.io/badge/⬇️_تحميل_آخر_إصدار-2.9.4-blue?style=for-the-badge&logo=android&logoColor=white" alt="Download">
+  </a>
+</p>
 
-- **Natural numeric sort** — ترتيب رقمي طبيعي للأغاني والمجلدات
-- **Custom folder covers** — أغلفة مخصصة للمجلدات
-- **Custom sort order** — ترتيب مخصص حسب رغبتك
-- **Auto-scan** — فحص تلقائي للمكتبة
-- **Arabic + 27 languages** — دعم العربية و27 لغة أخرى
-- **Default tab flow**: Folders → Songs → Albums → Playlists → Files → Artists → Genres
+<p align="center">
+  <a href="https://github.com/magen-gillan/magen-audio/releases">الإصدارات</a> ·
+  <a href="https://github.com/chr56/Phonograph_Plus">المشروع الأصلي</a>
+</p>
 
-## Download | التحميل
+---
 
-**Latest release | أحدث إصدار: [v2.7.8](https://github.com/magen-gillan/magen-audio/releases/tag/v2.7.8)**
+## عن المشروع
 
-- Direct APK | تحميل مباشر: [magen-audio-v2.7.8.apk](https://github.com/magen-gillan/magen-audio/releases/download/v2.7.8/magen-audio-v2.7.8.apk)
-- All releases | كل الإصدارات: [Releases](https://github.com/magen-gillan/magen-audio/releases)
+Magen Audio مشغل موسيقى لأندرويد مبني على [Phonograph Plus](https://github.com/chr56/Phonograph_Plus)، مطور بـ Kotlin وJetpack Compose وMedia3، مع هوية بصرية مخصصة وشخصية Alisha كتعريف للتطبيق.
 
-Each release ships with a `.sha256` checksum file. | كل إصدار مرفق معه ملف تحقق `.sha256`.
+مُحسّن لهاتف Honor X6c NIC-LX2 (arm64-v8a، Android 14) ويعمل على جميع أجهزة Android 8+.
 
-## Acknowledgements | شكر وتقدير
+## المميزات
+
+- **ترتيب رقمي طبيعي** — 1, 2, 3... وليس 1, 10, 2
+- **أيقونات مخصصة للمجلدات** — غيّر أيقونة كل مجلد بصورة من اختيارك
+- **اسم المجلد فقط** — عرض اسم المجلد بدون عدد الأغاني أو المسار
+- **تشغيل صحيح من مدير الملفات** — عند فتح أغنية من خارج التطبيق، تُشغّل الأغنية الصحيحة
+- **منع التخطي السريع** — عند نقل ملفات بين المجلدات، لا يتخطى التطبيق بسرعة
+- **شاشة ترحيب مخصصة** — مع شخصية Alisha وتصميم زجاجي
+- **دعم العربية و27 لغة** — مع دعم كامل للكتابة من اليمين لليسار
+- **ترتيب مخصص** — حسب رغبتك
+- **فحص تلقائي للمكتبة** — عند منح الأذونات
+- **بدون إعلانات أو تتبع** — مفتوح المصدر بالكامل
+- **R8 minification** — حجم صغير (8.8 MB فقط)
+- **توقيع v2 + v3** — متوافق مع Android 14+
+
+## التحميل
+
+**آخر إصدار: [v2.9.4](https://github.com/magen-gillan/magen-audio/releases/latest)**
+
+[تحميل APK مباشر](https://github.com/magen-gillan/magen-audio/releases/download/v2.9.4/magen-audio-v2.9.4.apk)
+
+- متطلبات: Android 8.0+ (API 26+)
+- الحجم: 8.8 MB
+- التوقيع: v2 + v3
+
+## شكر وتقدير
 
 - [Phonograph Plus](https://github.com/chr56/Phonograph_Plus) by chr_56
-- License | الترخيص: GPLv3
+- الترخيص: GPLv3
