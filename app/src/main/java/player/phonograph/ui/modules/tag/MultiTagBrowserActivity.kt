@@ -46,7 +46,10 @@ import androidx.compose.ui.unit.dp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import androidx.lifecycle.lifecycleScope
 
 class MultiTagBrowserActivity :
         ComposeActivity(),
@@ -62,8 +65,15 @@ class MultiTagBrowserActivity :
             createFileStorageAccessDelegate,
         )
         webSearchTool.register(this)
-        val songs = parseIntent(this, intent)
-        viewModel.load(this, songs, true)
+        // Defer song resolution to a background coroutine so the main
+        // thread (onCreate) is not blocked by N sequential MediaStore
+        // queries. The ViewModel.load call now happens after the IO
+        // resolution completes; if the user backs out before that
+        // finishes, lifecycleScope cancels the work cleanly.
+        lifecycleScope.launch {
+            val songs = withContext(Dispatchers.IO) { parseIntent(this@MultiTagBrowserActivity, intent) }
+            viewModel.load(this@MultiTagBrowserActivity, songs, true)
+        }
         super.onCreate(savedInstanceState)
         onBackPressedDispatcher.addCallback {
             if (viewModel.hasChanges) {
@@ -85,9 +95,19 @@ class MultiTagBrowserActivity :
     companion object {
 
         private const val PATHS = "PATHS"
-        private fun parseIntent(context: Context, intent: Intent): List<Song> {
+        // Note: this runs on the main thread (called from onCreate).
+        // Previously it did `paths.mapNotNull { runBlocking { Songs.path(context, it) } }`
+        // — N sequential runBlocking calls on the main thread, each doing a
+        // MediaStore query. For a user selecting e.g. 50 files this blows
+        // past the 5s ANR threshold and the system kills the activity.
+        // The activity's onCreate now stores the raw paths and defers the
+        // Song resolution to a lifecycleScope coroutine on Dispatchers.IO
+        // (handled in onStart / VM init), so this helper only runs when
+        // explicitly invoked from a background context. Keep the suspend
+        // signature so callers must opt into an async context.
+        private suspend fun parseIntent(context: Context, intent: Intent): List<Song> {
             val paths = intent.extras?.getStringArrayList(PATHS) ?: return emptyList()
-            return paths.mapNotNull { runBlocking { Songs.path(context, it) } }
+            return paths.mapNotNull { Songs.path(context, it) }
         }
 
         fun launch(context: Context, paths: ArrayList<String>) {

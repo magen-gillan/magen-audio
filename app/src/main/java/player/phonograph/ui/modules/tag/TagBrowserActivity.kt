@@ -54,7 +54,8 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import androidx.lifecycle.lifecycleScope
 
 class TagBrowserActivity :
         ComposeActivity(),
@@ -70,9 +71,16 @@ class TagBrowserActivity :
             createFileStorageAccessDelegate,
             webSearchTool,
         )
-        val song = parseIntent(this, intent)
-        if (song != null) {
-            viewModel.load(this, song, true)
+        webSearchTool.register(this)
+        // Defer the single song-path lookup to a background coroutine so
+        // the main thread (onCreate) is not blocked by a MediaStore query.
+        // The previous code did `val song = runBlocking { Songs.path(...) }`
+        // directly in onCreate.
+        lifecycleScope.launch {
+            val song = withContext(Dispatchers.IO) { parseIntent(this@TagBrowserActivity, intent) }
+            if (song != null) {
+                viewModel.load(this@TagBrowserActivity, song, true)
+            }
         }
         super.onCreate(savedInstanceState)
         onBackPressedDispatcher.addCallback {
@@ -100,9 +108,12 @@ class TagBrowserActivity :
     companion object {
 
         private const val PATH = "PATH"
-        private fun parseIntent(context: Context, intent: Intent): Song? {
+        // Note: now suspend — callers must dispatch on IO.
+        // Was `runBlocking { Songs.path(context, path) }` invoked directly
+        // from onCreate, which blocked the main thread on a MediaStore query.
+        private suspend fun parseIntent(context: Context, intent: Intent): Song? {
             val path = intent.extras?.getString(PATH) ?: return null
-            return runBlocking { Songs.path(context, path) }
+            return Songs.path(context, path)
         }
 
         fun launch(context: Context, path: String) {

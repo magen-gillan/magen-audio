@@ -41,7 +41,9 @@ import android.util.Log
 import android.widget.Toast
 import kotlin.random.Random
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import androidx.lifecycle.lifecycleScope
 
 class StarterActivity : AppCompatActivity() {
 
@@ -72,18 +74,33 @@ class StarterActivity : AppCompatActivity() {
     }
 
     private fun processFrontGroundMode(intent: Intent) {
-        val playRequest = runBlocking { lookupSongsFromIntent(intent) }
-        if (playRequest is PlayRequest.EmptyRequest) {
-            Toast.makeText(this, R.string.msg_empty, Toast.LENGTH_SHORT).show()
-            finish()
-        } else {
-            val showPrompt: Boolean = Settings(this.applicationContext)[Keys.externalPlayRequestShowPrompt].data
-            val silence: Boolean = Settings(this.applicationContext)[Keys.externalPlayRequestSilence].data
-            if (showPrompt) {
-                val openWithDialog = OpenWithDialog.create(playRequest, gotoMainActivity = !silence)
-                openWithDialog?.show(supportFragmentManager, null)
+        // IMPORTANT: this is called from onCreate() — i.e. on the MAIN thread.
+        // The previous implementation did
+        //     val playRequest = runBlocking { lookupSongsFromIntent(intent) }
+        // which blocks the main thread until the MediaStore queries in
+        // lookupSongsFromIntent complete. On devices with large music
+        // libraries (or slow storage) that easily exceeds the 5s ANR
+        // threshold, so the system shows the 'App isn't responding' dialog
+        // the moment the user taps an audio file in a file manager.
+        //
+        // Instead, launch the lookup on Dispatchers.IO via lifecycleScope
+        // and only touch the UI back on the main thread once we have a
+        // result. The activity is marked noHistory so finishing it from a
+        // callback is fine.
+        lifecycleScope.launch {
+            val playRequest = withContext(Dispatchers.IO) { lookupSongsFromIntent(intent) }
+            if (playRequest is PlayRequest.EmptyRequest) {
+                Toast.makeText(this@StarterActivity, R.string.msg_empty, Toast.LENGTH_SHORT).show()
+                finish()
             } else {
-                executePlayRequestByDefault(playRequest, silence)
+                val showPrompt: Boolean = Settings(this@StarterActivity.applicationContext)[Keys.externalPlayRequestShowPrompt].data
+                val silence: Boolean = Settings(this@StarterActivity.applicationContext)[Keys.externalPlayRequestSilence].data
+                if (showPrompt) {
+                    val openWithDialog = OpenWithDialog.create(playRequest, gotoMainActivity = !silence)
+                    openWithDialog?.show(supportFragmentManager, null)
+                } else {
+                    executePlayRequestByDefault(playRequest, silence)
+                }
             }
         }
     }
@@ -201,11 +218,17 @@ class StarterActivity : AppCompatActivity() {
             else                               -> return
         }
 
-        val songs =
-            runBlocking(Dispatchers.IO) { PlaylistSongsActions.reader(playlist).allSongs(this@StarterActivity) }
-        play(songs, shuffleMode)
-
-        if (SDK_INT >= N_MR1) PhonographShortcutManager.reportShortcutUsed(this, type.id)
+        // Previously: `runBlocking(Dispatchers.IO) { ...allSongs(this@StarterActivity) }`
+        // called directly from onCreate (via the SHORTCUT_MODE branch above),
+        // which blocks the main thread on a playlist query. Same ANR risk as
+        // processFrontGroundMode. Dispatch on lifecycleScope instead.
+        lifecycleScope.launch {
+            val songs = withContext(Dispatchers.IO) {
+                PlaylistSongsActions.reader(playlist).allSongs(this@StarterActivity)
+            }
+            play(songs, shuffleMode)
+            if (SDK_INT >= N_MR1) PhonographShortcutManager.reportShortcutUsed(this@StarterActivity, type.id)
+        }
     }
 
     private fun play(songs: List<Song>, shuffleMode: ShuffleMode) {

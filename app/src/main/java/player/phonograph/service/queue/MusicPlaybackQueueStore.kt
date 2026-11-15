@@ -69,18 +69,22 @@ class MusicPlaybackQueueStore(val context: Context) : SQLiteOpenHelper(
     @Synchronized
     private fun saveQueue(tableName: String, queue: List<Song>) {
         val database = writableDatabase
+        // IMPORTANT: the DELETE and all INSERTs MUST run inside a single
+        // transaction. Previously the DELETE ran in its own transaction and
+        // the INSERTs ran in separate per-batch transactions afterwards.
+        // That left a window between the commit of the DELETE and the start
+        // of the INSERTs where the table was empty in the database — so if
+        // the process was killed (OOM, user force-stop, crash) during that
+        // window, the saved queue was lost permanently and on next launch
+        // the user's playback queue would be empty.
+        // Wrapping everything in one transaction makes the replacement atomic:
+        // either the new queue is fully persisted, or the old queue is kept.
         database.beginTransaction()
         try {
             database.delete(tableName, null, null)
-            database.setTransactionSuccessful()
-        } finally {
-            database.endTransaction()
-        }
-        val concurrent = 20
-        var position = 0
-        while (position < queue.size) {
-            database.beginTransaction()
-            try {
+            val concurrent = 20
+            var position = 0
+            while (position < queue.size) {
                 var i = position
                 while (i < queue.size && i < position + concurrent) {
                     val song = queue[i]
@@ -103,11 +107,11 @@ class MusicPlaybackQueueStore(val context: Context) : SQLiteOpenHelper(
                     database.insert(tableName, null, values)
                     i++
                 }
-                database.setTransactionSuccessful()
-            } finally {
-                database.endTransaction()
                 position += concurrent
             }
+            database.setTransactionSuccessful()
+        } finally {
+            database.endTransaction()
         }
     }
 

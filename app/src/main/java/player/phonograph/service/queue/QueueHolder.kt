@@ -87,7 +87,13 @@ class QueueHolder private constructor(
     }
 
     fun getSongAt(position: Int): Song? = playingQueue.getOrNull(position)
-    val currentSong: Song? = getSongAt(currentSongPosition)
+    // IMPORTANT: must be a property getter, not a `val`.
+    // A `val` would snapshot the song at construction time and never update,
+    // so after `modifyPosition` or queue swap, `currentSong` would still
+    // report the original song. Callers that read `queueHolder.currentSong`
+    // (e.g. QueueManager.snapshotAndNotify → notifyCurrentSongChanged)
+    // must see the song at the CURRENT position, not a stale one.
+    val currentSong: Song? get() = getSongAt(currentSongPosition)
 
     fun getRestSongsDuration(position: Int): Long =
         playingQueue

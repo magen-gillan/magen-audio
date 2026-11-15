@@ -69,6 +69,13 @@ class PlayingNotificationManager : ServiceComponent {
     var persistent: Boolean = false
         private set
 
+    // @Volatile: this field is read from a SettingsObserver coroutine
+    // (different thread from the one that writes it at line ~116 below)
+    // and is busy-awaited in the persistentPlaybackNotification collector
+    // via `while (implementation == null) yield()`. Without @Volatile the
+    // reader thread is allowed to cache a stale null forever, so the
+    // wait loop would spin until the end of time on some JVMs.
+    @Volatile
     private var implementation: Implementation? = null
 
     private var channelCreated: Boolean = false
