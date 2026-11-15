@@ -135,6 +135,11 @@ object MagenPermissions {
         },
     )
 
+    // Music playback in the background is a legitimate use case for the
+    // REQUEST_IGNORE_BATTERY_OPTIMIZATIONS prompt (Play Store policy allows it
+    // for media apps). Suppress the lint warning rather than degrade the UX
+    // by forcing users into the global battery-optimization settings page.
+    @Suppress("BatteryLife")
     fun battery() = WelcomePermission(
         "◒", R.string.mwelcome_perm_battery_title, R.string.mwelcome_perm_battery_desc,
         { c -> (c.getSystemService(Context.POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(c.packageName) },
@@ -154,9 +159,17 @@ object MagenPermissions {
         { PermissionRequest.Runtime(listOf(if (Build.VERSION.SDK_INT >= 33) api33 else Manifest.permission.READ_EXTERNAL_STORAGE)) },
     )
 
-    fun audio() = media("♪", R.string.mwelcome_perm_audio_title, R.string.mwelcome_perm_audio_desc, Manifest.permission.READ_MEDIA_AUDIO)
-    fun images() = media("▣", R.string.mwelcome_perm_images_title, R.string.mwelcome_perm_images_desc, Manifest.permission.READ_MEDIA_IMAGES)
-    fun videos() = media("▶", R.string.mwelcome_perm_videos_title, R.string.mwelcome_perm_videos_desc, Manifest.permission.READ_MEDIA_VIDEO)
+    // Use the raw string values instead of the Manifest.permission.* constants
+    // (READ_MEDIA_AUDIO / IMAGES / VIDEO were only added in API 33). The string
+    // value is inlined by the compiler, so this avoids the InlinedApi lint warning
+    // AND keeps behaviour identical on every API level.
+    private const val PERM_READ_MEDIA_AUDIO = "android.permission.READ_MEDIA_AUDIO"
+    private const val PERM_READ_MEDIA_IMAGES = "android.permission.READ_MEDIA_IMAGES"
+    private const val PERM_READ_MEDIA_VIDEO = "android.permission.READ_MEDIA_VIDEO"
+
+    fun audio() = media("♪", R.string.mwelcome_perm_audio_title, R.string.mwelcome_perm_audio_desc, PERM_READ_MEDIA_AUDIO)
+    fun images() = media("▣", R.string.mwelcome_perm_images_title, R.string.mwelcome_perm_images_desc, PERM_READ_MEDIA_IMAGES)
+    fun videos() = media("▶", R.string.mwelcome_perm_videos_title, R.string.mwelcome_perm_videos_desc, PERM_READ_MEDIA_VIDEO)
 
     /** All-files access on Android 11+, legacy WRITE_EXTERNAL_STORAGE below. */
     fun files() = WelcomePermission(

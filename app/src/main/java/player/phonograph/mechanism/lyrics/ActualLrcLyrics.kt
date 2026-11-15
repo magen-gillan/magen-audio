@@ -129,8 +129,8 @@ data class ActualLrcLyrics(
                 val attrMatcher = LRC_ATTRIBUTE_PATTERN.matcher(line)
                 if (attrMatcher.find()) {
                     try { // todo [lyric parse] fix null safe in attr parse
-                        val attr = attrMatcher.group(1)!!.lowercase(Locale.ENGLISH).trim { it <= ' ' }
-                        val value = attrMatcher.group(2)!!.lowercase(Locale.ENGLISH).trim { it <= ' ' }
+                        val attr = attrMatcher.group(1)!!.lowercase(Locale.ENGLISH).trim()
+                        val value = attrMatcher.group(2)!!.lowercase(Locale.ENGLISH).trim()
                         when (attr) {
                             "offset" -> offset = value.toLong()
                             "length" -> totalTime = value.toLong()

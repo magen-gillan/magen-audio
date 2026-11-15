@@ -302,7 +302,7 @@ abstract class QueueSongBasicDisplayPresenter : DisplayPresenter<QueueSong> {
 
 private fun makeSectionName(reference: String?): String {
     if (reference.isNullOrBlank()) return ""
-    var str = reference.trim { it <= ' ' }.lowercase()
+    var str = reference.trim().lowercase()
     str = when {
         str.startsWith("the ") -> str.substring(4)
         str.startsWith("a ") -> str.substring(2)

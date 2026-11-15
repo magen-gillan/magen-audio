@@ -79,13 +79,22 @@ class App : Application(), ImageLoaderFactory {
         instance = this
 
         // Exception Handler
+        // Chain to the previous default handler so the system crash dialog/log
+        // still works correctly (otherwise we would swallow crashes that the
+        // platform expects to handle, e.g. for ANRs and native faults).
         crashActivity = CrashActivity::class.java
-        Thread.setDefaultUncaughtExceptionHandler { _, exception ->
-            if (!CrashActivity.isCrashProcess(this)) {
-                startCrashActivity(this, exception, CrashActivity::class.java)
-            } else {
-                Log.e("Phonograph", "Recursively crash!", exception)
+        val previousHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, exception ->
+            try {
+                if (!CrashActivity.isCrashProcess(this)) {
+                    startCrashActivity(this, exception, CrashActivity::class.java)
+                } else {
+                    Log.e("Phonograph", "Recursively crash!", exception)
+                }
+            } catch (_: Throwable) {
+                // never let the crash handler itself throw into the runtime
             }
+            previousHandler?.uncaughtException(thread, exception)
             Process.killProcess(Process.myPid())
             exitProcess(1)
         }

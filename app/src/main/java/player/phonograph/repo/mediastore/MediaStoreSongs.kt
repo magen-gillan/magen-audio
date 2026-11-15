@@ -49,7 +49,6 @@ object MediaStoreSongs : ISongs {
                     player.phonograph.model.sort.SortRef.ARTIST_NAME -> { s -> s.artistName }
                     player.phonograph.model.sort.SortRef.ALBUM_ARTIST_NAME -> { s -> s.albumArtistName }
                     player.phonograph.model.sort.SortRef.COMPOSER -> { s -> s.composer }
-                    else -> { _ -> null }
                 }
                 val cmp = player.phonograph.foundation.mediastore.naturalStringComparator(selector)
                 if (sortMode.revert) songs.sortedWith(cmp.reversed())

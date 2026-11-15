@@ -39,7 +39,7 @@
             android:focusable="true">
 
             <player.phonograph.ui.views.IconImageView
-                android:id="@+id/icon_author"
+                android:id="@+id/icon_modifier_author"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 app:srcCompat="@drawable/ic_person_white_24dp"
@@ -86,7 +86,7 @@
             android:focusable="true">
 
             <player.phonograph.ui.views.IconImageView
-                android:id="@+id/icon_github"
+                android:id="@+id/icon_modifier_github"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 app:srcCompat="@drawable/ic_github_circle_white_24dp"

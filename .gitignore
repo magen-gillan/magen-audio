@@ -1,6 +1,51 @@
-app/build/
-sdk.dir=/home/z/android-sdk
-app/build/
-*.idsig
-app/build/
-*.idsig
+# Built application files
+*.apk
+*.ap_
+*.aab
+*.dex
+
+# Generated files
+bin/
+gen/
+out/
+release/
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Proguard folder
+proguard/
+
+# Log Files
+*.log
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+.navigation/
+captures/
+
+# Keystore files
+*.jks
+*.keystore
+
+# External native build
+.externalNativeBuild
+.cxx/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Reports
+build/reports/
+
+# OS files
+.DS_Store
+Thumbs.db
