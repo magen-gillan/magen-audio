@@ -43,8 +43,8 @@
 - Automatic library scanning and customizable ordering.
 - بدون إعلانات أو تتبع، ومفتوح المصدر.
 - No ads or tracking; fully open source.
-- حجم صغير يقارب 8.8 MB مع توقيع v2 وv3.
-- Compact APK of about 8.8 MB with v2 and v3 signing.
+- حجم صغير يقارب 6.8 MB مع توقيع v2 وv3.
+- Compact APK of about 6.8 MB with v2 and v3 signing.
 
 ## التثبيت | Installation
 
@@ -52,7 +52,7 @@
 
 Press the green button above to download the latest build, then open the APK and allow installation when prompted.
 
-**المتطلبات | Requirements:** Android 8.0+ (API 26+) | الإصدار الحالي v2.9.4.
+**المتطلبات | Requirements:** Android 8.0+ (API 26+) | الإصدار الحالي v2.9.6.
 
 ## الاعتمادات | Credits
 

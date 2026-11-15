@@ -311,12 +311,21 @@ fun MagenWelcomeScreen(
             val mh = ms.first { it.layoutId == "h" }
             val mp = ms.first { it.layoutId == "p" }
             fun fixedW(x: Int) = Constraints(minWidth = x, maxWidth = x)
-            // pass 1: natural heights → scale; pass 2: re-measure wider so the scaled block fills the column
-            val b0 = mb.measure(fixedW(colW))
-            val p0 = mp.measure(fixedW(colW))
+            // Estimate natural heights at colW using intrinsic queries.
+            // IMPORTANT: Compose forbids calling measure() twice on the same
+            // Measurable during a single layout pass — it throws
+            // "measure() may not be called multiple times on the same Measurable".
+            // The previous code measured once at colW to estimate a scale factor
+            // and then measured AGAIN at a wider width, which crashed on the
+            // Honor X6c (NIC-LX2) at startup. Intrinsic queries (maxIntrinsicHeight)
+            // do NOT count toward the "measure once" contract, so they give us
+            // the height estimate we need without violating it.
+            val bH0 = mb.maxIntrinsicHeight(colW)
+            val pH0 = mp.maxIntrinsicHeight(colW)
             val avail = if (land) h else (h * 0.78f).toInt()
-            val s = (avail.toFloat() / (b0.height + p0.height)).coerceIn(0.5f, 1f)
+            val s = (avail.toFloat() / (bH0 + pH0)).coerceIn(0.5f, 1f)
             val wide = (colW / s).toInt()
+            // Single measure pass with the final width (no second measure).
             val b = mb.measure(fixedW(wide))
             val p = mp.measure(fixedW(wide))
             val bH = (b.height * s).toInt()
