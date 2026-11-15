@@ -31,6 +31,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM_ART
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST
+import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ART
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ARTIST
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DURATION
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_NUM_TRACKS
@@ -244,33 +245,63 @@ class MediaSessionController : ServiceComponent {
             putString(METADATA_KEY_ARTIST, song.artistName)
             putString(METADATA_KEY_ALBUM_ARTIST, song.artistName)
             putLong(METADATA_KEY_YEAR, song.year.toLong())
+            // Set BOTH METADATA_KEY_ALBUM_ART and METADATA_KEY_ART.
+            // On Android 10+ (API 29+) the system prefers METADATA_KEY_ART for
+            // the media notification artwork; ALBUM_ART is the legacy key.
+            // Setting both ensures the system always finds the bitmap
+            // regardless of which key it reads.
             putBitmap(METADATA_KEY_ALBUM_ART, bitmap)
+            putBitmap(METADATA_KEY_ART, bitmap)
             putLong(METADATA_KEY_TRACK_NUMBER, pos)
             putLong(METADATA_KEY_NUM_TRACKS, total)
         }
 
     private var disposable: Disposable? = null
+    @Volatile
     private var cachedBitmap: Bitmap? = null
+    @Volatile
     private var cachedSong: Song? = null
     fun updateMetaData(song: Song?, pos: Long, total: Long, loadCover: Boolean) {
         if (song == null) {
             mediaSession.setMetadata(null)
+            // don't clear cachedSong/cachedBitmap here — the song might come back
         } else {
+            // Capture the song we are loading for so the async callback
+            // can verify it is still current before applying the result.
+            val expectedSong = song
 
             val metadata = fillMetadata(song, pos, total, null)
             if (loadCover && cachedSong == song && cachedBitmap != null) {
                 metadata.putBitmap(METADATA_KEY_ALBUM_ART, cachedBitmap)
+                metadata.putBitmap(METADATA_KEY_ART, cachedBitmap)
             }
 
             mediaSession.setMetadata(metadata.build())
 
             disposable?.dispose()
-            if (loadCover && cachedSong != song) {
+            // Only load if we don't already have a NON-NULL bitmap for this
+            // song. Previously the code cached null bitmaps too (when a song
+            // had no art), which meant cachedSong == song was true and
+            // cachedBitmap != null was false, so the cache branch at the
+            // top was skipped AND the reload branch below was skipped —
+            // the song's art was never retried, and the notification
+            // permanently showed the default cover for that song.
+            // Now we only set cachedSong when we actually got a bitmap.
+            if (loadCover && (cachedSong != song || cachedBitmap == null)) {
                 disposable = service.coverLoader.load(song) { bitmap, _ ->
-                    metadata.putBitmap(METADATA_KEY_ALBUM_ART, bitmap)
-                    mediaSession.setMetadata(metadata.build())
-                    this.cachedBitmap = bitmap
-                    this.cachedSong = song
+                    // Guard against the song having changed while the load
+                    // was in flight — otherwise we'd overwrite the NEW
+                    // song's metadata with the OLD song's artwork.
+                    if (expectedSong != song && cachedSong != null) return@load
+                    if (bitmap != null) {
+                        metadata.putBitmap(METADATA_KEY_ALBUM_ART, bitmap)
+                        metadata.putBitmap(METADATA_KEY_ART, bitmap)
+                        mediaSession.setMetadata(metadata.build())
+                        this.cachedBitmap = bitmap
+                        this.cachedSong = song
+                    }
+                    // If bitmap is null (no art for this song), do NOT
+                    // cache the song — next call will retry the load.
                 }
             }
         }

@@ -239,23 +239,39 @@ class PlayingNotificationManager : ServiceComponent {
                 status = status,
             )
 
-            if (SDK_INT < VERSION_SET_COVER_USING_METADATA && cachedSong == song) {
+            // Use cached bitmap immediately if we already have it for this song.
+            // This runs on ALL API levels (previously it was gated on
+            // SDK_INT < VERSION_SET_COVER_USING_METADATA, which meant on
+            // Android 11+ the notification's large icon was NEVER set from
+            // the cache — it stayed as defaultCover forever).
+            if (cachedSong == song) {
                 prepareNotificationImages(notificationBuilder, cachedBitmap, cachedPaletteColor)
             }
 
             postNotification(notificationBuilder.build())
 
             request?.dispose()
-            if (SDK_INT < VERSION_SET_COVER_USING_METADATA && cachedSong != song) {
+            // Load album art on ALL API levels. On Android 11+ the system
+            // is supposed to pull artwork from the MediaSession metadata,
+            // but that only works when:
+            //   (a) the MediaSession metadata actually has a non-null bitmap, AND
+            //   (b) the system media renderer decides to use it.
+            // In practice this is unreliable — many devices/launchers still
+            // fall back to the notification's large icon. So we always
+            // load and set the large icon here as well, guaranteeing the
+            // album art is visible in the notification shade.
+            if (cachedSong != song) {
                 request = service.coverLoader.load(song) { bitmap: Bitmap?, paletteColor: Int ->
-                    if (bitmap != null) {
-                        prepareNotificationImages(notificationBuilder, bitmap, paletteColor)
-                        postNotification(notificationBuilder.build())
+                    // Always update — even if bitmap is null we still want
+                    // to mark the song as "loaded" so we don't retry every
+                    // frame. The prepareNotificationImages helper handles
+                    // null by leaving the existing large icon in place.
+                    prepareNotificationImages(notificationBuilder, bitmap, paletteColor)
+                    postNotification(notificationBuilder.build())
 
-                        this.cachedSong = song
-                        this.cachedBitmap = bitmap
-                        this.cachedPaletteColor = paletteColor
-                    }
+                    this.cachedSong = song
+                    this.cachedBitmap = bitmap
+                    this.cachedPaletteColor = paletteColor
                 }
             }
         }
@@ -272,12 +288,28 @@ class PlayingNotificationManager : ServiceComponent {
             status: MusicServiceStatus,
         ): NotificationCompat.Builder {
 
+            // On Android 11+ (API 30+) DO NOT set a large icon on the
+            // notification builder. When setLargeIcon() is called, the
+            // system treats it as a "regular" notification large icon and
+            // stamps the small icon (ic_notification) as a badge in the
+            // bottom-right corner of the artwork.
+            // Instead, on API 30+ the system pulls the artwork directly
+            // from the MediaSession metadata (MediaMetadataCompat).
+            // When the system renders art pulled from metadata, it does
+            // NOT add the small-icon badge — the notification shows ONLY
+            // the album art, which is what the user wants.
+            // On API < 30 the system doesn't pull from metadata, so we
+            // still need to set the large icon explicitly there.
             val base = builder
                 .setContentTitle(title)
                 .setContentText(content)
                 .setSubText(subText)
                 .setOngoing(status.isPlaying)
-                .setLargeIcon(service.coverLoader.defaultCover)
+                .apply {
+                    if (SDK_INT < VERSION_SET_COVER_USING_METADATA) {
+                        setLargeIcon(service.coverLoader.defaultCover)
+                    }
+                }
                 .clearActions()
 
             val actions =
@@ -314,7 +346,17 @@ class PlayingNotificationManager : ServiceComponent {
         ): NotificationCompat.Builder {
             return if (bitmap != null) {
                 notificationBuilder
-                    .setLargeIcon(bitmap)
+                    // Only call setLargeIcon on API < 30.
+                    // On API 30+ the system renders artwork from the
+                    // MediaSession metadata; calling setLargeIcon() here
+                    // would make the system treat it as a regular large
+                    // icon and re-introduce the small-icon badge in the
+                    // corner of the art.
+                    .apply {
+                        if (SDK_INT < VERSION_SET_COVER_USING_METADATA) {
+                            setLargeIcon(bitmap)
+                        }
+                    }
                     .also { builder ->
                         if (coloredNotification) {
                             if (paletteColor > 0) builder.color = paletteColor
@@ -403,7 +445,10 @@ class PlayingNotificationManager : ServiceComponent {
             postNotification(notificationBuilder.build())
 
             request?.dispose()
-            if (song != null && cachedSong != song) {
+            // Load on every song change. Don't skip when bitmap was null on
+            // a previous attempt — see MediaStyleNotification.update for the
+            // full rationale.
+            if (song != null && (cachedSong != song || cachedBitmap == null)) {
                 request = service.coverLoader.load(song) { bitmap: Bitmap?, color: Int ->
                     if (bitmap != null) {
                         layoutCompat.updateNotificationImages(bitmap, color, status, config, true)
@@ -413,8 +458,8 @@ class PlayingNotificationManager : ServiceComponent {
                         this.cachedSong = song
                         this.cachedBitmap = bitmap
                         this.cachedPaletteColor = color
-
                     }
+                    // null bitmap: don't cache the song so the next call retries
                 }
             }
         }
