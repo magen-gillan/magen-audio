@@ -43,8 +43,8 @@ android {
         targetSdk = 36
 
         applicationId = "player.phonograph.plus"
-        versionCode = 29400
-        versionName = "2.9.4"
+        versionCode = 29500
+        versionName = "2.9.5"
 
         ndk {
             abiFilters.add("arm64-v8a")
