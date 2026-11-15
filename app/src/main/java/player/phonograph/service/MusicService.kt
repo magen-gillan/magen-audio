@@ -451,7 +451,13 @@ class MusicService : MediaBrowserServiceCompat(),
 
     override fun onLoadChildren(parentId: String, result: Result<MutableList<MediaBrowserCompat.MediaItem>>) {
         log("onLoadChildren(): parentId $parentId", false)
-        runBlocking {
+        // Previously: runBlocking { ... result.sendResult(...) }
+        // runBlocking on a binder thread is wasteful — it blocks the binder
+        // thread until the query completes. The MediaBrowserService API
+        // explicitly supports async result delivery: result.sendResult()
+        // can be called from any thread, so we launch a coroutine on the
+        // service's IO scope and send the result when ready.
+        coroutineScope.launch {
             val context = this@MusicService
             val mediaItems = try {
                 MediaBrowserDelegate.listChildren(parentId, context)

@@ -48,7 +48,7 @@
     <string name="action_next">Наступна</string>
     <string name="action_add_to_playing_queue">Додати до черги відтворення</string>
     <string name="action_remove_from_playing_queue">Видалити з черги відтворення</string>
-    <string name="action_add_to_playlist">Додати до списку відтворення...</string>
+    <string name="action_add_to_playlist">Додати до списку відтворення…</string>
     <string name="action_tag_editor">Редактор тегів</string>
     <string name="action_delete_from_device">Видалити з пристрою</string>
     <string name="action_details">Подробиці</string>
@@ -58,14 +58,14 @@
     <string name="action_set_as_start_directory">Встановити як початкову теку</string>
     <string name="action_add_to_black_list">Додати у чорний список</string>
     <string name="action_item_layout">Компонування елемента</string>
-    <string name="action_new_playlist">Новий список відтворення...</string>
+    <string name="action_new_playlist">Новий список відтворення…</string>
     <string name="action_change_now_playing_screen">Змінити поточні відтворення</string>
     <string name="action_go_to_artist">Перейти до виконавця</string>
     <string name="action_go_to_album">Перейти до альбому</string>
     <string name="action_save_playlist">Зберегти як файл</string>
     <string name="action_save_playlists">Зберегти як файли</string>
     <string name="action_remove_from_playlist">Видалити зі списку відтворення</string>
-    <string name="action_choose_lyrics">Обрати джерело тексту пісні...</string>
+    <string name="action_choose_lyrics">Обрати джерело тексту пісні…</string>
     <string name="action_sleep_timer">Таймер сну</string>
     <string name="action_scan_media">Сканувати носії</string>
     <string name="action_scan_directory">Сканувати каталог</string>
@@ -165,10 +165,10 @@
     <string name="title_rename_playlist">Перейменувати список відтворення</string>
     <string name="title_add_playlist">Додати до списку відтворення</string>
     <string name="state_saving_changes">Збереження змін</string>
-    <string name="state_updating">Оновлення...</string>
+    <string name="state_updating">Оновлення…</string>
     <string name="state_loading">Завантажується</string>
     <string name="state_completed">Виконане</string>
-    <string name="state_process">Обробка...</string>
+    <string name="state_process">Обробка…</string>
     <string name="state_deleted">Видалено</string>
     <string name="option_finish_current_music_sleep_timer">Після завершення останньої композиції</string>
     <string name="option_delete_with_saf">Видалити файл через системний діалог Android</string>
@@ -181,7 +181,7 @@
     <string name="tips_service_disconnected">[Служба від’єднана!]</string>
     <string name="tips_are_you_sure">Впевнені?</string>
     <string name="tips_playlist_name_placeholder">Назва списку відтворення</string>
-    <string name="tips_search_hint">Пошук бібліотеки...</string>
+    <string name="tips_search_hint">Пошук бібліотеки…</string>
     <string name="tips_x_selected">Вибрано %1$d</string>
     <string name="tips_choose_at_least_one">Виберіть хоча б один</string>
     <string name="tips_select_at_least_one_category">Виберіть принаймні одну категорію.</string>

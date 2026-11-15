@@ -48,7 +48,7 @@
     <string name="action_next">Następny</string>
     <string name="action_add_to_playing_queue">Dodaj do kolejki odtwarzania</string>
     <string name="action_remove_from_playing_queue">Usuń z kolejki odtwarzania</string>
-    <string name="action_add_to_playlist">Dodaj do listy odtwarzania...</string>
+    <string name="action_add_to_playlist">Dodaj do listy odtwarzania…</string>
     <string name="action_tag_editor">Edytor tagów</string>
     <string name="action_delete_from_device">Usuń z urządzenia</string>
     <string name="action_details">Szczegóły</string>
@@ -58,7 +58,7 @@
     <string name="action_set_as_start_directory">Ustaw jako katalog startowy</string>
     <string name="action_add_to_black_list">Dodaj do czarnej listy</string>
     <string name="action_item_layout">Układ elementów</string>
-    <string name="action_new_playlist">Nowa lista odtwarzania...</string>
+    <string name="action_new_playlist">Nowa lista odtwarzania…</string>
     <string name="action_change_now_playing_screen">Zmień ekran \"teraz odtwarzane\"</string>
     <string name="action_go_to_artist">Przejdź do wykonawcy</string>
     <string name="action_go_to_album">Przejdź do albumu</string>
@@ -208,8 +208,8 @@
     <string name="title_new_playlist">Nowa lista odtwarzania</string>
     <string name="title_rename_playlist">Zmień nazwę listy odtwarzania</string>
     <string name="title_add_playlist">Dodaj do listy odtwarzania</string>
-    <string name="state_saving_changes">Zapisywanie zmian...</string>
-    <string name="state_updating">Aktualizowanie...</string>
+    <string name="state_saving_changes">Zapisywanie zmian…</string>
+    <string name="state_updating">Aktualizowanie…</string>
     <string name="state_loading">Ładowanie</string>
     <string name="state_completed">Zakończono</string>
     <string name="state_process">Przetwarzanie…</string>
@@ -225,7 +225,7 @@
     <string name="tips_service_disconnected">[Usługa jest rozłączona!]</string>
     <string name="tips_are_you_sure">Na pewno?</string>
     <string name="tips_playlist_name_placeholder">Nazwa listy odtwarzania</string>
-    <string name="tips_search_hint">Szukaj w bibliotece...</string>
+    <string name="tips_search_hint">Szukaj w bibliotece…</string>
     <string name="tips_x_selected">%1$d zaznaczono</string>
     <string name="tips_choose_at_least_one">Wybierz przynajmniej jeden</string>
     <string name="tips_select_at_least_one_category">Musisz wybrać co najmniej jedną kategorię</string>

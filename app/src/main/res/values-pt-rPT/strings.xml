@@ -202,7 +202,7 @@
     <string name="title_rename_playlist">Mudar o nome da lista de reprodução</string>
     <string name="title_add_playlist">Adicionar à lista de reprodução</string>
     <string name="state_saving_changes">A gravar alterações</string>
-    <string name="state_updating">A atualizar...</string>
+    <string name="state_updating">A atualizar…</string>
     <string name="state_loading">A carregar</string>
     <string name="state_completed">Concluído</string>
     <string name="state_process">A processar…</string>
@@ -472,42 +472,52 @@
     <plurals name="item_songs">
         <item quantity="one">%1$d música</item>
         <item quantity="other">%1$d Músicas</item>
+        <item quantity="many">%1$d Músicas</item>
     </plurals>
     <plurals name="item_files">
         <item quantity="one">%1$d ficheiro</item>
         <item quantity="other">%1$d ficheiros</item>
+        <item quantity="many">%1$d ficheiros</item>
     </plurals>
     <plurals name="item_albums">
         <item quantity="one">%1$d álbum</item>
         <item quantity="other">%1$d álbuns</item>
+        <item quantity="many">%1$d álbuns</item>
     </plurals>
     <plurals name="item_artists">
         <item quantity="one">%1$d artista</item>
         <item quantity="other">%1$d artistas</item>
+        <item quantity="many">%1$d artistas</item>
     </plurals>
     <plurals name="item_playlists">
         <item quantity="one">%1$d lista de reprodução</item>
         <item quantity="other">%1$d listas de reprodução</item>
+        <item quantity="many">%1$d listas de reprodução</item>
     </plurals>
     <plurals name="item_playlists_generated">
         <item quantity="one">%1$d lista de reprodução gerada</item>
         <item quantity="other">%1$d listas de reprodução geradas</item>
+        <item quantity="many">%1$d listas de reprodução geradas</item>
     </plurals>
     <plurals name="item_genres">
         <item quantity="one">%1$d género</item>
         <item quantity="other">%1$d Géneros</item>
+        <item quantity="many">%1$d Géneros</item>
     </plurals>
     <plurals name="msg_header_delete_items">
         <item quantity="one">%1$d item seria eliminado:</item>
         <item quantity="other">%1$d itens seriam eliminados:</item>
+        <item quantity="many">%1$d itens seriam eliminados:</item>
     </plurals>
     <plurals name="msg_header_remove_items">
         <!-- %1$s: where -->
         <item quantity="one">%2$d item seria removido de %1$s:</item>
         <item quantity="other">%2$d itens seriam removidos de %1$s:</item>
+        <item quantity="many">%2$d itens seriam removidos de %1$s:</item>
     </plurals>
     <plurals name="msg_deletion_result">
         <item quantity="one">%1$d / %2$d item foi eliminado com sucesso.</item>
         <item quantity="other">%1$d / %2$d itens foram eliminados com sucesso.</item>
+        <item quantity="many">%1$d / %2$d itens foram eliminados com sucesso.</item>
     </plurals>
 </resources>

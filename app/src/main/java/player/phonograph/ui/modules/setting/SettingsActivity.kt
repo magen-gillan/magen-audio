@@ -59,6 +59,7 @@ import android.os.Bundle
 import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.runBlocking
 import java.io.FileInputStream
 
@@ -151,12 +152,20 @@ class SettingsActivity : ComposeActivity(),
                 }
                 .setPositiveButton(R.string.action_clear_all_preference) { dialog, _ ->
                     dialog.dismiss()
-                    runBlocking {
-                        if (Settings(context).clearAll()) {
-                            Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show()
-                            Reboot.reboot(context)
-                        } else {
-                            Toast.makeText(context, R.string.failed, Toast.LENGTH_SHORT).show()
+                    // Previously: runBlocking { Settings(context).clearAll() ... }
+                    // runBlocking on the main thread blocks the UI while
+                    // DataStore clears all preferences. Use lifecycleScope +
+                    // Dispatchers.IO instead, and hop back to Main for the
+                    // Toast / Reboot calls.
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val ok = Settings(context).clearAll()
+                        withContext(Dispatchers.Main) {
+                            if (ok) {
+                                Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show()
+                                Reboot.reboot(context)
+                            } else {
+                                Toast.makeText(context, R.string.failed, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }

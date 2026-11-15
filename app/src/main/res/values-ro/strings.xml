@@ -29,14 +29,14 @@
     <string name="action_next">Următor</string>
     <string name="action_add_to_playing_queue">Adaugă la lista de redare</string>
     <string name="action_remove_from_playing_queue">Șterge din lista de redare</string>
-    <string name="action_add_to_playlist">Adăugaţi în lista de redare...</string>
+    <string name="action_add_to_playlist">Adăugaţi în lista de redare…</string>
     <string name="action_tag_editor">Editor etichete</string>
     <string name="action_delete_from_device">Ștergeți de pe dispozitiv</string>
     <string name="action_details">Detalii</string>
     <string name="action_scan">Scanează</string>
     <string name="action_cancel_current_timer">Anulează timer curent.</string>
     <string name="action_set_as_start_directory">Setaţi ca dosar de pornire</string>
-    <string name="action_new_playlist">Lista de redare nouă...</string>
+    <string name="action_new_playlist">Lista de redare nouă…</string>
     <string name="action_go_to_artist">Accesaţi artistul</string>
     <string name="action_go_to_album">Accesaţi albumul</string>
     <string name="action_save_playlist">Salveaza ca fișier</string>
@@ -93,7 +93,7 @@
     <string name="title_rename_playlist">Redenumire listă de redare</string>
     <string name="title_add_playlist">Adăugaţi la lista de redare</string>
     <string name="state_saving_changes">Se salvează schimbările</string>
-    <string name="state_updating">Actualizare...</string>
+    <string name="state_updating">Actualizare…</string>
     <string name="tips_playlist_name_placeholder">Nume listă</string>
     <string name="tips_search_hint">Căutați în bibliotecă.</string>
     <string name="tips_x_selected">%1$d selectat/ă</string>

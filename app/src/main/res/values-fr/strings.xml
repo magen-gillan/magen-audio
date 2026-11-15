@@ -411,7 +411,7 @@
     <string name="pref_summary_playlist_files_operation_behaviour">Comportements sur la façon de gérer les fichiers de playlist lors de la création, de la modification etc. pour les playlists des fichiers.</string>
     <string name="pref_summary_preload_images">Précharger les images pour accélérer le chargement et éviter les ralentissements. Cela peut entraîner une plus grande consommation de mémoire.</string>
     <string name="pref_summary_remember_last_tab">Au démarrage, retourner au dernier onglet ouvert.</string>
-    <string name="pref_summary_resume_after_audio_focus_gain">Toujours reprendre la lecture après une interruption (un appel téléphonique ou une alarme...).</string>
+    <string name="pref_summary_resume_after_audio_focus_gain">Toujours reprendre la lecture après une interruption (un appel téléphonique ou une alarme…).</string>
     <string name="pref_summary_send_lyrics">Diffuser les paroles synchronisées vers le module Xposed \"StatusBar Lyrics\"</string>
     <string name="pref_summary_seek_jump_interval">Définit le nombre de secondes à avancer ou reculer sur le lecteur ou la notification.</string>
     <string name="pref_summary_start_directory">Le répertoire par défaut lors de la navigation des fichiers.</string>
@@ -518,42 +518,52 @@
     <plurals name="item_songs">
         <item quantity="one">%1$d morceau</item>
         <item quantity="other">%1$d morceaux</item>
+        <item quantity="many">%1$d morceaux</item>
     </plurals>
     <plurals name="item_files">
         <item quantity="one">%1$d fichier</item>
         <item quantity="other">%1$d fichiers</item>
+        <item quantity="many">%1$d fichiers</item>
     </plurals>
     <plurals name="item_albums">
         <item quantity="one">%1$d Album</item>
         <item quantity="other">%1$d Albums</item>
+        <item quantity="many">%1$d Albums</item>
     </plurals>
     <plurals name="item_artists">
         <item quantity="one">%1$d artiste</item>
         <item quantity="other">%1$d artistes</item>
+        <item quantity="many">%1$d artistes</item>
     </plurals>
     <plurals name="item_playlists">
         <item quantity="one">%1$d playlist</item>
         <item quantity="other">%1$d playlists</item>
+        <item quantity="many">%1$d playlists</item>
     </plurals>
     <plurals name="item_playlists_generated">
         <item quantity="one">%1$d Liste de lecture générée</item>
         <item quantity="other">%1$d Listes de lecture générées</item>
+        <item quantity="many">%1$d Listes de lecture générées</item>
     </plurals>
     <plurals name="item_genres">
         <item quantity="one">%1$d Genre</item>
         <item quantity="other">%1$d Genres</item>
+        <item quantity="many">%1$d Genres</item>
     </plurals>
     <plurals name="msg_header_delete_items">
         <item quantity="one">%1$d Cet élément sera supprimé :</item>
         <item quantity="other">%1$d Ces éléments seront supprimés :</item>
+        <item quantity="many">%1$d Ces éléments seront supprimés :</item>
     </plurals>
     <plurals name="msg_header_remove_items">
         <!-- %1$s: where -->
         <item quantity="one">%2$d élément sera retiré de %1$s :</item>
         <item quantity="other">%2$d éléments seront retirés de %1$s :</item>
+        <item quantity="many">%2$d éléments seront retirés de %1$s :</item>
     </plurals>
     <plurals name="msg_deletion_result">
         <item quantity="one">%1$d / %2$d élément a été supprimé avec succès.</item>
         <item quantity="other">%1$d / %2$d éléments ont été supprimés avec succès.</item>
+        <item quantity="many">%1$d / %2$d éléments ont été supprimés avec succès.</item>
     </plurals>
 </resources>

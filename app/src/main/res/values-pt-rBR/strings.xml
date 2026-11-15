@@ -555,42 +555,52 @@
     <plurals name="item_songs">
         <item quantity="one">%1$d Música</item>
         <item quantity="other">%1$d Músicas</item>
+        <item quantity="many">%1$d Músicas</item>
     </plurals>
     <plurals name="item_files">
         <item quantity="one">%1$d Arquivo</item>
         <item quantity="other">%1$d Arquivos</item>
+        <item quantity="many">%1$d Arquivos</item>
     </plurals>
     <plurals name="item_albums">
         <item quantity="one">%1$d Álbum</item>
         <item quantity="other">%1$d Álbuns</item>
+        <item quantity="many">%1$d Álbuns</item>
     </plurals>
     <plurals name="item_artists">
         <item quantity="one">%1$d Artista</item>
         <item quantity="other">%1$d Artistas</item>
+        <item quantity="many">%1$d Artistas</item>
     </plurals>
     <plurals name="item_playlists">
         <item quantity="one">%1$d Lista de Reprodução</item>
         <item quantity="other">%1$d Listas de Reprodução</item>
+        <item quantity="many">%1$d Listas de Reprodução</item>
     </plurals>
     <plurals name="item_playlists_generated">
         <item quantity="one">%1$d Lista de Reprodução Gerada</item>
         <item quantity="other">%1$d Listas de Reprodução Geradas</item>
+        <item quantity="many">%1$d Listas de Reprodução Geradas</item>
     </plurals>
     <plurals name="item_genres">
         <item quantity="one">%1$d Gênero</item>
         <item quantity="other">%1$d Gêneros</item>
+        <item quantity="many">%1$d Gêneros</item>
     </plurals>
     <plurals name="msg_header_delete_items">
         <item quantity="one">%1$d item seria excluído:</item>
         <item quantity="other">%1$d itens seriam excluídos:</item>
+        <item quantity="many">%1$d itens seriam excluídos:</item>
     </plurals>
     <plurals name="msg_header_remove_items">
         <!-- %1$s: where -->
         <item quantity="one">%2$d item seria removido de %1$s:</item>
         <item quantity="other">%2$d itens seriam removidos de %1$s:</item>
+        <item quantity="many">%2$d itens seriam removidos de %1$s:</item>
     </plurals>
     <plurals name="msg_deletion_result">
         <item quantity="one">%1$d / %2$d item foi excluído com sucesso.</item>
         <item quantity="other">%1$d / %2$d itens foram excluídos com sucesso.</item>
+        <item quantity="many">%1$d / %2$d itens foram excluídos com sucesso.</item>
     </plurals>
 </resources>

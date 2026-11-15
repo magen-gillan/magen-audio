@@ -4,7 +4,7 @@
     <string name="disable">uitschakelen</string>
     <string name="success">Gelukt!</string>
     <string name="failed">mislukt!</string>
-    <string name="action_edit">Aanpassen...</string>
+    <string name="action_edit">Aanpassen…</string>
     <string name="action_save">Opslaan</string>
     <string name="action_delete">Verwijderen</string>
     <string name="action_clear">Legen</string>
@@ -65,7 +65,7 @@
     <string name="action_save_playlist">Opslaan als bestand</string>
     <string name="action_save_playlists">Opslaan als bestanden</string>
     <string name="action_remove_from_playlist">Verwijderen uit afspeellijst</string>
-    <string name="action_choose_lyrics">Kies songteksten...</string>
+    <string name="action_choose_lyrics">Kies songteksten…</string>
     <string name="action_sleep_timer">Slaaptimer</string>
     <string name="action_scan_media">Media scannen</string>
     <string name="action_scan_directory">Map scannen</string>

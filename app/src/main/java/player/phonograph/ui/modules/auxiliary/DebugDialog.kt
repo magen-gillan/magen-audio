@@ -12,6 +12,7 @@ import player.phonograph.repo.mediastore.MediaStoreSongsActions
 import player.phonograph.ui.modules.main.MainActivity
 import player.phonograph.ui.modules.upgrade.UpgradeInfoDialog
 import player.phonograph.ui.theme.tintButtons
+import androidx.lifecycle.lifecycleScope
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
@@ -21,22 +22,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 
 class DebugDialog : DialogFragment() {
 
-    @OptIn(DelicateCoroutinesApi::class)
     private val items = listOf<Pair<String, Function1<DialogInterface, Unit>>>(
         "Crash the app" to {
             throw Exception("Crash Test!!! Crash Test!!! Crash Test!!! Crash Test!!! Crash Test!!! ")
         },
         "Crash the app (Coroutine)" to {
-            GlobalScope.launch {
+            // Use lifecycleScope instead of GlobalScope so the coroutine
+            // is cancelled when the dialog's host activity is destroyed,
+            // rather than leaking forever.
+            lifecycleScope.launch {
                 throw Exception("Crash Test!!! Crash Test!!! Crash Test!!! Crash Test!!! Crash Test!!! ")
             }
         },

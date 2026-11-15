@@ -101,7 +101,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    tools:src="@drawable/ic_description_white_24dp" />
+                    tools:src="@drawable/ic_description_white_24dp" android:contentDescription="@null" />
 
 
                 <androidx.constraintlayout.widget.Barrier
@@ -120,7 +120,7 @@
                     android:src="@drawable/ic_description_white_24dp"
                     app:layout_constraintBottom_toBottomOf="@+id/name_text"
                     app:layout_constraintEnd_toStartOf="@+id/name_text"
-                    app:layout_constraintTop_toTopOf="@+id/name_text" />
+                    app:layout_constraintTop_toTopOf="@+id/name_text" android:contentDescription="@null" />
 
                 <TextView
                     android:id="@+id/name_text"
@@ -145,7 +145,7 @@
                     android:src="@drawable/ic_music_note_white_24dp"
                     app:layout_constraintBottom_toBottomOf="@id/song_count_text"
                     app:layout_constraintEnd_toStartOf="@id/song_count_text"
-                    app:layout_constraintTop_toTopOf="@id/song_count_text" />
+                    app:layout_constraintTop_toTopOf="@id/song_count_text" android:contentDescription="@null" />
 
                 <TextView
                     android:id="@+id/song_count_text"
@@ -168,7 +168,7 @@
                     android:src="@drawable/ic_timer_white_24dp"
                     app:layout_constraintBottom_toBottomOf="@id/duration_text"
                     app:layout_constraintEnd_toStartOf="@id/duration_text"
-                    app:layout_constraintTop_toTopOf="@id/duration_text" />
+                    app:layout_constraintTop_toTopOf="@id/duration_text" android:contentDescription="@null" />
 
                 <TextView
                     android:id="@+id/duration_text"
@@ -191,7 +191,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/path_text"
                     app:layout_constraintEnd_toStartOf="@+id/path_text"
                     app:layout_constraintTop_toTopOf="@+id/path_text"
-                    app:layout_goneMarginBottom="16dp" />
+                    app:layout_goneMarginBottom="16dp" android:contentDescription="@null" />
 
                 <TextView
                     android:id="@+id/path_text"

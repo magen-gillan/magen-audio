@@ -45,7 +45,7 @@
     <string name="action_next">Sonraki</string>
     <string name="action_add_to_playing_queue">Çalma sırasına ekle</string>
     <string name="action_remove_from_playing_queue">Çalma sırasından kaldır</string>
-    <string name="action_add_to_playlist">Çalma listesine ekle...</string>
+    <string name="action_add_to_playlist">Çalma listesine ekle…</string>
     <string name="action_tag_editor">Etiket düzenleyici</string>
     <string name="action_delete_from_device">Cihazdan sil</string>
     <string name="action_details">Detaylar</string>
@@ -53,14 +53,14 @@
     <string name="action_cancel_current_timer">Şu anki zamanlayıcıyı iptal et</string>
     <string name="action_set_as_start_directory">Başlangıç dizini olarak ayarla</string>
     <string name="action_add_to_black_list">Kara listeye ekle</string>
-    <string name="action_new_playlist">Yeni çalma listesi....</string>
+    <string name="action_new_playlist">Yeni çalma listesi….</string>
     <string name="action_change_now_playing_screen">Şimdi Oynatılıyor ekranını değiştir</string>
     <string name="action_go_to_artist">Sanatçıya git</string>
     <string name="action_go_to_album">Albüme git</string>
     <string name="action_save_playlist">Dosya olarak kaydet</string>
     <string name="action_save_playlists">Dosya olarak kaydet</string>
     <string name="action_remove_from_playlist">Çalma listesinden kaldır</string>
-    <string name="action_choose_lyrics">Şarkı Sözü Seç...</string>
+    <string name="action_choose_lyrics">Şarkı Sözü Seç…</string>
     <string name="action_sleep_timer">Uyku zamanlayıcı</string>
     <string name="action_scan_media">Medyayı tara</string>
     <string name="action_scan_directory">Tarama dizini</string>
@@ -186,10 +186,10 @@
     <string name="title_rename_playlist">Çalma listesini yeniden adlandır</string>
     <string name="title_add_playlist">Çalma listesine ekle</string>
     <string name="state_saving_changes">Değişiklikler kaydediliyor</string>
-    <string name="state_updating">Güncelleniyor...</string>
+    <string name="state_updating">Güncelleniyor…</string>
     <string name="state_loading">Yükleniyor</string>
     <string name="state_completed">Tamamlandı</string>
-    <string name="state_process">İşlem...</string>
+    <string name="state_process">İşlem…</string>
     <string name="option_finish_current_music_sleep_timer">Son şarkıyı bitir</string>
     <string name="option_delete_with_saf">SAF ile sil</string>
     <string name="option_lyrics_following">Sonraki Şarkı Sözleri</string>
@@ -198,7 +198,7 @@
     <string name="tips_not_available_now">şuan kullanılamıyor</string>
     <string name="tips_are_you_sure">Emin misin?</string>
     <string name="tips_playlist_name_placeholder">Çalma listesi adı</string>
-    <string name="tips_search_hint">Kitaplığınız taranıyor...</string>
+    <string name="tips_search_hint">Kitaplığınız taranıyor…</string>
     <string name="tips_x_selected">%1$d seçildi</string>
     <string name="tips_choose_at_least_one">Lütfen en az bir tane seçin</string>
     <string name="tips_select_at_least_one_category">En az bir kategori seçmeniz gerekiyor.</string>

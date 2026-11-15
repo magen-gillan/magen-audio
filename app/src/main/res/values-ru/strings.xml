@@ -58,7 +58,7 @@
     <string name="action_set_as_start_directory">Назначить начальной директорией</string>
     <string name="action_add_to_black_list">Добавить в чёрный список</string>
     <string name="action_item_layout">Макет</string>
-    <string name="action_new_playlist">Новый плейлист...</string>
+    <string name="action_new_playlist">Новый плейлист…</string>
     <string name="action_change_now_playing_screen">Изменить воспроизведение экрана</string>
     <string name="action_go_to_artist">Перейти к исполнителю</string>
     <string name="action_go_to_album">Перейти к альбому</string>

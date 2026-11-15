@@ -45,7 +45,7 @@
     <string name="action_next">Prossima</string>
     <string name="action_add_to_playing_queue">Aggiungi alla coda di riproduzione</string>
     <string name="action_remove_from_playing_queue">Rimuovi dalla coda di riproduzione</string>
-    <string name="action_add_to_playlist">Aggiungi alla playlist...</string>
+    <string name="action_add_to_playlist">Aggiungi alla playlist…</string>
     <string name="action_tag_editor">Modifica tag</string>
     <string name="action_delete_from_device">Elimina dal dispositivo</string>
     <string name="action_details">Dettagli</string>
@@ -53,7 +53,7 @@
     <string name="action_cancel_current_timer">Annulla questo timer</string>
     <string name="action_set_as_start_directory">Imposta come cartella iniziale</string>
     <string name="action_add_to_black_list">Aggiungi alla lista nera</string>
-    <string name="action_new_playlist">Nuova playlist...</string>
+    <string name="action_new_playlist">Nuova playlist…</string>
     <string name="action_change_now_playing_screen">Cambia schermata di riproduzione</string>
     <string name="action_go_to_artist">Vai all\'artista</string>
     <string name="action_go_to_album">Vai all\'album</string>
@@ -160,10 +160,10 @@
     <string name="title_rename_playlist">Rinomina playlist</string>
     <string name="title_add_playlist">Aggiungi alla playlist</string>
     <string name="state_saving_changes">Salva le modifiche</string>
-    <string name="state_updating">Aggiornamento...</string>
+    <string name="state_updating">Aggiornamento…</string>
     <string name="state_loading">Caricamento</string>
     <string name="state_completed">Completato</string>
-    <string name="state_process">In Elaborazione...</string>
+    <string name="state_process">In Elaborazione…</string>
     <string name="option_finish_current_music_sleep_timer">Termina l\'ultimo brano</string>
     <string name="option_delete_with_saf">Elimina con SAF</string>
     <string name="option_lyrics_following">Testi seguenti</string>
@@ -173,7 +173,7 @@
     <string name="tips_not_available_now">Non disponibile ora</string>
     <string name="tips_are_you_sure">Sei sicuro?</string>
     <string name="tips_playlist_name_placeholder">Nome playlist</string>
-    <string name="tips_search_hint">Cercando nella tua libreria...</string>
+    <string name="tips_search_hint">Cercando nella tua libreria…</string>
     <string name="tips_x_selected">%1$d selezionati</string>
     <string name="tips_choose_at_least_one">Scegliere almeno uno</string>
     <string name="tips_select_at_least_one_category">Devi scegliere almeno una categoria.</string>
@@ -376,42 +376,52 @@
     <plurals name="item_songs">
         <item quantity="one">%1$d brano</item>
         <item quantity="other">%1$d brani</item>
+        <item quantity="many">%1$d brani</item>
     </plurals>
     <plurals name="item_files">
         <item quantity="one">%1$d file</item>
         <item quantity="other">%1$d files</item>
+        <item quantity="many">%1$d files</item>
     </plurals>
     <plurals name="item_albums">
         <item quantity="one">%1$d album</item>
         <item quantity="other">%1$d albums</item>
+        <item quantity="many">%1$d albums</item>
     </plurals>
     <plurals name="item_artists">
         <item quantity="one">%1$d artista</item>
         <item quantity="other">%1$d artisti</item>
+        <item quantity="many">%1$d artisti</item>
     </plurals>
     <plurals name="item_playlists">
         <item quantity="one">%1$d Scaletta</item>
         <item quantity="other">%1$d Scalette</item>
+        <item quantity="many">%1$d Scalette</item>
     </plurals>
     <plurals name="item_playlists_generated">
         <item quantity="one">%1$d Scaletta Generata</item>
         <item quantity="other">%1$d Scalette Generate</item>
+        <item quantity="many">%1$d Scalette Generate</item>
     </plurals>
     <plurals name="item_genres">
         <item quantity="one">%1$d genere</item>
         <item quantity="other">%1$d generi</item>
+        <item quantity="many">%1$d generi</item>
     </plurals>
     <plurals name="msg_header_delete_items">
         <item quantity="one">%1$d elemento sarà eliminato:</item>
         <item quantity="other">%1$d elementi saranno eliminati:</item>
+        <item quantity="many">%1$d elementi saranno eliminati:</item>
     </plurals>
     <plurals name="msg_header_remove_items">
         <!-- %1$s: where -->
         <item quantity="one">Questo elemento verrebbe rimosso da %1$s:</item>
         <item quantity="other">Questi elementi verrebbero rimossi da %1$s:</item>
+        <item quantity="many">Questi elementi verrebbero rimossi da %1$s:</item>
     </plurals>
     <plurals name="msg_deletion_result">
         <item quantity="one">%1$d / %2$d elemento è stato eliminato con successo.</item>
         <item quantity="other">%1$d / %2$d elementi sono stati eliminati con successo.</item>
+        <item quantity="many">%1$d / %2$d elementi sono stati eliminati con successo.</item>
     </plurals>
 </resources>
