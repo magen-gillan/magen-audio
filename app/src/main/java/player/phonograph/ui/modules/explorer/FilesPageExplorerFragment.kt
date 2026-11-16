@@ -44,29 +44,43 @@ class FilesPageExplorerFragment : AbsFilesExplorerFragment() {
         FolderIconMenuProvider(ActionMenuProviders.FileItemActionMenuProvider, ::requestChangeFolderIcon, ::resetFolderIcon)
 
     //region Folder icon
-    private var pendingIconFolder: FileItem? = null
+    /**
+     * path of the folder that is waiting for an image from the picker;
+     * kept in the saved state, because the fragment may be recreated while the picker is on screen
+     */
+    private var pendingIconFolderPath: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        pendingIconFolderPath = savedInstanceState?.getString(STATE_PENDING_ICON_FOLDER)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_PENDING_ICON_FOLDER, pendingIconFolderPath)
+    }
 
     private val pickFolderIcon =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            val folder = pendingIconFolder
-            pendingIconFolder = null
-            if (uri != null && folder != null) applyFolderIcon(folder, uri)
+            val folderPath = pendingIconFolderPath
+            pendingIconFolderPath = null
+            if (uri != null && folderPath != null) applyFolderIcon(folderPath, uri)
         }
 
     private fun requestChangeFolderIcon(folder: FileItem) {
-        pendingIconFolder = folder
+        pendingIconFolderPath = folder.path
         try {
             pickFolderIcon.launch("image/*")
         } catch (_: ActivityNotFoundException) {
-            pendingIconFolder = null
+            pendingIconFolderPath = null
             Toast.makeText(requireContext(), R.string.err_folder_icon_failed, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun applyFolderIcon(folder: FileItem, uri: Uri) {
+    private fun applyFolderIcon(folderPath: String, uri: Uri) {
         val appContext = requireContext().applicationContext
         lifecycleScope.launch {
-            val failure = FolderIconStore.set(appContext, folder.path, uri)
+            val failure = FolderIconStore.set(appContext, folderPath, uri)
             if (failure == null) {
                 Toast.makeText(appContext, R.string.msg_folder_icon_changed, Toast.LENGTH_SHORT).show()
                 refreshIcons()
@@ -118,6 +132,10 @@ class FilesPageExplorerFragment : AbsFilesExplorerFragment() {
         }
     }
     //endregion
+
+    private companion object {
+        const val STATE_PENDING_ICON_FOLDER = "pending_icon_folder"
+    }
 
     class FilesPageClickActionProvider(private val onSwitch: (FileItem) -> Unit) :
             ClickActionProviders.ClickActionProvider<FileItem> {

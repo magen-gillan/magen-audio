@@ -261,7 +261,12 @@ class MediaSessionController : ServiceComponent {
     private var cachedBitmap: Bitmap? = null
     @Volatile
     private var cachedSong: Song? = null
+    /** the song that metadata was requested for last (to drop results of outdated cover loading) */
+    @Volatile
+    private var currentSong: Song? = null
+
     fun updateMetaData(song: Song?, pos: Long, total: Long, loadCover: Boolean) {
+        currentSong = song
         if (song == null) {
             mediaSession.setMetadata(null)
             // don't clear cachedSong/cachedBitmap here — the song might come back
@@ -292,7 +297,7 @@ class MediaSessionController : ServiceComponent {
                     // Guard against the song having changed while the load
                     // was in flight — otherwise we'd overwrite the NEW
                     // song's metadata with the OLD song's artwork.
-                    if (expectedSong != song && cachedSong != null) return@load
+                    if (currentSong != expectedSong) return@load
                     if (bitmap != null) {
                         metadata.putBitmap(METADATA_KEY_ALBUM_ART, bitmap)
                         metadata.putBitmap(METADATA_KEY_ART, bitmap)

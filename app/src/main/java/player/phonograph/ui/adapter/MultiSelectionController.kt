@@ -126,19 +126,19 @@ class MultiSelectionController<I>(
                 currentCab.titleText = currentCab.toolbar.resources.getString(R.string.tips_x_selected, size)
                 currentCab.setupMenu()
                 currentCab.show()
+                // intercept "back" only while something is selected
+                if (!onBackPressedDispatcherRegistered) {
+                    onBackPressedDispatcherRegistered = true
+                    activity.onBackPressedDispatcher.addCallback(activity, backPressedCallback)
+                    debug {
+                        Log.v(TAG, "onBackPressedDispatcher Callback registered")
+                    }
+                }
             } else {
                 currentCab.hide()
                 if (onBackPressedDispatcherRegistered) {
                     backPressedCallback.remove()
                     onBackPressedDispatcherRegistered = false
-                }
-            }
-
-            if (!onBackPressedDispatcherRegistered) {
-                onBackPressedDispatcherRegistered = true
-                activity.onBackPressedDispatcher.addCallback(activity, backPressedCallback)
-                debug {
-                    Log.v(TAG, "onBackPressedDispatcher Callback registered")
                 }
             }
         }

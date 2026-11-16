@@ -173,6 +173,8 @@ object Keys {
     //</editor-fold>
 
     //<editor-fold desc="Interactions">
+    // NOTICE: the stored key names of songItemClickMode / songItemClickExtraFlag are swapped on purpose (legacy).
+    // Do NOT "fix" them: it would silently reset the setting of every existing user without a migration.
     val songItemClickMode
         get() = PrimitiveKey<Int>(intPK("song_item_click_extra_flag")) { SongClickMode.QUEUE_SWITCH_TO_POSITION }
     val songItemClickExtraFlag

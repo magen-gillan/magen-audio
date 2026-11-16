@@ -52,7 +52,7 @@
 
 Press the green button above to download the latest build, then open the APK and allow installation when prompted.
 
-**المتطلبات | Requirements:** Android 8.0+ (API 26+) | الإصدار الحالي v2.9.9.
+**المتطلبات | Requirements:** Android 8.0+ (API 26+) | الإصدار الحالي v2.9.10.
 
 ## الاعتمادات | Credits
 

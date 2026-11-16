@@ -59,9 +59,12 @@ class StarterActivity : AppCompatActivity() {
             }
             val shortcutType = launcherIntent.extras?.getString(SHORTCUT_TYPE, null)
             if (shortcutType != null) {
+                // finish() is called by processShortcut() once the work is done: finishing here would
+                // destroy the activity and cancel its lifecycleScope before the songs are even loaded
                 processShortcut(shortcutType)
+            } else {
+                finish()
             }
-            finish()
         } else {
             debug {
                 Log.d("Starter", "Normal Mode")
@@ -177,7 +180,7 @@ class StarterActivity : AppCompatActivity() {
                 if (id >= 0) {
                     val position = intent.getIntExtra("position", 0)
                     val songs = MediaStorePlaylists.songs(this, id).map { it.song }
-                    if (songs.isNotEmpty()) return SongsRequest(songs, position)
+                    if (songs.isNotEmpty()) return SongsRequest(songs, position.coerceIn(0, songs.lastIndex))
                 }
             }
 
@@ -186,7 +189,7 @@ class StarterActivity : AppCompatActivity() {
                 if (id >= 0) {
                     val position = intent.getIntExtra("position", 0)
                     val songs = Songs.album(this, id)
-                    if (songs.isNotEmpty()) return SongsRequest(songs, position)
+                    if (songs.isNotEmpty()) return SongsRequest(songs, position.coerceIn(0, songs.lastIndex))
                 }
             }
 
@@ -195,7 +198,7 @@ class StarterActivity : AppCompatActivity() {
                 if (id >= 0) {
                     val position = intent.getIntExtra("position", 0)
                     val songs = Songs.artist(this, id)
-                    if (songs.isNotEmpty()) return SongsRequest(songs, position)
+                    if (songs.isNotEmpty()) return SongsRequest(songs, position.coerceIn(0, songs.lastIndex))
                 }
             }
         }
@@ -203,7 +206,10 @@ class StarterActivity : AppCompatActivity() {
     }
 
     private fun processShortcut(shortcutType: String) {
-        val type = AppShortcutType.from(shortcutType)
+        val type: AppShortcutType = AppShortcutType.from(shortcutType) ?: run {
+            finish()
+            return
+        }
         var shuffleMode = ShuffleMode.NONE
         val playlist: Playlist = when (type) {
             AppShortcutType.ShuffleAllShortcut ->
@@ -214,20 +220,20 @@ class StarterActivity : AppCompatActivity() {
 
             AppShortcutType.LastAddedShortcut  ->
                 DynamicPlaylists.lastAdded(resources)
-
-            else                               -> return
         }
 
-        // Previously: `runBlocking(Dispatchers.IO) { ...allSongs(this@StarterActivity) }`
-        // called directly from onCreate (via the SHORTCUT_MODE branch above),
-        // which blocks the main thread on a playlist query. Same ANR risk as
-        // processFrontGroundMode. Dispatch on lifecycleScope instead.
+        // Do not block the main thread on a playlist query (ANR risk): load on IO via lifecycleScope,
+        // and finish only after the playback is requested (finishing earlier cancels this coroutine).
         lifecycleScope.launch {
-            val songs = withContext(Dispatchers.IO) {
-                PlaylistSongsActions.reader(playlist).allSongs(this@StarterActivity)
+            try {
+                val songs = withContext(Dispatchers.IO) {
+                    PlaylistSongsActions.reader(playlist).allSongs(this@StarterActivity)
+                }
+                play(songs, shuffleMode)
+                if (SDK_INT >= N_MR1) PhonographShortcutManager.reportShortcutUsed(this@StarterActivity, type.id)
+            } finally {
+                finish()
             }
-            play(songs, shuffleMode)
-            if (SDK_INT >= N_MR1) PhonographShortcutManager.reportShortcutUsed(this@StarterActivity, type.id)
         }
     }
 

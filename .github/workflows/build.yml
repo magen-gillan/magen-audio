@@ -46,6 +46,9 @@ jobs:
       - name: Compile (modern / stable / release)
         run: ./gradlew :app:compileModernStableReleaseKotlin --no-daemon --stacktrace
 
+      - name: Run unit tests
+        run: ./gradlew :app:testModernStableDebugUnitTest --no-daemon
+
       - name: Run Lint
         run: ./gradlew :app:lintModernStableRelease --no-daemon
 

@@ -59,14 +59,20 @@ object FolderIconStore {
         try {
             val bitmap = decodeScaled(app, uri) ?: return@withContext "Unsupported or unreadable image"
             val dir = directory(app)
+            // keep transparency (JPEG would turn transparent pixels black)
+            val hasAlpha = bitmap.hasAlpha()
+            val format = if (hasAlpha) Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG
+            val extension = if (hasAlpha) "png" else "jpg"
             // a new file name for each change so that image caches never serve the old image
-            val newFile = File(dir, "${digest(folderKey)}_${System.currentTimeMillis()}.jpg")
-            try {
-                newFile.outputStream().buffered().use { out ->
-                    if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 92, out)) return@withContext "Failed to encode the image"
-                }
+            val newFile = File(dir, "${digest(folderKey)}_${System.currentTimeMillis()}.$extension")
+            val written = try {
+                newFile.outputStream().buffered().use { out -> bitmap.compress(format, 92, out) }
             } finally {
                 bitmap.recycle()
+            }
+            if (!written) {
+                newFile.delete()
+                return@withContext "Failed to encode the image"
             }
             val prefs = preferences(app)
             val old = prefs.getString(folderKey, null)
@@ -97,10 +103,8 @@ object FolderIconStore {
         val old = prefs.getString(folderKey, null)
         val committed = prefs.edit().remove(folderKey).commit()
         if (!committed) return@withContext false
-        if (old != null) {
-            val file = File(directory(app), old)
-            if (file.exists() && !file.delete()) return@withContext false
-        }
+        // the icon is already detached from the folder; a file that cannot be deleted is only an orphan
+        if (old != null) File(directory(app), old).delete()
         true
     }
 
@@ -147,7 +151,9 @@ object FolderIconStore {
      */
     fun normalizePath(path: String): String {
         val stripped = when {
-            path.startsWith("/storage/emulated/0") -> path.removePrefix("/storage/emulated/0")
+            // match the whole path segment: "/storage/emulated/01/x" is not the primary storage
+            path == "/storage/emulated/0" || path.startsWith("/storage/emulated/0/") ->
+                path.removePrefix("/storage/emulated/0")
             path.startsWith("/storage/")           -> path.removePrefix("/storage")
             else                                   -> path
         }

@@ -29,7 +29,9 @@ class FileItemPresenter(
 ) : DisplayPresenter<FileItem> {
 
     override fun getItemID(item: FileItem): Long =
-        item.mediaPath.hashCode().toLong() shl 16 + item.name.hashCode() shl 1 + if (item.isFolder) 1 else 0
+        // NOTICE: infix `shl` has lower precedence than `+`, so every part has to be grouped explicitly
+        ((item.mediaPath.hashCode().toLong() shl 32) or (item.name.hashCode().toLong() and 0xFFFFFFFFL)) xor
+                (if (item.isFolder) 1L else 0L)
 
     override fun getDisplayTitle(context: Context, item: FileItem): CharSequence = item.name
 

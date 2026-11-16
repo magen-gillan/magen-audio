@@ -457,6 +457,9 @@ class MusicService : MediaBrowserServiceCompat(),
         // explicitly supports async result delivery: result.sendResult()
         // can be called from any thread, so we launch a coroutine on the
         // service's IO scope and send the result when ready.
+        // detach() is REQUIRED before returning, otherwise MediaBrowserServiceCompat throws
+        // "onLoadChildren must call detach() or sendResult() before returning".
+        result.detach()
         coroutineScope.launch {
             val context = this@MusicService
             val mediaItems = try {

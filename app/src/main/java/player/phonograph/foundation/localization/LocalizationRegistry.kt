@@ -26,7 +26,6 @@ val availableLanguageTag = arrayOf(
     "en-rCA",
     "en-rGB",
     "ar",
-    "bg",
     "cs",
     "de",
     "el",
@@ -34,7 +33,6 @@ val availableLanguageTag = arrayOf(
     "es-rUS",
     "fi",
     "fr",
-    "hr",
     "hu",
     "in", //
     "it",

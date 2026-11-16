@@ -510,19 +510,27 @@ private fun WelcomeVideo(modifier: Modifier) {
 private fun CoverVideo(modifier: Modifier) {
     val context = LocalContext.current
     val player = remember { arrayOfNulls<MediaPlayer>(1) }
-    DisposableEffect(Unit) { onDispose { runCatching { player[0]?.release() }; player[0] = null } }
+    val surface = remember { arrayOfNulls<Surface>(1) }
+    fun releaseAll() {
+        runCatching { player[0]?.release() }; player[0] = null
+        runCatching { surface[0]?.release() }; surface[0] = null
+    }
+    DisposableEffect(Unit) { onDispose { releaseAll() } }
     AndroidView(
         modifier = modifier,
         factory = { ctx ->
             CoverTextureView(ctx).also { tv ->
                 tv.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
                     override fun onSurfaceTextureAvailable(st: SurfaceTexture, w: Int, h: Int) {
+                        releaseAll() // never leak a previous player/surface if the texture is re-created
                         runCatching {
                             val afd = context.resources.openRawResourceFd(R.raw.alisha_welcome)
                             val mp = MediaPlayer()
                             mp.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
                             afd.close()
-                            mp.setSurface(Surface(st))
+                            val sf = Surface(st)
+                            surface[0] = sf
+                            mp.setSurface(sf)
                             mp.isLooping = true
                             mp.setVolume(0f, 0f)
                             mp.setOnVideoSizeChangedListener { _, vw, vh -> tv.vw = vw; tv.vh = vh; tv.cover() }
@@ -533,7 +541,7 @@ private fun CoverVideo(modifier: Modifier) {
                     }
                     override fun onSurfaceTextureSizeChanged(st: SurfaceTexture, w: Int, h: Int) { tv.cover() }
                     override fun onSurfaceTextureDestroyed(st: SurfaceTexture): Boolean {
-                        runCatching { player[0]?.release() }; player[0] = null; return true
+                        releaseAll(); return true
                     }
                     override fun onSurfaceTextureUpdated(st: SurfaceTexture) {}
                 }

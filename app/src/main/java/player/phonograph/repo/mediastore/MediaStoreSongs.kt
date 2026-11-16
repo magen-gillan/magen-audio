@@ -8,14 +8,18 @@ import player.phonograph.foundation.error.record
 import player.phonograph.foundation.mediastore.CURSOR_INDEX_ID
 import player.phonograph.foundation.mediastore.intoFirstSong
 import player.phonograph.foundation.mediastore.intoSongs
+import player.phonograph.foundation.mediastore.naturalStringComparator
 import player.phonograph.foundation.mediastore.queryMediastoreAudio
 import player.phonograph.foundation.mediastore.withBaseAudioFilter
 import player.phonograph.model.Song
 import player.phonograph.model.repo.loader.ISongs
 import player.phonograph.model.sort.SortMode
+import player.phonograph.model.sort.SortRef
 import player.phonograph.repo.mediastore.internal.defaultSongQuerySortOrder
 import player.phonograph.repo.mediastore.internal.mediastoreSongQuerySortOrder
 import player.phonograph.repo.mediastore.internal.withPathFilter
+import player.phonograph.settings.Keys
+import player.phonograph.settings.Settings
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore.Audio.AudioColumns
@@ -33,37 +37,33 @@ object MediaStoreSongs : ISongs {
         val songs = querySongs(context, sortOrder = mediastoreSongQuerySortOrder(sortMode)).intoSongs()
         // Apply natural (numeric-aware) sort on top of MediaStore's lexicographical sort
         // so titles like "1, 2, 10" don't end up as "1, 10, 2".
-        return when (sortMode.sortRef) {
-            player.phonograph.model.sort.SortRef.SONG_NAME,
-            player.phonograph.model.sort.SortRef.DISPLAY_NAME,
-            player.phonograph.model.sort.SortRef.PATH,
-            player.phonograph.model.sort.SortRef.ALBUM_NAME,
-            player.phonograph.model.sort.SortRef.ARTIST_NAME,
-            player.phonograph.model.sort.SortRef.ALBUM_ARTIST_NAME,
-            player.phonograph.model.sort.SortRef.COMPOSER -> {
-                val selector: (Song) -> String? = when (sortMode.sortRef) {
-                    player.phonograph.model.sort.SortRef.SONG_NAME -> { s -> s.title }
-                    player.phonograph.model.sort.SortRef.DISPLAY_NAME -> { s -> s.title }
-                    player.phonograph.model.sort.SortRef.PATH -> { s -> s.data }
-                    player.phonograph.model.sort.SortRef.ALBUM_NAME -> { s -> s.albumName }
-                    player.phonograph.model.sort.SortRef.ARTIST_NAME -> { s -> s.artistName }
-                    player.phonograph.model.sort.SortRef.ALBUM_ARTIST_NAME -> { s -> s.albumArtistName }
-                    player.phonograph.model.sort.SortRef.COMPOSER -> { s -> s.composer }
-                }
-                val cmp = player.phonograph.foundation.mediastore.naturalStringComparator(selector)
-                if (sortMode.revert) songs.sortedWith(cmp.reversed())
-                else songs.sortedWith(cmp)
-            }
-            player.phonograph.model.sort.SortRef.CUSTOM -> {
-                val prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context)
-                val orderCsv = prefs.getString("custom_sort_order", "") ?: ""
-                if (orderCsv.isNotBlank()) {
-                    val orderMap = orderCsv.split(",").mapIndexed { idx, id -> id.trim().toLong() to idx }.toMap()
-                    songs.sortedWith(compareBy { orderMap[it.id] ?: Int.MAX_VALUE })
-                } else songs
-            }
-            else -> songs
+        val selector: ((Song) -> String?)? = when (sortMode.sortRef) {
+            SortRef.SONG_NAME         -> { s: Song -> s.title }
+            SortRef.DISPLAY_NAME      -> { s: Song -> s.title }
+            SortRef.PATH              -> { s: Song -> s.data }
+            SortRef.ALBUM_NAME        -> { s: Song -> s.albumName }
+            SortRef.ARTIST_NAME       -> { s: Song -> s.artistName }
+            SortRef.ALBUM_ARTIST_NAME -> { s: Song -> s.albumArtistName }
+            SortRef.COMPOSER          -> { s: Song -> s.composer }
+            else                      -> null
         }
+        if (selector != null) {
+            val cmp = naturalStringComparator(selector)
+            return songs.sortedWith(if (sortMode.revert) cmp.reversed() else cmp)
+        }
+        if (sortMode.sortRef == SortRef.CUSTOM) {
+            // user-defined order: comma separated song ids (invalid entries are ignored)
+            val orderCsv = Settings(context)[Keys.customSortOrder].read()
+            val orderMap = orderCsv.split(',')
+                .mapNotNull { it.trim().toLongOrNull() }
+                .withIndex()
+                .associate { (index, id) -> id to index }
+            if (orderMap.isNotEmpty()) {
+                val byOrder = compareBy<Song> { orderMap[it.id] ?: Int.MAX_VALUE }
+                return songs.sortedWith(if (sortMode.revert) byOrder.reversed() else byOrder)
+            }
+        }
+        return songs
     }
 
     override suspend fun id(context: Context, id: Long): Song? =
@@ -114,7 +114,7 @@ object MediaStoreSongs : ISongs {
         return cursor.intoFirstSong()
     }
 
-    override suspend fun total(context: Context): Int = querySongs(context = context)?.count ?: 0
+    override suspend fun total(context: Context): Int = querySongs(context = context)?.use { it.count } ?: 0
 
     suspend fun ids(context: Context): Set<Long> =
         querySongs(context = context, sortOrder = null)?.use { cursor ->
